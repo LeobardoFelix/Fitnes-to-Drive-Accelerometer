@@ -68,12 +68,14 @@ class SignalTracker(QObject):
         dataFileName = self.baseDir + "/MEDIDAS.csv"
         reactionName = self.baseDir + "/REACCIONES.csv"
 
-        if self.dataMode == IMU_MODE:
+        """if self.dataMode == IMU_MODE:
             fields = ["Aceleración escalar", "Promedio", "Ronda", "Timestamp", "Estimulo"]
             reactFields = ["Aceleración escalar", 'No_round', 'Timestamp', "Estimulo"]
         else:
             fields = ["Valor EOG", "Promedio", "Ronda", "Timestamp", "Estimulo"]
-            reactFields = ["Valor EOG", 'No_round', 'Timestamp', "Estimulo"]
+            reactFields = ["Valor EOG", 'No_round', 'Timestamp', "Estimulo"]"""
+
+        reactFields = ["no_round", "ts_start_round", "ts_end_round", "delta_ts", "reaction"]
 
         # Check files BEFORE opening
         os.makedirs(self.baseDir, exist_ok=True)
@@ -91,6 +93,7 @@ class SignalTracker(QObject):
                 self.monitor.initMonitorThreading()
                 self.monitor.stopWriting()
                 for i in range(self.noRondas):
+                    self.currentLog = []
                     print("INICIA UNA NUEVA RONDA")
                     if not self.isTracking:
                         break
@@ -98,12 +101,14 @@ class SignalTracker(QObject):
                     self.monitor.currentRound = i
                     self.waitRandom()
                     print("EMPIEZA BUSCAR REACCION")
-                    self.waitForReaction(reactWriter)
+                    self.waitForReaction()
                     self.monitor.stopWriting()
                     print("TERMINA LA BUSQUEDA DE REACCIÓN")
                     self.emptyFigure.emit()
+                    self.checkIfReacted()
+                    reactWriter.writerow(self.currentLog)
+                    print(f"REACTION LOG: {self.reactionLog}")
                     print(f"RONDA {self.currentRound} TERMINO")
-                    self.checkIfReacted(reactWriter)
 
         except Exception as e:
             print("Error in classification:", e)
@@ -122,14 +127,15 @@ class SignalTracker(QObject):
             time.sleep(.1)
             currentTime = time.monotonic()
 
-    def waitForReaction(self, reactWriter):
+    def waitForReaction(self):
         
         self.reacciono = False
         #Marca el momento del estimulo
         startTime = time.monotonic()
         currentTime = time.monotonic()
-        #Primera marca en reacción
-        reactWriter.writerow([0, self.currentRound, currentTime, 0])
+        self.startRoundTime = currentTime
+        self.currentLog.append(self.currentRound)
+        self.currentLog.append(self.startRoundTime)
         print(f"RONDA: {self.currentRound} TS: {currentTime}  REACCION: 0")
         self.monitor.startWriting()
         #time.sleep(1)
@@ -137,24 +143,18 @@ class SignalTracker(QObject):
         self.fillFigure.emit()
         
         while (currentTime - startTime) < self.waitTime and self.isTracking:
-           #TODO: HERE IS GOING TO READ FROM SerialConsumer CURRENT VARIABLE
-            #with dataLock:
-            # valor = self.monitor.currentValue
-            # promedio = self.monitor.currentMean
-            # ts = self.monitor.currentTime
-            # reaccion = self.monitor.currentReaction
-            #print(f"{valor}, {promedio}, {ts}, {reaccion}")
-            #row = [valor, promedio, self.currentRound, ts, reaccion]
-            #csvwriter.writerow(row)
+
             if self.monitor.hasReacted:
-                #with dataLock:
                 valor = self.monitor.reactionValue
                 promedio = self.monitor.reactionMean
                 ts = self.monitor.reactionTime
                 reaccion = 1
+                self.currentLog.append(ts)
+                self.currentLog.append(ts-self.startRoundTime)
+                self.currentLog.append(reaccion)
+                self.reactionLog.append(self.currentLog)
                 print(f"REACTION: {self.monitor.reactionValue} PROMEDIO: {self.monitor.reactionMean}  TIEMPO: {self.monitor.reactionTime}")
                 print(f"{valor}, {promedio}, {ts}, {reaccion}")
-                reactWriter.writerow([self.monitor.reactionValue, self.currentRound, self.monitor.reactionTime, 1])
                 self.monitor.hasReacted = False
                 self.reacciono = True
                 break
@@ -162,34 +162,18 @@ class SignalTracker(QObject):
             currentTime = time.monotonic()
 
 
-    def checkForReactionBeheavior(self, valor, promedio):
-        if self.dataMode == EOG_MODE:
-            return self.checkEOGReaction(valor, promedio)
-        else:
-            return self.checkIMUReaction(valor, promedio)
-
     def stopThread(self):
         self.isTracking = False
-        #self.classification_thread.join(timeout=1)  # Waits for thread to finish safely
         print("Cycle stopped and thread finished")
 
-    def checkEOGReaction(self, valor, promedio):
-        if self.thresholdMode == STATIC_MODE:
-            return (valor <= self.bottomThresholdEOG or self.topThresholdEOG <= valor)
-        else:
-            return (valor <= (promedio-self.bottomModEOG) or (promedio+self.topThresholdEOG) <= valor)
-
-    def checkIMUReaction(self, valor, promedio):
-        if self.thresholdMode == STATIC_MODE:
-            return (valor >= self.thresholdIMU)
-        else:
-            return (valor >= promedio+self.thresholdIMU)
-            
-    def checkIfReacted(self, reactWriter):
+    def checkIfReacted(self):
         if not self.reacciono:
             ts = time.monotonic()
+            self.currentLog.append(ts)
+            self.currentLog.append(ts-self.startRoundTime)
+            self.currentLog.append(0)
+            self.reactionLog.append(self.currentLog)
             print(f"NO REACCIONO TS: {ts}")
-            reactWriter.writerow([-1, self.currentRound, ts, 0])
         else:
             print(f"SI REACCIONO")
 

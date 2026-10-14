@@ -284,8 +284,6 @@ class TestsWindow(QWidget):
         self.signalMonitor.stopThread()
         self.classificationThread.quit()
         self.classificationThread.wait()
-        self.frameThread.quit()
-        self.frameThread.wait()
         self.signalMonitor = SignalTracker(self.puerto)
 
 
