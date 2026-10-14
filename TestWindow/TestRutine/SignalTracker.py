@@ -68,13 +68,6 @@ class SignalTracker(QObject):
         dataFileName = self.baseDir + "/MEDIDAS.csv"
         reactionName = self.baseDir + "/REACCIONES.csv"
 
-        """if self.dataMode == IMU_MODE:
-            fields = ["Aceleración escalar", "Promedio", "Ronda", "Timestamp", "Estimulo"]
-            reactFields = ["Aceleración escalar", 'No_round', 'Timestamp', "Estimulo"]
-        else:
-            fields = ["Valor EOG", "Promedio", "Ronda", "Timestamp", "Estimulo"]
-            reactFields = ["Valor EOG", 'No_round', 'Timestamp', "Estimulo"]"""
-
         reactFields = ["no_round", "ts_start_round", "ts_end_round", "delta_ts", "reaction"]
 
         # Check files BEFORE opening
