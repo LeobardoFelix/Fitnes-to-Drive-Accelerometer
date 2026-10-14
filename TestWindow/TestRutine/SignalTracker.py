@@ -5,6 +5,7 @@ from PyQt6.QtCore import QObject, pyqtSignal
 import random
 from TestWindow.SerialCommunication.SerialConsumer import SerialConsumer
 import time
+from reportWindow import ReportWindow
 
 #dataLock = threading.Lock()
 READ_LINEAR_ACCELERATION = b":41\n"

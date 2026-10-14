@@ -10,7 +10,7 @@
             "name": "main.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "main.py",
+            "program": "TestWindow/TestRutine/reportWindow.py",
             "console": "integratedTerminal"
         }
     ]

@@ -209,10 +209,7 @@ class GraphWindow(QMainWindow):
         else:
             self.topEogLine, = self.ax.plot([], [], color=ACCENT_BLUE,  linestyle="--", linewidth=0.8, label="Top EOG Threshold")
             self.bottomEogLine, = self.ax.plot([], [], color=ACCENT_AMBER,  linestyle="--", linewidth=0.8, label="Bottom EOG Threshold")
-        #self.linea_limite,         = self.ax.plot([], [], color=ACCENT_RED,   linestyle="--", linewidth=1.0, label="Límite")
-        #self.linea_limite_azul,    = self.ax.plot([], [], color=ACCENT_BLUE,  linestyle="--", linewidth=0.8, label="+σ")
-        #self.linea_limite_amarilla,= self.ax.plot([], [], color=ACCENT_AMBER, linestyle="--", linewidth=0.8, label="-σ")
-
+        
         self.ax.legend(
             facecolor=PANEL_BG, edgecolor=BORDER,
             labelcolor=TEXT_LABEL, fontsize=9, loc="upper right"
