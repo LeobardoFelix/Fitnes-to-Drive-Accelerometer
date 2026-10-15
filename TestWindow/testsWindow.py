@@ -6,6 +6,7 @@ from PyQt6.QtWidgets import (
 from PyQt6 import QtGui
 from PyQt6.QtCore import Qt, QTimer, QThread
 from TestWindow.TestRutine.SignalTracker import SignalTracker
+from TestWindow.TestRutine.reportWindow import ReportWindow
 print("Inicio de aplicación")
 emptyFile = "C:/Users/felix/OneDrive/Documents/IMU_Sensor/Interfaz/resources/EmptyTriangle.png"
 fillFile = "C:/Users/felix/OneDrive/Documents/IMU_Sensor/Interfaz/resources/FillTriangle.png"
@@ -19,7 +20,7 @@ class TestsWindow(QWidget):
         #self.tracker = imuTracker()
         self.puerto = puerto
 
-        self.signalMonitor = SignalTracker(self.puerto)
+        self.signalTracker = SignalTracker(self.puerto)
         self.baseDir = "./DataSets/Sept2026/sujetos/sujeto"
         self.pic = QLabel()
         self.pixmap = QtGui.QPixmap()
@@ -65,7 +66,7 @@ class TestsWindow(QWidget):
 
         self.sujeto = 0
         directorio = self.baseDir + str(self.sujeto)
-        self.signalMonitor.baseDir = directorio
+        self.signalTracker.baseDir = directorio
         hl2.addWidget(QLabel("SUBJECT: "))
         self.subjectLabel = QSpinBox()
         self.subjectLabel.setValue(self.sujeto)
@@ -123,14 +124,10 @@ class TestsWindow(QWidget):
         self.dataButton.clicked.connect(self.changeDataMode)
         hlayout.addWidget(self.dataButton)
 
-    
-        
         hl1.addWidget(self.modeButton)
         hl1.addWidget(self.startBtn)
         hl2.addWidget(self.dataButton)
         hl2.addWidget(self.stopButton)
-
-
 
         #Imagen
         self.pic.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -149,38 +146,38 @@ class TestsWindow(QWidget):
     #INTERFAZ
     def changedThreshold(self, value):
         self.thresholdIMU = float(value)
-        self.signalMonitor.thresholdIMU = self.thresholdIMU
+        self.signalTracker.thresholdIMU = self.thresholdIMU
         print(f"threshold: {self.thresholdIMU}")
 
     def changeTopThreshold(self, value):
         self.topThreshEOG = float(value)
         if self.thresholdMode == STATIC_MODE:
-            self.signalMonitor.topThresholdEOG = float(value)
+            self.signalTracker.topThresholdEOG = float(value)
         else:
-            self.signalMonitor.topModEOG = float(value)
+            self.signalTracker.topModEOG = float(value)
         print(f"TOP THRESHOLD: {self.topThreshEOG}")
 
 
     def changeBottomThreshold(self, value):
         self.bottomThreshEOG = float(value)
         if self.thresholdMode == STATIC_MODE:
-            self.signalMonitor.bottomThresholdEOG = float(value)
+            self.signalTracker.bottomThresholdEOG = float(value)
         else:
-            self.signalMonitor.bottomModEOG = float(value)
+            self.signalTracker.bottomModEOG = float(value)
         print(f"BOTTOM THRESHOLD: {self.bottomThreshEOG}")
 
     def changeMode(self):
         self.thresholdMode = MOVIL_MODE if self.modeButton.isChecked() else STATIC_MODE
         newText = "MOVIL MODE" if self.modeButton.isChecked() else "STATIC MODE"
         self.modeButton.setText(newText)
-        self.signalMonitor.thresholdMode = self.thresholdMode
+        self.signalTracker.thresholdMode = self.thresholdMode
         print(f"THRESHOLD MODE: {self.thresholdMode}")
 
     def changeDataMode(self):
         self.dataMode = EOG_MODE if self.dataButton.isChecked() else IMU_MODE
         newText = "EOG" if self.dataButton.isChecked() else "IMU"
         self.dataButton.setText(newText)
-        self.signalMonitor.dataMode = self.dataMode
+        self.signalTracker.dataMode = self.dataMode
         print(f"DATA MODE CHANGED: {self.dataMode}")
 
 
@@ -201,67 +198,67 @@ class TestsWindow(QWidget):
     #Valores de la UI
     def changedRondas(self, value):
         self.noRondas = int(value)
-        self.signalMonitor.noRondas = self.noRondas
+        self.signalTracker.noRondas = self.noRondas
         print(f"RONDAS: {self.noRondas}")
     def changeMinTime(self, value):
         self.minTime = int(value)
-        self.signalMonitor.minTime = self.minTime
+        self.signalTracker.minTime = self.minTime
         print(f"MIN TIME: {self.minTime}")
     def changeMaxTime(self, value):
         self.maxTime = int(value)
-        self.signalMonitor.maxTime = self.maxTime
+        self.signalTracker.maxTime = self.maxTime
         print(f"MAX TIME: {self.maxTime}")
     def changedWaitTime(self, value):
         self.waitTime = int(value)
-        self.signalMonitor.waitTime = self.waitTime
+        self.signalTracker.waitTime = self.waitTime
         print(f"WAIT TIME:  {self.waitTime}")
 
     def changedSujeto(self, value):
         self.sujeto = int(value)
-        self.signalMonitor.sujeto = self.sujeto
+        self.signalTracker.sujeto = self.sujeto
         
         directorio = self.baseDir + str(self.sujeto)
-        self.signalMonitor.baseDir = directorio
+        self.signalTracker.baseDir = directorio
         print(directorio)
         print(f"SUJETO: {self.sujeto}")
 
     def updateAll(self):
         self.thresholdIMU = float(self.thresholdLabel.value())
-        self.signalMonitor.threshold = self.thresholdIMU
+        self.signalTracker.threshold = self.thresholdIMU
         print(f"threshold: {self.thresholdIMU}")
         self.noRondas = int(self.noRondasBox.value())
-        self.signalMonitor.noRondas = self.noRondas
+        self.signalTracker.noRondas = self.noRondas
         print(f"RONDAS: {self.noRondas}")
         self.minTime = int(self.minTimeLabel.value())
-        self.signalMonitor.minTime = int(self.minTime)
+        self.signalTracker.minTime = int(self.minTime)
         print(f"MIN TIME: {self.minTime}")
         self.maxTime = int(self.maxTimeLabel.value())
-        self.signalMonitor.maxTime = int(self.maxTime)
+        self.signalTracker.maxTime = int(self.maxTime)
         print(f"MAX TIME: {self.maxTime}")
         self.waitTime = int(self.waitTimeLabel.value())
-        self.signalMonitor.waitTime = self.waitTime
+        self.signalTracker.waitTime = self.waitTime
         print(f"WAIT TIME:  {self.waitTime}")
         self.sujeto = int(self.subjectLabel.value())
-        self.signalMonitor.sujeto = int(self.sujeto)
+        self.signalTracker.sujeto = int(self.sujeto)
         directorio = self.baseDir + str(self.sujeto)
-        self.signalMonitor.baseDir = directorio
+        self.signalTracker.baseDir = directorio
         print(directorio)
         print(f"SUJETO: {self.sujeto}")
         self.thresholdMode = MOVIL_MODE if self.modeButton.isChecked() else STATIC_MODE
-        self.signalMonitor.thresholdMode = self.thresholdMode
+        self.signalTracker.thresholdMode = self.thresholdMode
         print(f"THRESHOLD MODE: {self.thresholdMode}")
 
         self.dataMode = EOG_MODE if self.dataButton.isChecked() else IMU_MODE
-        self.signalMonitor.dataMode = self.dataMode
+        self.signalTracker.dataMode = self.dataMode
         print(f"DATA MODE CHANGED: {self.dataMode}")
 
 
         if self.thresholdMode == STATIC_MODE:
-            self.signalMonitor.topThresholdEOG = int(self.topThreshEOGLabel.value())
-            self.signalMonitor.bottomThresholdEOG = int(self.bottomThreshEOGLabel.value())
+            self.signalTracker.topThresholdEOG = int(self.topThreshEOGLabel.value())
+            self.signalTracker.bottomThresholdEOG = int(self.bottomThreshEOGLabel.value())
         else: #Movil
-            self.signalMonitor.topModEOG = int(self.topThreshEOGLabel.value())
-            self.signalMonitor.bottomModEOG = int(self.bottomThreshEOGLabel.value())
+            self.signalTracker.topModEOG = int(self.topThreshEOGLabel.value())
+            self.signalTracker.bottomModEOG = int(self.bottomThreshEOGLabel.value())
 
         print(f"TOP THRESHOLD: {self.topThreshEOG}")
 
@@ -270,21 +267,22 @@ class TestsWindow(QWidget):
         self.updateAll()
 
         self.classificationThread = QThread()
-        self.signalMonitor.moveToThread(self.classificationThread)
-        self.classificationThread.started.connect(self.signalMonitor.trackData)
-        self.signalMonitor.isTracking = True
-        self.signalMonitor.emptyFigure.connect(self.emptyTriangle)
-        self.signalMonitor.fillFigure.connect(self.fillTriangle)
-        self.signalMonitor.stopSignal.connect(self.stop)
+        self.signalTracker.moveToThread(self.classificationThread)
+        self.classificationThread.started.connect(self.signalTracker.trackData)
+        self.signalTracker.isTracking = True
+        self.signalTracker.emptyFigure.connect(self.emptyTriangle)
+        self.signalTracker.fillFigure.connect(self.fillTriangle)
+        self.signalTracker.stopSignal.connect(self.stop)
+        self.signalTracker.reportSignal.connect(self.showReportWindow)
         self.classificationThread.start()
 
         
         
     def stop(self):
-        self.signalMonitor.stopThread()
+        self.signalTracker.stopThread()
         self.classificationThread.quit()
         self.classificationThread.wait()
-        self.signalMonitor = SignalTracker(self.puerto)
+        self.signalTracker = SignalTracker(self.puerto)
 
 
     def changeTriangleColor(self, isRed):
@@ -304,6 +302,20 @@ class TestsWindow(QWidget):
 
     def calibrate(self):
         self.tracker.calibrateSensor()
+
+    def showReportWindow(self, preliminarLog):
+        repWindow = ReportWindow(preliminarLog)
+        print("Ventana creada")
+        repWindow.exec()
+        if repWindow.isLastLogSaved:
+            self.signalTracker.isCurrentLogSaved = True
+            print("SALVADO")
+        else:
+            self.signalTracker.isCurrentLogSaved = False
+            print("DE NUEVO")
+        self.signalTracker.reviewEnded = True
+        
+
 
 
 

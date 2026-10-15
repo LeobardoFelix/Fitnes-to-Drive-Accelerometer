@@ -1,17 +1,8 @@
-import queue
-import sys
-import threading
-from collections import deque
-import matplotlib
-matplotlib.use("QtAgg")
-import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
 
 from PyQt6.QtWidgets import (
-    QCheckBox, QFrame, QDialogButtonBox,
-    QGroupBox, QHBoxLayout, QLabel, 
-    QPushButton, QSizePolicy, QStyledItemDelegate,
-    QVBoxLayout, QDialog, QApplication, QTableWidget, QTableWidgetItem
+    QHBoxLayout, QPushButton, QStyledItemDelegate,
+    QVBoxLayout, QDialog, QTableWidget, QTableWidgetItem
 )
 from PyQt6.QtCore import Qt
 
@@ -23,6 +14,8 @@ class ReportWindow(QDialog):
         self.reactionLog = reactionLog
         headers = ["no_round", "ts_start_round", "ts_end_round", "delta_ts", "reaction"]
         self.resize(len(headers) * (COLUMN_WIDTH+7), (len(reactionLog))*55)
+        self.isLastLogSaved = True
+        self.hasEnded = False
         layout = QVBoxLayout()
         mainTable = QTableWidget()
         
@@ -44,25 +37,26 @@ class ReportWindow(QDialog):
                 label.setTextAlignment(Qt.AlignmentFlag.AlignHCenter)
                 #label.setTextAlig(Qt.AlignmentFlag.AlignHCenter)
                 mainTable.setItem(i, j, label)
-                #mainTable.
-            """checkMark = QTableWidgetItem()
-            checkMark.setTextAlignment(Qt.AlignmentFlag.AlignHCenter)
-            checkMark.setCheckState(Qt.CheckState.Unchecked)
-            self.checks.append(checkMark)
-            mainTable.setItem(i, j+1, checkMark)
-            #mainTable.setCellWidget(i, j+1, checkMark)"""
         layout.addWidget(mainTable)
-        saveBtn = QDialogButtonBox(QDialogButtonBox.StandardButton.Save | QDialogButtonBox.StandardButton.Discard)
-        saveBtn.accepted.connect(self.saveLog)
-        saveBtn.rejected.connect(self.reDoLog)
-        layout.addWidget(saveBtn)
+        btnLayout = QHBoxLayout()
+        self.saveBtn = QPushButton("SAVE")
+        self.rerunBtn = QPushButton("RERUN")
+        btnLayout.addWidget(self.saveBtn)
+        btnLayout.addWidget(self.rerunBtn)
+        self.saveBtn.clicked.connect(self.saveLog)
+        self.rerunBtn.clicked.connect(self.reDoLog)
+        layout.addLayout(btnLayout)
         self.setLayout(layout)
 
     def saveLog(self):
-        pass
+        self.isLastLogSaved = True
+        self.hasEnded = True
+        self.close()
 
     def reDoLog(self):
-        pass
+        self.isLastLogSaved = False
+        self.hasEnded = True
+        self.close()
 
 class AlignDelegate(QStyledItemDelegate):
     def initStyleOption(self, option, index):

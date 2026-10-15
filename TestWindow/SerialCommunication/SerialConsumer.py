@@ -78,7 +78,7 @@ class SerialConsumer:
                                 self.currentTime = time.monotonic()
                                 row = [self.currentValue, self.currentMean, self.currentRound, self.currentTime, self.currentReaction]
                                 csvwriter.writerow(row)
-                                print(f"WRITING: {self.currentValue}, {self.currentMean}, {self.currentReaction}")
+                                #print(f"WRITING: {self.currentValue}, {self.currentMean}, {self.currentReaction}")
                                 if self.currentReaction == 1:
                                     #print("REACCIONO REACCCION REACCIONO REACCIONO")
                                     self.reactionValue = self.currentValue

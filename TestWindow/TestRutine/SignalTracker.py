@@ -5,7 +5,6 @@ from PyQt6.QtCore import QObject, pyqtSignal
 import random
 from TestWindow.SerialCommunication.SerialConsumer import SerialConsumer
 import time
-from reportWindow import ReportWindow
 
 #dataLock = threading.Lock()
 READ_LINEAR_ACCELERATION = b":41\n"
@@ -32,6 +31,7 @@ class SignalTracker(QObject):
     fillFigure = pyqtSignal()
     emptyFigure = pyqtSignal()
     stopSignal = pyqtSignal()
+    reportSignal = pyqtSignal(list)
 
     def __init__(self, puerto, baudrate=9600, vectorMaxSize = 20, thresholdMode = 0, dataMode = 0,
                   thresholdIMU=2, topThresholdEOG=500, bottomThresholdEOG=200):
@@ -44,6 +44,8 @@ class SignalTracker(QObject):
         self.dataMode = dataMode
         self.thresholdIMU = thresholdIMU
         self.reactionLog = []
+        self.isCurrentLogSaved = False
+        self.reviewEnded = False
         if dataMode == EOG_MODE and thresholdMode == MOVIL_MODE:
             self.topModEOG = topThresholdEOG
             self.bottomModEOG = bottomThresholdEOG
@@ -51,7 +53,7 @@ class SignalTracker(QObject):
             self.topThresholdEOG = topThresholdEOG
             self.bottomThresholdEOG = bottomThresholdEOG
 
-        self.monitor = SerialConsumer(puerto, baudrate, vectorMaxSize, thresholdMode, dataMode, thresholdIMU, topThresholdEOG, bottomThresholdEOG)
+        self.serialConsumer = SerialConsumer(puerto, baudrate, vectorMaxSize, thresholdMode, dataMode, thresholdIMU, topThresholdEOG, bottomThresholdEOG)
         
         self.isTracking = True
         self.currentRound = 0
@@ -83,34 +85,42 @@ class SignalTracker(QObject):
                 print("INICIARAN LAS RONDAS")
                 self.currentRound = 0
                 #self.catcher.openConection()
-                self.monitor.baseDir = self.baseDir
-                self.monitor.initMonitorThreading()
-                self.monitor.stopWriting()
+                self.serialConsumer.baseDir = self.baseDir
+                self.serialConsumer.initMonitorThreading()
+                self.serialConsumer.stopWriting()
                 for i in range(self.noRondas):
-                    self.currentLog = []
-                    print("INICIA UNA NUEVA RONDA")
-                    if not self.isTracking:
-                        break
-                    self.currentRound = i
-                    self.monitor.currentRound = i
-                    self.waitRandom()
-                    print("EMPIEZA BUSCAR REACCION")
-                    self.waitForReaction()
-                    self.monitor.stopWriting()
-                    print("TERMINA LA BUSQUEDA DE REACCIÓN")
-                    self.emptyFigure.emit()
-                    self.checkIfReacted()
-                    reactWriter.writerow(self.currentLog)
-                    print(f"REACTION LOG: {self.reactionLog}")
-                    print(f"RONDA {self.currentRound} TERMINO")
+                    self.isCurrentLogSaved = False
+                    while not self.isCurrentLogSaved:
+                        print("INICIA UNA NUEVA RONDA")
+                        self.currentLog = []
+                        if not self.isTracking:
+                            break
+                        self.currentRound = i
+                        self.serialConsumer.currentRound = i
+                        self.waitRandom()
+                        print("EMPIEZA BUSCAR REACCION")
+                        self.waitForReaction()
+                        self.serialConsumer.stopWriting()
+                        print("TERMINA LA BUSQUEDA DE REACCIÓN")
+                        self.emptyFigure.emit()
+                        self.checkIfReacted()
+                        self.reviewRound()
+                        if self.isCurrentLogSaved:
+                            print("Paso revision")
+                            self.reactionLog.append(self.currentLog)
+                            reactWriter.writerow(self.currentLog)
+                            print(f"REACTION LOG: {self.reactionLog}")
+                            print(f"RONDA {self.currentRound} TERMINO")
+                        else:
+                            print(f"No paso revision DE NUEVO, REPITE RONDA {self.currentRound}")
+                    
 
         except Exception as e:
             print("Error in classification:", e)
 
         finally:
             self.stopSignal.emit()
-            self.monitor.stopMonitorThread()
-            #self.catcher.closeConection()
+            self.serialConsumer.stopMonitorThread()
 
     def waitRandom(self):
         esperaActual  = random.randint(self.minTime, self.maxTime)
@@ -131,25 +141,24 @@ class SignalTracker(QObject):
         self.currentLog.append(self.currentRound)
         self.currentLog.append(self.startRoundTime)
         print(f"RONDA: {self.currentRound} TS: {currentTime}  REACCION: 0")
-        self.monitor.startWriting()
+        self.serialConsumer.startWriting()
         #time.sleep(1)
         
         self.fillFigure.emit()
         
         while (currentTime - startTime) < self.waitTime and self.isTracking:
 
-            if self.monitor.hasReacted:
-                valor = self.monitor.reactionValue
-                promedio = self.monitor.reactionMean
-                ts = self.monitor.reactionTime
+            if self.serialConsumer.hasReacted:
+                valor = self.serialConsumer.reactionValue
+                promedio = self.serialConsumer.reactionMean
+                ts = self.serialConsumer.reactionTime
                 reaccion = 1
                 self.currentLog.append(ts)
                 self.currentLog.append(ts-self.startRoundTime)
                 self.currentLog.append(reaccion)
-                self.reactionLog.append(self.currentLog)
-                print(f"REACTION: {self.monitor.reactionValue} PROMEDIO: {self.monitor.reactionMean}  TIEMPO: {self.monitor.reactionTime}")
+                print(f"REACTION: {self.serialConsumer.reactionValue} PROMEDIO: {self.serialConsumer.reactionMean}  TIEMPO: {self.serialConsumer.reactionTime}")
                 print(f"{valor}, {promedio}, {ts}, {reaccion}")
-                self.monitor.hasReacted = False
+                self.serialConsumer.hasReacted = False
                 self.reacciono = True
                 break
             time.sleep(0.002)
@@ -166,10 +175,32 @@ class SignalTracker(QObject):
             self.currentLog.append(ts)
             self.currentLog.append(ts-self.startRoundTime)
             self.currentLog.append(0)
-            self.reactionLog.append(self.currentLog)
             print(f"NO REACCIONO TS: {ts}")
         else:
             print(f"SI REACCIONO")
+
+    def reviewRound(self):
+        self.reviewEnded = False
+        preliminarLog = []
+        for log in self.reactionLog:
+            preliminarLog.append(log)
+        #preliminarLog = self.reactionLog
+        preliminarLog.append(self.currentLog)
+        self.reportSignal.emit(preliminarLog)
+        print("EJECUTADO")
+        #return True
+        while not self.reviewEnded:
+            time.sleep(1)
+
+        if self.isCurrentLogSaved:
+            print("SALVADO")
+            return True
+        else:
+            print("DE NUEVO")
+            return False
+
+
+
 
 # print("ISDOADSIJOD")
 # signalMonitor = SignalTracker("COM7")
