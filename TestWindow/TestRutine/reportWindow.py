@@ -160,20 +160,17 @@ class ReportWindow(QWidget):
         layout.addLayout(btnLayout)
         self.setLayout(layout)
 
-    #TODO: Quitar 
+     
     def saveLog(self):
         self.hasEnded = True
 
         self.signalTracker.isCurrentLogSaved = True
         self.signalTracker.reviewEnded = True
-        #self.close()
 
     def reDoLog(self):
         self.hasEnded = True
-
         self.signalTracker.isCurrentLogSaved = False
         self.signalTracker.reviewEnded = True
-        #self.close()
 
 
     #INTERFAZ
@@ -183,20 +180,10 @@ class ReportWindow(QWidget):
 
     def changeTopThreshold(self, value):
         self.topThreshEOG = float(value)
-        """ #TODO: APPLY THIS TO START
-        if self.thresholdMode == STATIC_MODE:
-            self.signalTracker.topThresholdEOG = float(value)
-        else:
-            self.signalTracker.topModEOG = float(value)"""
         print(f"TOP THRESHOLD: {self.topThreshEOG}")
 
     def changeBottomThreshold(self, value):
         self.bottomThreshEOG = float(value)
-        #TODO: APPLY THIS TO START
-        """if self.thresholdMode == STATIC_MODE:
-            self.signalTracker.bottomThresholdEOG = float(value)
-        else:
-            self.signalTracker.bottomModEOG = float(value)"""
         print(f"BOTTOM THRESHOLD: {self.bottomThreshEOG}")
 
     def changeMode(self):
@@ -232,25 +219,15 @@ class ReportWindow(QWidget):
 
     def updateAll(self):
         self.thresholdIMU = float(self.thresholdLabel.value())
-        print(f"threshold: {self.thresholdIMU}")
         self.noRondas = int(self.noRondasBox.value())
-        print(f"RONDAS: {self.noRondas}")
         self.minTime = int(self.minTimeLabel.value())
-        print(f"MIN TIME: {self.minTime}")
         self.maxTime = int(self.maxTimeLabel.value())
-        print(f"MAX TIME: {self.maxTime}")
         self.waitTime = int(self.waitTimeLabel.value())
-        print(f"WAIT TIME:  {self.waitTime}")
         self.sujeto = int(self.subjectLabel.value())
         self.currentDir = BASE_DIR + str(self.sujeto)
-        print(self.currentDir)
-        print(f"SUJETO: {self.sujeto}")
         self.thresholdMode = MOVIL_MODE if self.modeButton.isChecked() else STATIC_MODE
-        print(f"THRESHOLD MODE: {self.thresholdMode}")
-
         self.dataMode = EOG_MODE if self.dataButton.isChecked() else IMU_MODE
-        print(f"DATA MODE CHANGED: {self.dataMode}")
-        print(f"TOP THRESHOLD: {self.topThreshEOG}")
+
 
     def startTracking(self):
         print("START IT")
@@ -276,6 +253,7 @@ class ReportWindow(QWidget):
         self.signalTracker.stopThread()
         self.trackingThread.quit()
         self.trackingThread.wait()
+        self.isTracking = False
         #self.signalTracker = SignalTracker(self.puerto)
 
     def updateTable(self, newLog):
@@ -298,7 +276,6 @@ class ReportWindow(QWidget):
                 self.mainTable.setItem(i, j, label)
 
 
-    #TODO: En start initialize signalTracker 
 #TestWindow/TestRutine/reportWindow.py
 """app = QApplication(sys.argv)
 app.setStyle("Fusion")
