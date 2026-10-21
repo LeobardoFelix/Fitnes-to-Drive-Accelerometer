@@ -15,11 +15,11 @@ STATIC_MODE = 0
 IMU_MODE = 0
 EOG_MODE = 1
 class TestsWindow(QWidget):
-    def __init__(self, puerto):
+    def __init__(self, puerto, vectorSize):
         super().__init__()
         #self.tracker = imuTracker()
         self.puerto = puerto
-
+        self.vectorSize = vectorSize
         self.signalTracker = SignalTracker(self.puerto)
         self.baseDir = "./DataSets/Sept2026/sujetos/sujeto"
         self.pic = QLabel()
@@ -73,9 +73,6 @@ class TestsWindow(QWidget):
         self.subjectLabel.valueChanged.connect(self.changedSujeto)
         hl2.addWidget(self.subjectLabel)
 
-        self.calBtn = QPushButton("CALIBRATE")
-        self.calBtn.clicked.connect(self.calibrate)
-        hlayout.addWidget(self.calBtn)
 
         self.startBtn = QPushButton("START")
         self.startBtn.clicked.connect(self.startClassification)
@@ -142,6 +139,15 @@ class TestsWindow(QWidget):
         QTimer.singleShot(0, self.update_image)
 
         self.emptyTriangle()
+
+        self.reportWindow = ReportWindow([], self.puerto, self.vectorSize)
+        self.reportWindow.show()
+        self.reportWindow.emptyFigure.connect(self.emptyTriangle)
+        self.reportWindow.fillFigure.connect(self.fillTriangle)
+        self.reportWindow.stopSignal.connect(self.stop)
+        self.reportWindow.reportSignal.connect(self.showReportWindow)
+        
+        
 
     #INTERFAZ
     def changedThreshold(self, value):
@@ -300,14 +306,11 @@ class TestsWindow(QWidget):
         self.pixmap.load(fillFile)
         self.update_image()
 
-    def calibrate(self):
-        self.tracker.calibrateSensor()
-
     def showReportWindow(self, preliminarLog):
-        repWindow = ReportWindow(preliminarLog)
+        self.repWindow = ReportWindow(preliminarLog)
         print("Ventana creada")
-        repWindow.exec()
-        if repWindow.isLastLogSaved:
+        self.repWindow.show()
+        if self.repWindow.isLastLogSaved:
             self.signalTracker.isCurrentLogSaved = True
             print("SALVADO")
         else:

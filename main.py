@@ -47,7 +47,7 @@ while True:
                 filterLength, dataMode, thresholdImu, topFrame, bottomFrame)
         print("GRAPH")
     else:
-        ventana = TestsWindow(puerto)
+        ventana = TestsWindow(puerto, filterLength)
         print("PRUEBAS")
     ventana.show()
     #printData(puerto, topThreshold, bottomThreshold, thresholdMode, filterLength, dataMode, windowMode, imuThreshold)

@@ -34,7 +34,7 @@ class SignalTracker(QObject):
     reportSignal = pyqtSignal(list)
 
     def __init__(self, puerto, baudrate=9600, vectorMaxSize = 20, thresholdMode = 0, dataMode = 0,
-                  thresholdIMU=2, topThresholdEOG=500, bottomThresholdEOG=200):
+                  thresholdIMU=2, topThresholdEOG=500, bottomThresholdEOG=200, currentDir=None):
 
         super().__init__()
         self.puerto = puerto
@@ -57,7 +57,7 @@ class SignalTracker(QObject):
         
         self.isTracking = True
         self.currentRound = 0
-        self.baseDir = os.path.join(os.getcwd(), "sujetos")
+        self.baseDir = os.path.join(os.getcwd(), "sujetos") if currentDir == None else currentDir
 
         self.noRondas = 5
         self.minTime = 5 #En segundos
@@ -188,7 +188,7 @@ class SignalTracker(QObject):
         preliminarLog.append(self.currentLog)
         self.reportSignal.emit(preliminarLog)
         print("EJECUTADO")
-        #return True
+        #Espera hasta que le diga que continue
         while not self.reviewEnded:
             time.sleep(1)
 
