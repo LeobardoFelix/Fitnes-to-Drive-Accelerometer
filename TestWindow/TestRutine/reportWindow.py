@@ -13,14 +13,15 @@ MOVIL_MODE = 1
 STATIC_MODE = 0
 IMU_MODE = 0
 EOG_MODE = 1
-BASE_DIR = "./DataSets/Sept2026/sujetos/sujeto"
+ADDED_DIR = "/sujetos/sujeto"
 COLUMN_WIDTH = 100
 class ReportWindow(QWidget):
     fillFigure = pyqtSignal()
     emptyFigure = pyqtSignal()
     stopSignal = pyqtSignal()
     reportSignal = pyqtSignal(list)
-    def __init__(self, reactionLog=[], puerto=None, vectorSize=20):
+    reconnectSignal = pyqtSignal()
+    def __init__(self, reactionLog=[], puerto=None, vectorSize=20, currentDir="."):
         super().__init__()
         self.reactionLog = reactionLog
         headers = ["no_round", "ts_start_round", "ts_end_round", "delta_ts", "reaction"]
@@ -39,7 +40,8 @@ class ReportWindow(QWidget):
         self.noRondas = 6
         self.sujeto = 0
         self.isTracking = False
-        self.currentDir = BASE_DIR + str(self.sujeto)
+        self.rootDir = currentDir
+        self.currentDir = self.rootDir + ADDED_DIR + str(self.sujeto)
         self.noRondasBox = QSpinBox()
         self.noRondasBox.setValue(self.noRondas)
         self.noRondasBox.valueChanged.connect(self.changedRondas)
@@ -67,7 +69,7 @@ class ReportWindow(QWidget):
         hl1.addWidget(self.waitTimeLabel)
 
         self.sujeto = 0
-        self.currentDir = BASE_DIR + str(self.sujeto)
+        self.currentDir = self.rootDir + ADDED_DIR + str(self.sujeto)
         hl2.addWidget(QLabel("SUBJECT: "))
         self.subjectLabel = QSpinBox()
         self.subjectLabel.setValue(self.sujeto)
@@ -117,6 +119,19 @@ class ReportWindow(QWidget):
         self.dataButton.setCheckable(True)
         self.dataButton.clicked.connect(self.changeDataMode)
 
+        h3 = QHBoxLayout()
+
+        self.continueLed = QLabel("CONTINUE", alignment= Qt.AlignmentFlag.AlignCenter)
+        self.continueLed.setStyleSheet(f"""QLabel {{background-color: {"#D10707"};
+                                                color: {"#FFFFFF"};
+                                                border-radius: {"15px"}; 
+                                                text-align: {"center"};
+                                                }}""")
+    
+        self.reconnectButton = QPushButton("RECONNECT")
+        self.reconnectButton.clicked.connect(self.reconnectSignal.emit)
+        h3.addWidget(self.continueLed)
+        h3.addWidget(self.reconnectButton)
         hl1.addWidget(self.modeButton)
         hl1.addWidget(self.startBtn)
         hl2.addWidget(self.dataButton)
@@ -124,6 +139,7 @@ class ReportWindow(QWidget):
 
         layout.addLayout(hl1)
         layout.addLayout(hl2)
+        layout.addLayout(h3)
 
 
 
@@ -213,7 +229,7 @@ class ReportWindow(QWidget):
 
     def changedSujeto(self, value):
         self.sujeto = int(value)
-        self.currentDir = BASE_DIR + str(self.sujeto)
+        self.currentDir = self.rootDir + ADDED_DIR + str(self.sujeto)
         print(self.currentDir)
         print(f"SUJETO: {self.sujeto}")
 
@@ -224,7 +240,7 @@ class ReportWindow(QWidget):
         self.maxTime = int(self.maxTimeLabel.value())
         self.waitTime = int(self.waitTimeLabel.value())
         self.sujeto = int(self.subjectLabel.value())
-        self.currentDir = BASE_DIR + str(self.sujeto)
+        self.currentDir = self.rootDir + ADDED_DIR + str(self.sujeto)
         self.thresholdMode = MOVIL_MODE if self.modeButton.isChecked() else STATIC_MODE
         self.dataMode = EOG_MODE if self.dataButton.isChecked() else IMU_MODE
 
@@ -243,6 +259,8 @@ class ReportWindow(QWidget):
             self.trackingThread.started.connect(self.signalTracker.trackData)
             #Signals
             self.signalTracker.isTracking = True
+            self.signalTracker.stopLedSignal.connect(self.setPauseLed)
+            self.signalTracker.continueLedSignal.connect(self.setContinueLed)
             self.signalTracker.emptyFigure.connect(self.emptyFigure.emit)
             self.signalTracker.fillFigure.connect(self.fillFigure.emit)
             self.signalTracker.stopSignal.connect(self.stopTracking)
@@ -274,6 +292,23 @@ class ReportWindow(QWidget):
                 label.setTextAlignment(Qt.AlignmentFlag.AlignHCenter)
                 #label.setTextAlig(Qt.AlignmentFlag.AlignHCenter)
                 self.mainTable.setItem(i, j, label)
+
+    def setPauseLed(self):
+        self.continueLed.setStyleSheet(f"""QLabel {{background-color: {"#D10707"};
+                                                color: {"#FFFFFF"};
+                                                border-radius: {"15px"}; 
+                                                text-align: {"center"};
+                                                }}""")
+        self.continueLed.setText("CONTINUE")
+
+    def setContinueLed(self):
+        self.continueLed.setStyleSheet(f"""QLabel {{background-color: {"#15B818"};
+                                                    color: {"#000000"};
+                                                    border-radius: {"15px"};
+                                                    text-align: {"center"};
+                                                    }}""")
+        self.continueLed.setText("IN PROCESS")
+        
 
 
 #TestWindow/TestRutine/reportWindow.py

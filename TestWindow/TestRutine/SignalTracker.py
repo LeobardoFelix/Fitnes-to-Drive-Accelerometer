@@ -32,6 +32,9 @@ class SignalTracker(QObject):
     emptyFigure = pyqtSignal()
     stopSignal = pyqtSignal()
     reportSignal = pyqtSignal(list)
+    stopLedSignal = pyqtSignal()
+    continueLedSignal = pyqtSignal()
+    
 
     def __init__(self, puerto, baudrate=9600, vectorMaxSize = 20, thresholdMode = 0, dataMode = 0,
                   thresholdIMU=2, topThresholdEOG=500, bottomThresholdEOG=200, currentDir=None):
@@ -79,6 +82,7 @@ class SignalTracker(QObject):
         try:
             with open(reactionName, 'w', newline='') as reactcsvfile:
                 #csvwriter = csv.writer(csvfile)
+                self.continueLedSignal.emit()
                 reactWriter = csv.writer(reactcsvfile)
                 #csvwriter.writerow(fields)
                 reactWriter.writerow(reactFields)
@@ -189,8 +193,10 @@ class SignalTracker(QObject):
         self.reportSignal.emit(preliminarLog)
         print("EJECUTADO")
         #Espera hasta que le diga que continue
+        self.stopLedSignal.emit()
         while not self.reviewEnded:
             time.sleep(1)
+        self.continueLedSignal.emit()
 
         if self.isCurrentLogSaved:
             print("SALVADO")

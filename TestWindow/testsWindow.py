@@ -15,10 +15,11 @@ STATIC_MODE = 0
 IMU_MODE = 0
 EOG_MODE = 1
 class TestsWindow(QWidget):
-    def __init__(self, puerto, vectorSize):
+    def __init__(self, puerto, vectorSize, currentDir):
         super().__init__()
         #self.tracker = imuTracker()
         self.puerto = puerto
+        self.reconectar = False
         self.vectorSize = vectorSize
         self.signalTracker = SignalTracker(self.puerto)
         self.baseDir = "./DataSets/Sept2026/sujetos/sujeto"
@@ -41,10 +42,11 @@ class TestsWindow(QWidget):
         QTimer.singleShot(0, self.update_image)
 
         self.emptyTriangle()
-        self.reportWindow = ReportWindow([], self.puerto, self.vectorSize)
+        self.reportWindow = ReportWindow([], self.puerto, self.vectorSize, currentDir)
         self.reportWindow.show()
         self.reportWindow.emptyFigure.connect(self.emptyTriangle)
         self.reportWindow.fillFigure.connect(self.fillTriangle)
+        self.reportWindow.reconnectSignal.connect(self.reconnect)
 
     def update_image(self):
         if not self.pixmap.isNull():
@@ -75,7 +77,10 @@ class TestsWindow(QWidget):
     def fillTriangle(self):
         self.pixmap.load(fillFile)
         self.update_image()
-
+    def reconnect(self):
+        self.reconectar = True
+        self.reportWindow.close()
+        self.close()
 """app = QApplication(sys.argv)
 mainWindow = ventanaPrincipal("COM7")
 mainWindow.show()

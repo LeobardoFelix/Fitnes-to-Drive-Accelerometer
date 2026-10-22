@@ -1,17 +1,11 @@
-import queue
 import sys
-import threading
-from collections import deque
+import os
+import errno
 from serial.tools import list_ports 
 
 import matplotlib
 matplotlib.use("QtAgg")
-import matplotlib.pyplot as plt
-from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
-
-import time
-from PyQt6.QtCore import Qt, QTimer, pyqtSignal
-from PyQt6.QtGui import QFont, QColor, QPalette
+from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (
     QApplication, QCheckBox, QComboBox, QDialog, QFrame, QGridLayout,
     QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMainWindow,
@@ -22,6 +16,7 @@ from StyleGraphics.StylesGraphic import STYLE_SHEET
 from TestWindow.testsWindow import IMU_MODE, EOG_MODE, STATIC_MODE, MOVIL_MODE
 GRAPH_WINDOW_MODE = 0
 PRUEBAS_WINDOW_MODE = 1
+ERROR_INVALID_NAME = 123
 
 
 class configurationWindow(QDialog):
@@ -84,6 +79,10 @@ class configurationWindow(QDialog):
         row("TOP FRAME", self.topFrameLine, 5)
         self.bottomFrameLine = QLineEdit("0")
         row("BOTTOM FRAME", self.bottomFrameLine, 6)
+
+        self.currentDir = "."
+        self.directoryLine = QLineEdit(self.currentDir)
+        row("SAVE DIRECTORY", self.directoryLine, 7)
 
         root_layout.addLayout(form)
         root_layout.addSpacing(18)
@@ -153,15 +152,84 @@ class configurationWindow(QDialog):
         self.imuThreshold = float(self.imuThreshLine.text())
         self.topFrame = float(self.topFrameLine.text())
         self.bottomFrame = float(self.bottomFrameLine.text())
+        self.currentDir = self.directoryLine.text()
+        if not is_pathname_valid(self.currentDir):
+            self.currentDir = "./NewFolder"
+
         self.accept()
 
     def iniciar(self):
         if self.exec() == QDialog.DialogCode.Accepted:
             return self.puerto, self.topThreshold, self.bottomThreshold, self.thresholdMode, \
-         self.filterLength, self.dataMode, self.windowMode, self.imuThreshold, self.topFrame, self.bottomFrame
-        return None, None, None, None, None
+         self.filterLength, self.dataMode, self.windowMode, self.imuThreshold, self.topFrame, \
+            self.bottomFrame, self.currentDir
+        return [None] * 11
 
 def make_separator(vertical=False):
     sep = QFrame()
     sep.setFrameShape(QFrame.Shape.VLine if vertical else QFrame.Shape.HLine)
     return sep
+def is_pathname_valid(pathname: str) -> bool:
+    '''
+    `True` if the passed pathname is a valid pathname for the current OS;
+    `False` otherwise.
+    '''
+    # If this pathname is either not a string or is but is empty, this pathname
+    # is invalid.
+    try:
+        if not isinstance(pathname, str) or not pathname:
+            return False
+
+        # Strip this pathname's Windows-specific drive specifier (e.g., `C:\`)
+        # if any. Since Windows prohibits path components from containing `:`
+        # characters, failing to strip this `:`-suffixed prefix would
+        # erroneously invalidate all valid absolute Windows pathnames.
+        _, pathname = os.path.splitdrive(pathname)
+
+        # Directory guaranteed to exist. If the current OS is Windows, this is
+        # the drive to which Windows was installed (e.g., the "%HOMEDRIVE%"
+        # environment variable); else, the typical root directory.
+        root_dirname = os.environ.get('HOMEDRIVE', 'C:') \
+            if sys.platform == 'win32' else os.path.sep
+        assert os.path.isdir(root_dirname)   # ...Murphy and her ironclad Law
+
+        # Append a path separator to this directory if needed.
+        root_dirname = root_dirname.rstrip(os.path.sep) + os.path.sep
+
+        # Test whether each path component split from this pathname is valid or
+        # not, ignoring non-existent and non-readable path components.
+        for pathname_part in pathname.split(os.path.sep):
+            try:
+                os.lstat(root_dirname + pathname_part)
+            # If an OS-specific exception is raised, its error code
+            # indicates whether this pathname is valid or not. Unless this
+            # is the case, this exception implies an ignorable kernel or
+            # filesystem complaint (e.g., path not found or inaccessible).
+            #
+            # Only the following exceptions indicate invalid pathnames:
+            #
+            # * Instances of the Windows-specific "WindowsError" class
+            #   defining the "winerror" attribute whose value is
+            #   "ERROR_INVALID_NAME". Under Windows, "winerror" is more
+            #   fine-grained and hence useful than the generic "errno"
+            #   attribute. When a too-long pathname is passed, for example,
+            #   "errno" is "ENOENT" (i.e., no such file or directory) rather
+            #   than "ENAMETOOLONG" (i.e., file name too long).
+            # * Instances of the cross-platform "OSError" class defining the
+            #   generic "errno" attribute whose value is either:
+            #   * Under most POSIX-compatible OSes, "ENAMETOOLONG".
+            #   * Under some edge-case OSes (e.g., SunOS, *BSD), "ERANGE".
+            except OSError as exc:
+                if hasattr(exc, 'winerror'):
+                    if exc.winerror == ERROR_INVALID_NAME:
+                        return False
+                elif exc.errno in {errno.ENAMETOOLONG, errno.ERANGE}:
+                    return False
+    # If a "TypeError" exception was raised, it almost certainly has the
+    # error message "embedded NUL character" indicating an invalid pathname.
+    except TypeError as exc:
+        return False
+    # If no exception was raised, all path components and hence this
+    # pathname itself are valid. (Praise be to the curmudgeonly python.)
+    else:
+        return True

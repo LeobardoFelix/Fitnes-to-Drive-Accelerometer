@@ -29,7 +29,8 @@ class GraphWindow(QMainWindow):
 
     reconectar_solicitado = pyqtSignal()  # ← avisa al loop principal
 
-    def __init__(self, puerto, topThreshold, bottomThreshold, thresholdMode, filterLength, dataMode, thresholdIMU, topFrame, bottomFrame):
+    def __init__(self, puerto, topThreshold, bottomThreshold, thresholdMode, 
+                 filterLength, dataMode, thresholdIMU, topFrame, bottomFrame, currentDir):
         super().__init__()
         self.setWindowTitle("Monitor Serial")
         self.setMinimumSize(1020, 640)
@@ -37,7 +38,7 @@ class GraphWindow(QMainWindow):
 
         # ── Estado ────────────────────────────────────────────────────────────
         self.corriendo     = True
-        self._reconectando = False
+        self.reconectar = False
         self.limit         = 300
         self.average = 0.0
         self.datos         = deque(maxlen=500)
@@ -50,6 +51,7 @@ class GraphWindow(QMainWindow):
         self.filterLength = filterLength
         self.topThreshold = topThreshold
         self.bottomThreshold = bottomThreshold
+        self.currentDir = currentDir
         #self.topEOG = topEOG
         #self.bottomEOG = bottomEOG
 
@@ -73,7 +75,7 @@ class GraphWindow(QMainWindow):
             self.SC.openConection()
         except Exception as e:
             # Marcar como reconexión para que closeEvent no llame sys.exit()
-            self._reconectando = True
+            self.reconectar = True
             
             msg = QMessageBox()
             msg.setStyleSheet(STYLE_SHEET)
@@ -302,7 +304,7 @@ class GraphWindow(QMainWindow):
             else:
                 self.logger.set_limit(self.limit)
 
-            self.logger.registrar(valor)
+            self.logger.registrar(valor, promedio)
 
         self.lbl_count.setText(f"Muestras: {len(self.datos)}")
 
@@ -327,32 +329,8 @@ class GraphWindow(QMainWindow):
                 self.topEogLine.set_data(LINE_LENGTH, [currentTopThreshold, currentTopThreshold])
                 self.bottomEogLine.set_data(LINE_LENGTH, [currentBottomThreshold, currentBottomThreshold])
 
-            #limite_actual = (
-            #    self.average if self.umbralType == "Promedio" else self.limit
-            #)
-            #self.linea_limite.set_data(LINE_LENGTH, [limite_actual, limite_actual])
-
-            """if self.umbralType == "Promedio":
-                self.linea_limite_azul.set_data(
-                    LINE_LENGTH,
-                    [self.average + self.limit, self.average + self.limit]
-                )
-                self.linea_limite_amarilla.set_data(
-                    LINE_LENGTH,
-                    [self.average - self.limit, self.average - self.limit]
-                )
-            else:
-                self.linea_limite_azul.set_data([], [])
-                self.linea_limite_amarilla.set_data([], [])"""
-
             self.canvas.draw_idle()
         
-        # if len(self.promedio_datosBth) > 0:
-        #     n = len(self.promedio_datosBth)
-        #     self.lineaPromedio_bth.set_data(range(n), list(self.promedio_datosBth))
-        # if len(self.promedio_datosBth) > 0:
-        #     n = len(self.promedio_datosBth)
-        #     self.lineaPromedio_EOG.set_data(range(n), list(self.promedio_datosEOG))
 
     def enviar_manual(self):
         try:
@@ -364,7 +342,7 @@ class GraphWindow(QMainWindow):
             pass
 
     def iniciar_muestreo(self):
-        self.logger.iniciar()
+        self.logger.iniciar(self.currentDir)
 
     def detener_muestreo(self):
         self.logger.detener()
@@ -394,13 +372,13 @@ class GraphWindow(QMainWindow):
             self.SC.closeConection()
 
     def solicitar_reconexion(self):
-        self._reconectando = True
+        self.reconectar = True
         self._cerrar_sesion(reset_arduino=True)
         self.reconectar_solicitado.emit()
         self.close()
 
     def closeEvent(self, event):
-        if not self._reconectando:
+        if not self.reconectar:
             self._cerrar_sesion(reset_arduino=False)
             event.accept()
             sys.exit()

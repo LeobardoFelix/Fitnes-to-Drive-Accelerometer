@@ -38,23 +38,31 @@ def printData(puerto, topThreshold, bottomThreshold, thresholdMode, filterLength
 app = QApplication(sys.argv)
 app.setStyle("Fusion")
 
-
+reconectar = True
 while True:
-    config = configurationWindow()
-    puerto, topThreshold, bottomThreshold, thresholdMode, filterLength, dataMode, windowMode, thresholdImu, topFrame, bottomFrame = config.iniciar()
-    if windowMode == GRAPH_WINDOW_MODE:
-        ventana = GraphWindow(puerto, topThreshold, bottomThreshold, thresholdMode, 
-                filterLength, dataMode, thresholdImu, topFrame, bottomFrame)
-        print("GRAPH")
-    else:
-        ventana = TestsWindow(puerto, filterLength)
-        print("PRUEBAS")
-    ventana.show()
-    #printData(puerto, topThreshold, bottomThreshold, thresholdMode, filterLength, dataMode, windowMode, imuThreshold)
-    if not puerto:          # usuario cerró el diálogo sin conectar
-        sys.exit(0)
 
-    reconectar = False
+    while reconectar:
+        reconectar = False
+
+        config = configurationWindow()
+        puerto, topThreshold, bottomThreshold, thresholdMode, filterLength, dataMode, \
+            windowMode, thresholdImu, topFrame, bottomFrame, currentDir = config.iniciar()
+        if not puerto:          # usuario cerró el diálogo sin conectar
+            sys.exit(0)
+        if windowMode == GRAPH_WINDOW_MODE:
+            ventana = GraphWindow(puerto, topThreshold, bottomThreshold, thresholdMode, 
+                    filterLength, dataMode, thresholdImu, topFrame, bottomFrame, currentDir)
+            print("GRAPH")
+        else:
+            ventana = TestsWindow(puerto, filterLength, currentDir)
+            print("PRUEBAS")
+        ventana.show()
+        #printData(puerto, topThreshold, bottomThreshold, thresholdMode, filterLength, dataMode, windowMode, imuThreshold)
+        app.exec()
+
+        reconectar = ventana.reconectar 
+        if not reconectar:      # cerraron la ventana normalmente → salir
+            sys.exit(0)
 
     """ventana = GraphWindow(puerto, maxC, minC, umbral, filterLength, 1, 2, 500, 200)
 
@@ -64,8 +72,5 @@ while True:
 
     ventana.reconectar_solicitado.connect(_pedir_reconexion)
     ventana.show()"""
-    app.exec()
-
-    if not reconectar:      # cerraron la ventana normalmente → salir
-        sys.exit(0)
+    
     # Si reconectar=True, el while vuelve a mostrar VentanaConexion
