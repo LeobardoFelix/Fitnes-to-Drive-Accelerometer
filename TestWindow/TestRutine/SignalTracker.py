@@ -37,7 +37,7 @@ class SignalTracker(QObject):
     
 
     def __init__(self, puerto, baudrate=9600, vectorMaxSize = 20, thresholdMode = 0, dataMode = 0,
-                  thresholdIMU=2, topThresholdEOG=500, bottomThresholdEOG=200, currentDir=None):
+                  reactionMode=0, thresholdIMU=2, topThresholdEOG=500, bottomThresholdEOG=200, currentDir=None):
 
         super().__init__()
         self.puerto = puerto
@@ -45,6 +45,7 @@ class SignalTracker(QObject):
         self.vectorMaxSize = vectorMaxSize
         self.thresholdMode = thresholdMode
         self.dataMode = dataMode
+        self.reactionMode = reactionMode
         self.thresholdIMU = thresholdIMU
         self.reactionLog = []
         self.isCurrentLogSaved = False
@@ -56,7 +57,8 @@ class SignalTracker(QObject):
             self.topThresholdEOG = topThresholdEOG
             self.bottomThresholdEOG = bottomThresholdEOG
 
-        self.serialConsumer = SerialConsumer(puerto, baudrate, vectorMaxSize, thresholdMode, dataMode, thresholdIMU, topThresholdEOG, bottomThresholdEOG)
+        self.serialConsumer = SerialConsumer(puerto, baudrate, vectorMaxSize, 
+                thresholdMode, dataMode, reactionMode, thresholdIMU, topThresholdEOG, bottomThresholdEOG)
         
         self.isTracking = True
         self.currentRound = 0

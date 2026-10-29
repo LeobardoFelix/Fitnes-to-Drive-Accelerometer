@@ -21,7 +21,6 @@ class TestsWindow(QWidget):
         self.puerto = puerto
         self.reconectar = False
         self.vectorSize = vectorSize
-        self.signalTracker = SignalTracker(self.puerto)
         self.baseDir = "./DataSets/Sept2026/sujetos/sujeto"
         self.setStyleSheet(f"""QWidget {{background-color: {"#FFFFFF"};}}""")
         self.pic = QLabel()

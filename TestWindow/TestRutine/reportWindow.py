@@ -15,6 +15,8 @@ IMU_MODE = 0
 EOG_MODE = 1
 ADDED_DIR = "/sujetos/sujeto"
 COLUMN_WIDTH = 100
+VALUE_REACTION_MODE = 0
+MEAN_REACTION_MODE = 1
 class ReportWindow(QWidget):
     fillFigure = pyqtSignal()
     emptyFigure = pyqtSignal()
@@ -119,6 +121,11 @@ class ReportWindow(QWidget):
         self.dataButton.setCheckable(True)
         self.dataButton.clicked.connect(self.changeDataMode)
 
+        self.reactionMode = VALUE_REACTION_MODE
+        self.reactionModeButton = QPushButton("VALUE")
+        self.reactionModeButton.setCheckable(True)
+        self.reactionModeButton.clicked.connect(self.changeReactionMode)
+
         h3 = QHBoxLayout()
 
         self.continueLed = QLabel("CONTINUE", alignment= Qt.AlignmentFlag.AlignCenter)
@@ -136,6 +143,7 @@ class ReportWindow(QWidget):
         hl1.addWidget(self.startBtn)
         hl2.addWidget(self.dataButton)
         hl2.addWidget(self.stopButton)
+        hl2.addWidget(self.reactionModeButton)
 
         layout.addLayout(hl1)
         layout.addLayout(hl2)
@@ -213,6 +221,13 @@ class ReportWindow(QWidget):
         newText = "EOG" if self.dataButton.isChecked() else "IMU"
         self.dataButton.setText(newText)
         print(f"DATA MODE CHANGED: {self.dataMode}")
+
+    def changeReactionMode(self):
+        self.reactionMode = VALUE_REACTION_MODE if self.reactionModeButton.isChecked() else MEAN_REACTION_MODE
+        if self.reactionModeButton.isChecked():
+            self.reactionModeButton.setText("MEAN")
+        else:
+            self.reactionModeButton.setText("VALUE")
     #Valores de la UI
     def changedRondas(self, value):
         self.noRondas = int(value)
@@ -251,7 +266,7 @@ class ReportWindow(QWidget):
         if not self.isTracking:
             self.isTracking = True
             self.signalTracker = SignalTracker(self.puerto, 9600,
-                self.vectorSize, self.thresholdMode, self.dataMode,
+                self.vectorSize, self.thresholdMode, self.dataMode,self.reactionMode,
                 self.thresholdIMU, self.topThreshEOG, self.bottomThreshEOG, self.currentDir)
             #Thread configuration
             self.trackingThread = QThread()

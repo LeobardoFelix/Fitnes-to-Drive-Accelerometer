@@ -17,6 +17,8 @@ from TestWindow.testsWindow import IMU_MODE, EOG_MODE, STATIC_MODE, MOVIL_MODE
 GRAPH_WINDOW_MODE = 0
 PRUEBAS_WINDOW_MODE = 1
 ERROR_INVALID_NAME = 123
+VALUE_REACTION_MODE = 0
+MEAN_REACTION_MODE = 1
 
 
 class configurationWindow(QDialog):
@@ -100,6 +102,11 @@ class configurationWindow(QDialog):
         self.checkDataMode = QCheckBox("EOG")
         self.checkDataMode.toggled.connect(self.changeDataCheckText)
         check_layout.addWidget(self.checkDataMode)
+
+        self.checkReactionMode = QCheckBox("VALUE")
+        self.checkReactionMode.toggled.connect(self.changeReactionCheckText)
+        check_layout.addWidget(self.checkReactionMode)
+
         prom_layout.addLayout(check_layout)
 
         slider_row = QHBoxLayout()
@@ -141,6 +148,12 @@ class configurationWindow(QDialog):
         else:
             self.checkDataMode.setText("EOG")
 
+    def changeReactionCheckText(self):
+        if self.checkReactionMode.isChecked():
+            self.checkReactionMode.setText("MEAN")
+        else:
+            self.checkReactionMode.setText("VALUE")
+
     def conectar(self):
         self.puerto  = self.campo_com.currentText()
         self.topThreshold    = int(self.campo_max.text())
@@ -148,6 +161,7 @@ class configurationWindow(QDialog):
         self.thresholdMode  = MOVIL_MODE if self.checkUmbral.isChecked() else STATIC_MODE
         self.filterLength = self.filterLenSlider.value()
         self.dataMode =  IMU_MODE if self.checkDataMode.isChecked() else EOG_MODE
+        self.reactionMode = MEAN_REACTION_MODE if self.checkReactionMode.isChecked() else VALUE_REACTION_MODE
         self.windowMode = GRAPH_WINDOW_MODE if self.windowsBox.currentText() == "Graficadora" else PRUEBAS_WINDOW_MODE
         self.imuThreshold = float(self.imuThreshLine.text())
         self.topFrame = float(self.topFrameLine.text())
@@ -161,9 +175,9 @@ class configurationWindow(QDialog):
     def iniciar(self):
         if self.exec() == QDialog.DialogCode.Accepted:
             return self.puerto, self.topThreshold, self.bottomThreshold, self.thresholdMode, \
-         self.filterLength, self.dataMode, self.windowMode, self.imuThreshold, self.topFrame, \
+         self.filterLength, self.dataMode, self.reactionMode, self.windowMode, self.imuThreshold, self.topFrame, \
             self.bottomFrame, self.currentDir
-        return [None] * 11
+        return [None] * 12
 
 def make_separator(vertical=False):
     sep = QFrame()

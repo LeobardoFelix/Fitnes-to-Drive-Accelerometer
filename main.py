@@ -46,12 +46,12 @@ while True:
 
         config = configurationWindow()
         puerto, topThreshold, bottomThreshold, thresholdMode, filterLength, dataMode, \
-            windowMode, thresholdImu, topFrame, bottomFrame, currentDir = config.iniciar()
+            reactionMode, windowMode, thresholdImu, topFrame, bottomFrame, currentDir = config.iniciar()
         if not puerto:          # usuario cerró el diálogo sin conectar
             sys.exit(0)
         if windowMode == GRAPH_WINDOW_MODE:
             ventana = GraphWindow(puerto, topThreshold, bottomThreshold, thresholdMode, 
-                    filterLength, dataMode, thresholdImu, topFrame, bottomFrame, currentDir)
+                    filterLength, dataMode, reactionMode, thresholdImu, topFrame, bottomFrame, currentDir)
             print("GRAPH")
         else:
             ventana = TestsWindow(puerto, filterLength, currentDir)

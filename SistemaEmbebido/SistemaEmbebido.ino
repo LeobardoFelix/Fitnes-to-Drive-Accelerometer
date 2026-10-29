@@ -8,10 +8,12 @@
 #define TX_PIN 9
 #define SIGNAL_PIN 5
 #define LED_PIN 6
+#define VALUE_REACTION_MODE 0
+#define MEAN_REACTION_MODE 1
 // Pines del HC-05
 #define MOVIL_MODE 1
 #define STATIC_MODE 0
-// EN ARDUINO UNO: pines 10 (RX) y 11 (TX)
+// EN ARDUINO UNO: pines 8 (RX) y 9 (TX)
 SoftwareSerial BTSerial(RX_PIN, TX_PIN); // RX, TX
 String inputBuffer = "";
 unsigned long lastRequest = 0;
@@ -45,9 +47,11 @@ const int ARRAY_LEN = 20;
 char serialCharArray[ARRAY_LEN]; 
 int auxiliar = 0;
 float auxFloat = 0.0;
+//Awaits for this variables
 int vectorMaxSize = 0;
 int thresholdMode = 0; // Referencia para threshold 0 Estatico / 1 Para que sea igual al promedio
 int dataMode = 0; //0 for IMU, 1 for EOG
+int reactionMode = 0; //0 for raw value, 1 for mean value.
 float thresholdIMU = 0.0;
 float topThresholdEOG = 0.0;
 float bottomThresholdEOG = 0.0;
@@ -56,6 +60,7 @@ float modBottomEOG = 0.0;
 float currentTopThresholdEOG = 0.0;
 float currentBottomThresholdEOG = 0.0;
 float currentThresholdIMU = 0.0;
+///////////////////
 long lastSignalTime = 0.0;
 long signalDuration = 1000;
 bool isOn = false;
@@ -116,7 +121,7 @@ void loop() {
 
 void readForMessages(){
   if (Serial.available()){
-    if (msgReceived < 3){
+    if (msgReceived < 4){
       auxiliar = Serial.parseInt();
       Serial.println(auxiliar);
     }
@@ -128,35 +133,46 @@ void readForMessages(){
     switch (msgReceived){
       case 0: 
         vectorMaxSize = auxiliar;
+        Serial.println("SIZ");
         msgReceived++;
         break;
       case 1: 
         thresholdMode = auxiliar;
+        Serial.println("MOD");
         msgReceived++;
         break;
       case 2:
         dataMode = auxiliar; 
         msgReceived++;
+        Serial.println("DAT");
         break;
       case 3: 
+        reactionMode = auxiliar;
+        Serial.println("REA");
+        msgReceived++;
+        break;
+      case 4:
         thresholdIMU = auxFloat;
         if (thresholdMode == STATIC_MODE){
           currentThresholdIMU = thresholdIMU;
         }
+        Serial.println("IMU");
         msgReceived++;
         break;
-      case 4: 
+      case 5: 
         modTopEOG = auxFloat;
         if (thresholdMode == STATIC_MODE){
           currentTopThresholdEOG = auxFloat;
         }
+        Serial.println("TOP");
         msgReceived++;
         break;
-      case 5: 
+      case 6: 
         modBottomEOG = auxFloat;
         if (thresholdMode == STATIC_MODE){
           currentBottomThresholdEOG = auxFloat;
         }
+        Serial.println("BOT");
         msgReceived++;
         break;
     }
@@ -174,7 +190,7 @@ void turnOffSignal(){
 }
 
 void waitForMessages(){
-  while (msgReceived < 6){
+  while (msgReceived < 7){
     readForMessages();
   }
 }
@@ -271,14 +287,19 @@ void thresholdBeheaviorIMU(){
     currentThresholdIMU = bthFilterValue+thresholdIMU;
   }
   printThreshold = currentThresholdIMU;
-  if (scalarValue >= currentThresholdIMU){  // 1 Threshold Movil
-    
+  float value;
+  if (reactionMode == VALUE_REACTION_MODE){
+    value = scalarValue;
+  }
+  else{
+    value = bthFilterValue;
+  }
+  if (value >= currentThresholdIMU){  // 1 Threshold Movil
     digitalWrite(SIGNAL_PIN, 1);
     digitalWrite(LED_PIN, 1);
     lastSignalTime = millis();
     isOn = true;
     hasReacted = 1;
-    
   }
   else
   {
@@ -293,7 +314,15 @@ void thresholdBeheaviorEOG(){
     }
     printThreshold = currentTopThresholdEOG;
 
-    if (eogValue <= currentBottomThresholdEOG || currentTopThresholdEOG <= eogValue ) {  // 1 Threshold Movil
+    float value;
+    if (reactionMode == VALUE_REACTION_MODE){
+      value = eogValue;
+    }
+    else{
+      value = eogFilterValue;
+    }
+
+    if (value <= currentBottomThresholdEOG || currentTopThresholdEOG <= value ) {  // 1 Threshold Movil
       digitalWrite(SIGNAL_PIN, 1);
       digitalWrite(LED_PIN, 1);
       lastSignalTime = millis();

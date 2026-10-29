@@ -30,7 +30,8 @@ class GraphWindow(QMainWindow):
     reconectar_solicitado = pyqtSignal()  # ← avisa al loop principal
 
     def __init__(self, puerto, topThreshold, bottomThreshold, thresholdMode, 
-                 filterLength, dataMode, thresholdIMU, topFrame, bottomFrame, currentDir):
+                 filterLength, dataMode, reactionMode,
+                   thresholdIMU, topFrame, bottomFrame, currentDir):
         super().__init__()
         self.setWindowTitle("Monitor Serial")
         self.setMinimumSize(1020, 640)
@@ -47,6 +48,7 @@ class GraphWindow(QMainWindow):
         self.puerto = puerto
         self.thresholdMode      = thresholdMode
         self.dataMode = dataMode
+        self.reactionMode = reactionMode
         self.thresholdImu = thresholdIMU
         self.filterLength = filterLength
         self.topThreshold = topThreshold
@@ -68,7 +70,7 @@ class GraphWindow(QMainWindow):
         umbralMode = 1 if self.umbralType == "Promedio" else 0
         #self.SC = SerialReader.SerialReader(puerto, 9600, self.thresholdMode, umbralMode)
         self.SC = SerialReader.SerialReader(self.puerto, BAUD_RATE, self.filterLength, 
-            self.thresholdMode, self.dataMode, self.thresholdImu, 
+            self.thresholdMode, self.dataMode, self.reactionMode, self.thresholdImu, 
             self.topThreshold, self.bottomThreshold)
         
         try:

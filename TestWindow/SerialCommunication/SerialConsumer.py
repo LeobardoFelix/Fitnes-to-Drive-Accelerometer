@@ -9,12 +9,13 @@ IMU_MODE = 0
 EOG_MODE = 1
 class SerialConsumer:
     def __init__(self, puerto, baudrate=9600, vectorMaxSize = 20, thresholdMode = 0, dataMode = 0, 
-            thresholdIMU=2, topThresholdEOG=500, bottomThresholdEOG=200):
+            reactionMode=0, thresholdIMU=2, topThresholdEOG=500, bottomThresholdEOG=200):
         self.puerto = puerto
         self.baudrate = baudrate
         self.vectorMaxSize = vectorMaxSize
         self.thresholdMode = thresholdMode
         self.dataMode = dataMode
+        self.reactionMode = reactionMode
         self.thresholdIMU = thresholdIMU
         self.baseDir = "."
         self.fields = ["Aceleración escalar", "Promedio", "Ronda", "Timestamp", "Estimulo"]
@@ -28,10 +29,10 @@ class SerialConsumer:
         
         if self.thresholdMode == STATIC_MODE:
             self.catcher = SerialReader(self.puerto, self.baudrate, self.vectorMaxSize, self.thresholdMode,
-            self.dataMode, self.thresholdIMU, self.topThresholdEOG, self.bottomThresholdEOG)
+            self.dataMode, self.reactionMode, self.thresholdIMU, self.topThresholdEOG, self.bottomThresholdEOG)
         else: #MOVIL_MODE
             self.catcher = SerialReader(self.puerto, self.baudrate, self.vectorMaxSize, self.thresholdMode,
-            self.dataMode, self.thresholdIMU, self.topModEOG, self.bottomModEOG)
+            self.dataMode, self.reactionMode, self.thresholdIMU, self.topModEOG, self.bottomModEOG)
         
         self.currentValue = 0
         self.currentMean = 0

@@ -6,12 +6,13 @@ BAUD_RATE = 9600
 class SerialReader:
 
     def __init__(self, puerto, baudrate=9600, vectorMaxSize = 20, thresholdMode = 0, dataMode = 0,
-                  thresholdIMU=2, topThresholdEOG=500, bottomThresholdEOG=200):
+                  reactionMode=0, thresholdIMU=2, topThresholdEOG=500, bottomThresholdEOG=200):
         self.serialLocation = puerto
         self.baudrate = baudrate
         self.vectorMaxSize = vectorMaxSize
         self.thresholdMode = thresholdMode
         self.dataMode = dataMode
+        self.reactionMode=reactionMode
         self.thresholdIMU = thresholdIMU
         self.topThresholdEOG = topThresholdEOG
         self.bottomThresholdEOG = bottomThresholdEOG
@@ -27,11 +28,14 @@ class SerialReader:
         time.sleep(0.1)
         self.sendSignal(str(self.dataMode)+"\n")
         time.sleep(0.1)
+        self.sendSignal(str(self.reactionMode)+"\n")
+        time.sleep(0.1)
         self.sendSignal(str(self.thresholdIMU)+"\n")
         time.sleep(0.1)
         self.sendSignal(str(self.topThresholdEOG)+"\n")
         time.sleep(0.1)
         self.sendSignal(str(self.bottomThresholdEOG)+"\n")
+        time.sleep(0.1)
         
 
     def catchSerial(self):
