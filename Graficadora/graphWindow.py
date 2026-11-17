@@ -446,7 +446,7 @@ def isNumeric(num):
     transformada a un número.
     
     Returns:
-    Un valor booleano: True si es un número, False si no lo es.
+        bool: True si es un número, False si no lo es.
     """
     try: 
         float(num)

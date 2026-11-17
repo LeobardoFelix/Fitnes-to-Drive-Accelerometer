@@ -1,0 +1,563 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestWindow.SerialCommunication package &mdash; documentación de RTEMPUS - 0.1</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=9c9b61ad"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/translations.js?v=f85f4cfb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RTEMPUS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">TestWindow.SerialCommunication package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-TestWindow.SerialCommunication.SerialConsumer">TestWindow.SerialCommunication.SerialConsumer module</a><ul>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer"><code class="docutils literal notranslate"><span class="pre">SerialConsumer</span></code></a><ul>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.catcher"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.catcher</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.baseDir"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.baseDir</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.currentValue"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.currentValue</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.currentMean"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.currentMean</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.currentReaction"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.currentReaction</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.reactionValue"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.reactionValue</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.reactionMean"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.reactionMean</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.reactionTime"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.reactionTime</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.isWriting"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.isWriting</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.isMonitoring"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.isMonitoring</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.hasReacted"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.hasReacted</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.initMonitorThreading"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.initMonitorThreading()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.stopMonitorThread"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.stopMonitorThread()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.stopWriting"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.stopWriting()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.startWriting"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.startWriting()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.stopMonitoring"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.stopMonitoring()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.monitorSerial"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.monitorSerial()</span></code></a></li>
+<li><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.initMonitorThreading()</span></code></a></li>
+<li><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.monitorSerial()</span></code></a></li>
+<li><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.startWriting()</span></code></a></li>
+<li><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.stopMonitorThread()</span></code></a></li>
+<li><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.stopMonitoring()</span></code></a></li>
+<li><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">SerialConsumer.stopWriting()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-TestWindow.SerialCommunication.SerialReader">TestWindow.SerialCommunication.SerialReader module</a><ul>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader"><code class="docutils literal notranslate"><span class="pre">SerialReader</span></code></a><ul>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.serialLocation"><code class="docutils literal notranslate"><span class="pre">SerialReader.serialLocation</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.baudrate"><code class="docutils literal notranslate"><span class="pre">SerialReader.baudrate</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.vectorMaxSize"><code class="docutils literal notranslate"><span class="pre">SerialReader.vectorMaxSize</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.thresholdMode"><code class="docutils literal notranslate"><span class="pre">SerialReader.thresholdMode</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.dataMode"><code class="docutils literal notranslate"><span class="pre">SerialReader.dataMode</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.reactionMode"><code class="docutils literal notranslate"><span class="pre">SerialReader.reactionMode</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.thresholdIMU"><code class="docutils literal notranslate"><span class="pre">SerialReader.thresholdIMU</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.topThresholdEOG"><code class="docutils literal notranslate"><span class="pre">SerialReader.topThresholdEOG</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.bottomThresholdEOG"><code class="docutils literal notranslate"><span class="pre">SerialReader.bottomThresholdEOG</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.ser"><code class="docutils literal notranslate"><span class="pre">SerialReader.ser</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.openConection"><code class="docutils literal notranslate"><span class="pre">SerialReader.openConection()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.catchSerial"><code class="docutils literal notranslate"><span class="pre">SerialReader.catchSerial()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.closeConnection"><code class="docutils literal notranslate"><span class="pre">SerialReader.closeConnection()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.sendSignal"><code class="docutils literal notranslate"><span class="pre">SerialReader.sendSignal()</span></code></a></li>
+<li><a class="reference internal" href="#id6"><code class="docutils literal notranslate"><span class="pre">SerialReader.catchSerial()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.closeConection"><code class="docutils literal notranslate"><span class="pre">SerialReader.closeConection()</span></code></a></li>
+<li><a class="reference internal" href="#id7"><code class="docutils literal notranslate"><span class="pre">SerialReader.openConection()</span></code></a></li>
+<li><a class="reference internal" href="#id8"><code class="docutils literal notranslate"><span class="pre">SerialReader.sendSignal()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-TestWindow.SerialCommunication">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RTEMPUS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">TestWindow.SerialCommunication package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/TestWindow.SerialCommunication.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="testwindow-serialcommunication-package">
+<h1>TestWindow.SerialCommunication package<a class="headerlink" href="#testwindow-serialcommunication-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-TestWindow.SerialCommunication.SerialConsumer">
+<span id="testwindow-serialcommunication-serialconsumer-module"></span><h2>TestWindow.SerialCommunication.SerialConsumer module<a class="headerlink" href="#module-TestWindow.SerialCommunication.SerialConsumer" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">TestWindow.SerialCommunication.SerialConsumer.</span></span><span class="sig-name descname"><span class="pre">SerialConsumer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">puerto</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baudrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectorMaxSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholdMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactionMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholdIMU</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topThresholdEOG</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottomThresholdEOG</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialConsumer.html#SerialConsumer"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representación del estado actual y últimos valores relevantes
+del que el sistema embebido pasa por medio del puerto serial.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.catcher">
+<span class="sig-name descname"><span class="pre">catcher</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.catcher" title="Link to this definition"></a></dt>
+<dd><p>Lector de puerto serial.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#TestWindow.SerialCommunication.SerialReader.SerialReader" title="TestWindow.SerialCommunication.SerialReader.SerialReader">SerialReader</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.baseDir">
+<span class="sig-name descname"><span class="pre">baseDir</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.baseDir" title="Link to this definition"></a></dt>
+<dd><p>Directorio actual donde se guardaran los datos capturados.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.currentValue">
+<span class="sig-name descname"><span class="pre">currentValue</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.currentValue" title="Link to this definition"></a></dt>
+<dd><p>Último valor leido del puerto serial.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.currentMean">
+<span class="sig-name descname"><span class="pre">currentMean</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.currentMean" title="Link to this definition"></a></dt>
+<dd><p>Último promedio leído por el puerto serial.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.currentReaction">
+<span class="sig-name descname"><span class="pre">currentReaction</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.currentReaction" title="Link to this definition"></a></dt>
+<dd><p>Última bandera de reacción leída por el puerto serial.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.reactionValue">
+<span class="sig-name descname"><span class="pre">reactionValue</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.reactionValue" title="Link to this definition"></a></dt>
+<dd><p>Valor de la última reacción leída.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.reactionMean">
+<span class="sig-name descname"><span class="pre">reactionMean</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.reactionMean" title="Link to this definition"></a></dt>
+<dd><p>Promedio de la última reacción leída.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.reactionTime">
+<span class="sig-name descname"><span class="pre">reactionTime</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.reactionTime" title="Link to this definition"></a></dt>
+<dd><p>Timestamp de la última reacción leída.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.isWriting">
+<span class="sig-name descname"><span class="pre">isWriting</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.isWriting" title="Link to this definition"></a></dt>
+<dd><p>Bandera que controla si se esta escribiendo los datos en un archivo.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.isMonitoring">
+<span class="sig-name descname"><span class="pre">isMonitoring</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.isMonitoring" title="Link to this definition"></a></dt>
+<dd><p>Bandera que controla el inicio y el fin del ciclo de consumo de datos por el serial.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.hasReacted">
+<span class="sig-name descname"><span class="pre">hasReacted</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.hasReacted" title="Link to this definition"></a></dt>
+<dd><p>Bandera que se alza si ha leído una reacción.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.initMonitorThreading">
+<span class="sig-name descname"><span class="pre">initMonitorThreading</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialConsumer.html#SerialConsumer.initMonitorThreading"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.initMonitorThreading" title="Link to this definition"></a></dt>
+<dd><p>Inicia el ciclo de consumo del puerto serial en un nuevo hilo.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.stopMonitorThread">
+<span class="sig-name descname"><span class="pre">stopMonitorThread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialConsumer.html#SerialConsumer.stopMonitorThread"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.stopMonitorThread" title="Link to this definition"></a></dt>
+<dd><p>Para el ciclo de consumo y termina el hilo.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.stopWriting">
+<span class="sig-name descname"><span class="pre">stopWriting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialConsumer.html#SerialConsumer.stopWriting"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.stopWriting" title="Link to this definition"></a></dt>
+<dd><p>Para la captura de datos en el archivo CSV.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.startWriting">
+<span class="sig-name descname"><span class="pre">startWriting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialConsumer.html#SerialConsumer.startWriting"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.startWriting" title="Link to this definition"></a></dt>
+<dd><p>Inicia la captura de datos en el archivo CSV.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.stopMonitoring">
+<span class="sig-name descname"><span class="pre">stopMonitoring</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialConsumer.html#SerialConsumer.stopMonitoring"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.stopMonitoring" title="Link to this definition"></a></dt>
+<dd><p>Alza la bandera para terminar el ciclo de consumo.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.monitorSerial">
+<span class="sig-name descname"><span class="pre">monitorSerial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialConsumer.html#SerialConsumer.monitorSerial"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer.monitorSerial" title="Link to this definition"></a></dt>
+<dd><p>Inicia el archivo CSV y el ciclo de consumo.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">initMonitorThreading</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialConsumer.html#SerialConsumer.initMonitorThreading"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>Inicia el ciclo de consumo del puerto serial en un nuevo hilo.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">monitorSerial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialConsumer.html#SerialConsumer.monitorSerial"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd><p>Inicia la conexión con el puerto serial, crea un archivo
+CSV en el que se guardaran los datos e inicia el ciclo de
+consumo.</p>
+<dl class="simple">
+<dt>Exceptions:</dt><dd><p>ValueError: Los datos mandados se encuentran corruptos o incompletos.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">startWriting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialConsumer.html#SerialConsumer.startWriting"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd><p>Inicia la captura de datos en los archivos CSV.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">stopMonitorThread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialConsumer.html#SerialConsumer.stopMonitorThread"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd><p>Para el ciclo de consumo y termina el hilo.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">stopMonitoring</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialConsumer.html#SerialConsumer.stopMonitoring"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd><p>Alza la bandera para terminar el ciclo de consumo.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">stopWriting</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialConsumer.html#SerialConsumer.stopWriting"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd><p>Para la captura de datos en los archivos CSV.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-TestWindow.SerialCommunication.SerialReader">
+<span id="testwindow-serialcommunication-serialreader-module"></span><h2>TestWindow.SerialCommunication.SerialReader module<a class="headerlink" href="#module-TestWindow.SerialCommunication.SerialReader" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialReader.SerialReader">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">TestWindow.SerialCommunication.SerialReader.</span></span><span class="sig-name descname"><span class="pre">SerialReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">puerto</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baudrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectorMaxSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholdMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactionMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholdIMU</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topThresholdEOG</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottomThresholdEOG</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialReader.html#SerialReader"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.SerialCommunication.SerialReader.SerialReader" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Lector y decodificador del puerto serial destinado
+a la comunicación con el sistema embebido.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialReader.SerialReader.serialLocation">
+<span class="sig-name descname"><span class="pre">serialLocation</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.serialLocation" title="Link to this definition"></a></dt>
+<dd><p>Locación del puerto de comunicación serial.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialReader.SerialReader.baudrate">
+<span class="sig-name descname"><span class="pre">baudrate</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.baudrate" title="Link to this definition"></a></dt>
+<dd><p>Tasa de cambios de estados en el que se comunica el puerto serial.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialReader.SerialReader.vectorMaxSize">
+<span class="sig-name descname"><span class="pre">vectorMaxSize</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.vectorMaxSize" title="Link to this definition"></a></dt>
+<dd><p>El tamaño de muestras del promedio.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialReader.SerialReader.thresholdMode">
+<span class="sig-name descname"><span class="pre">thresholdMode</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.thresholdMode" title="Link to this definition"></a></dt>
+<dd><p>El tipo de límite que el sistema toma registrar una reacción; False para un límite estático, True para uno móvil con respecto al promedio.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialReader.SerialReader.dataMode">
+<span class="sig-name descname"><span class="pre">dataMode</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.dataMode" title="Link to this definition"></a></dt>
+<dd><p>El tipo de dato que el sistema va capturar; False para la aceleración lineal, True para el valor en el electroculograma.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialReader.SerialReader.reactionMode">
+<span class="sig-name descname"><span class="pre">reactionMode</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.reactionMode" title="Link to this definition"></a></dt>
+<dd><p>El tipo de dato que toma en cuenta para registrar una reacción; False para el valor del sensor, True para el promedio de la medidas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialReader.SerialReader.thresholdIMU">
+<span class="sig-name descname"><span class="pre">thresholdIMU</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.thresholdIMU" title="Link to this definition"></a></dt>
+<dd><p>Límite de la reacción por sensor inercial.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialReader.SerialReader.topThresholdEOG">
+<span class="sig-name descname"><span class="pre">topThresholdEOG</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.topThresholdEOG" title="Link to this definition"></a></dt>
+<dd><p>Límite superior de la reacción por electroculograma.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialReader.SerialReader.bottomThresholdEOG">
+<span class="sig-name descname"><span class="pre">bottomThresholdEOG</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.bottomThresholdEOG" title="Link to this definition"></a></dt>
+<dd><p>Límite superior de la reacción por electroculograma.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialReader.SerialReader.ser">
+<span class="sig-name descname"><span class="pre">ser</span></span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.ser" title="Link to this definition"></a></dt>
+<dd><p>Puerto de comunicación serial.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Serial</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialReader.SerialReader.openConection">
+<span class="sig-name descname"><span class="pre">openConection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialReader.html#SerialReader.openConection"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.openConection" title="Link to this definition"></a></dt>
+<dd><p>Abre conexión con el sistema embebido.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialReader.SerialReader.catchSerial">
+<span class="sig-name descname"><span class="pre">catchSerial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialReader.html#SerialReader.catchSerial"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.catchSerial" title="Link to this definition"></a></dt>
+<dd><p>Lee la información disponible en el puerto serial.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialReader.SerialReader.closeConnection">
+<span class="sig-name descname"><span class="pre">closeConnection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.closeConnection" title="Link to this definition"></a></dt>
+<dd><p>Cierra el puerto de comunicación serial.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialReader.SerialReader.sendSignal">
+<span class="sig-name descname"><span class="pre">sendSignal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialReader.html#SerialReader.sendSignal"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.sendSignal" title="Link to this definition"></a></dt>
+<dd><p>Manda un valor por el puerto serial.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">catchSerial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialReader.html#SerialReader.catchSerial"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd><p>Si hay bytes en espera en el puerto serial, lee y decodifica
+los datos disponibles, en caso contrario regresa None</p>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Cadena de caracteres de los datos recibidos por serial.</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p>linea (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.SerialCommunication.SerialReader.SerialReader.closeConection">
+<span class="sig-name descname"><span class="pre">closeConection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialReader.html#SerialReader.closeConection"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.SerialCommunication.SerialReader.SerialReader.closeConection" title="Link to this definition"></a></dt>
+<dd><p>Cierra el puerto de comunicación serial.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">openConection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialReader.html#SerialReader.openConection"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
+<dd><p>Abre el puerto serial y manda los datos de configuración
+necesarios para establecer conexión con el sistema embebido.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">sendSignal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/SerialCommunication/SerialReader.html#SerialReader.sendSignal"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
+<dd><p>Manda un valor hacia el sistema embebido
+por medio del puerto serial.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>any</em>) – El valor que es mandado por el puerto serial.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-TestWindow.SerialCommunication">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-TestWindow.SerialCommunication" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2026, Leobardo.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

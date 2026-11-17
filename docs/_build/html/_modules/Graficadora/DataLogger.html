@@ -1,0 +1,249 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graficadora.DataLogger &mdash; documentación de RTEMPUS - 0.1</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=9c9b61ad"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/translations.js?v=f85f4cfb"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            RTEMPUS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RTEMPUS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Código de módulo</a></li>
+      <li class="breadcrumb-item active">Graficadora.DataLogger</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Código fuente para Graficadora.DataLogger</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+
+<div class="viewcode-block" id="DataLogger">
+<a class="viewcode-back" href="../../Graficadora.html#Graficadora.DataLogger.DataLogger">[documentos]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DataLogger</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Representa un capturador de datos, capaz de registrar datos </span>
+<span class="sd">    en archivos CSV creados de forma automática.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        modo (str): Representa el tipo de límite que se usa para referencia, puede ser continuo o umbral.</span>
+<span class="sd">        limit (float): El valor en el que el logger registra una reacción.</span>
+<span class="sd">        activo (bool): Es True si un archivo se encuentra abierto.</span>
+<span class="sd">        _archivo (str): Directorio y nombre del archivo donde se guardaran los datos.</span>
+<span class="sd">        _file_obj (str): Archivo CSV actual</span>
+<span class="sd">        _writer (Writer): Escritor de archivos CSV</span>
+<span class="sd">        _t0 (long): Timestamp actual</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        iniciar(str): Crea y devuelve un nuevo archivo CSV.</span>
+<span class="sd">        detener(): Cierra el archivo CSV actualmente abierto.</span>
+<span class="sd">        registrar(float, float): Añade una nueva entrada al archivo actualmente abierto.</span>
+<span class="sd">        set_modo(str): Cambia el modo del límite.</span>
+<span class="sd">        set_limit(float): Establece un nuevo valor para el limite actual.</span>
+
+<span class="sd">    """</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modo</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"continuo"</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">300</span><span class="p">):</span>
+        
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">modo</span> <span class="o">=</span> <span class="n">modo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">limit</span> <span class="o">=</span> <span class="n">limit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activo</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_archivo</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_obj</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_t0</span> <span class="o">=</span> <span class="kc">None</span>
+
+    
+<div class="viewcode-block" id="DataLogger.iniciar">
+<a class="viewcode-back" href="../../Graficadora.html#Graficadora.DataLogger.DataLogger.iniciar">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">iniciar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directorio</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"."</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Crea un nuevo archivo CSV en el directorio actual, </span>
+<span class="sd">        con los campos: tiempo_ms, valor y promedio.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            directorio (str): Directorio donde se creará el archivo. </span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            _archivo (str): Directorio con el nombre del archivo creado.       </span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activo</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"El muestreo ya está en curso."</span><span class="p">)</span>
+
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"%Y%m</span><span class="si">%d</span><span class="s2">_%H%M%S"</span><span class="p">)</span>
+        <span class="n">currentDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directorio</span><span class="p">,</span> <span class="s2">"Graphs"</span><span class="p">)</span>
+        <span class="n">nombre</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"muestreo_</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">.csv"</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_archivo</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">currentDir</span><span class="p">,</span> <span class="n">nombre</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">currentDir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_obj</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_archivo</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_file_obj</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s2">"tiempo_ms"</span><span class="p">,</span> <span class="s2">"valor"</span><span class="p">,</span> <span class="s2">"promedio"</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_obj</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activo</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archivo</span></div>
+
+
+<div class="viewcode-block" id="DataLogger.detener">
+<a class="viewcode-back" href="../../Graficadora.html#Graficadora.DataLogger.DataLogger.detener">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">detener</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Cierra el archivo CSV actualmente abierto.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">activo</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activo</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_file_obj</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file_obj</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file_obj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_file_obj</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="DataLogger.registrar">
+<a class="viewcode-back" href="../../Graficadora.html#Graficadora.DataLogger.DataLogger.registrar">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">registrar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valor</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">promedio</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Añade una entrada al archivo abierto actualmente, si no existe un</span>
+<span class="sd">        archivo abierto o el valor es menor al límite en modo umbral no </span>
+<span class="sd">        registra ningún valor.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            valor (float): valor a registrar.</span>
+<span class="sd">            promedio (float): promedio a registrar.</span>
+
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">activo</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">modo</span> <span class="o">==</span> <span class="s2">"umbral"</span> <span class="ow">and</span> <span class="n">valor</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">limit</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">elapsed_ms</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_t0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="n">elapsed_ms</span><span class="p">,</span> <span class="n">valor</span><span class="p">,</span> <span class="n">promedio</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_file_obj</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="DataLogger.set_modo">
+<a class="viewcode-back" href="../../Graficadora.html#Graficadora.DataLogger.DataLogger.set_modo">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_modo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modo</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Cambia el modo del límite entre umbral y continuo.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            modo (str): Nuevo modo del sistema.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: Si el límite no tiene el valor "umbral" o "continuo"</span>
+<span class="sd">        """</span>
+
+        <span class="k">if</span> <span class="n">modo</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"continuo"</span><span class="p">,</span> <span class="s2">"umbral"</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Modo desconocido: </span><span class="si">{</span><span class="n">modo</span><span class="si">!r}</span><span class="s2">. Use 'continuo' o 'umbral'."</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modo</span> <span class="o">=</span> <span class="n">modo</span></div>
+
+
+<div class="viewcode-block" id="DataLogger.set_limit">
+<a class="viewcode-back" href="../../Graficadora.html#Graficadora.DataLogger.DataLogger.set_limit">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Establece un nuevo valor para el límite actual.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            limit (float): Nuevo límite.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">limit</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">limit</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">archivo_actual</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_archivo</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">activo</span> <span class="k">else</span> <span class="kc">None</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2026, Leobardo.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

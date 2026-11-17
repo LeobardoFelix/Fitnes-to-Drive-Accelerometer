@@ -1,0 +1,518 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestWindow.TestRutine.reportWindow &mdash; documentación de RTEMPUS - 0.1</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=9c9b61ad"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../_static/translations.js?v=f85f4cfb"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            RTEMPUS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RTEMPUS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Código de módulo</a></li>
+      <li class="breadcrumb-item active">TestWindow.TestRutine.reportWindow</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Código fuente para TestWindow.TestRutine.reportWindow</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.backends.backend_qtagg</span><span class="w"> </span><span class="kn">import</span> <span class="n">FigureCanvasQTAgg</span> <span class="k">as</span> <span class="n">FigureCanvas</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyQt6.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QSpinBox</span><span class="p">,</span>
+    <span class="n">QVBoxLayout</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="p">,</span> <span class="n">QWidget</span><span class="p">,</span> <span class="n">QTableWidget</span><span class="p">,</span> 
+    <span class="n">QTableWidgetItem</span><span class="p">,</span> <span class="n">QDoubleSpinBox</span><span class="p">,</span> <span class="n">QHeaderView</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyQt6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QThread</span><span class="p">,</span> <span class="n">pyqtSignal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TestWindow.TestRutine.SignalTracker</span><span class="w"> </span><span class="kn">import</span> <span class="n">SignalTracker</span>
+<span class="n">emptyFile</span> <span class="o">=</span> <span class="s2">"C:/Users/felix/OneDrive/Documents/IMU_Sensor/Interfaz/resources/EmptyTriangle.png"</span>
+<span class="n">fillFile</span> <span class="o">=</span> <span class="s2">"C:/Users/felix/OneDrive/Documents/IMU_Sensor/Interfaz/resources/FillTriangle.png"</span>
+<span class="n">MOVIL_MODE</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">STATIC_MODE</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">IMU_MODE</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">EOG_MODE</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">ADDED_DIR</span> <span class="o">=</span> <span class="s2">"/sujetos/sujeto"</span>
+<span class="n">COLUMN_WIDTH</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">VALUE_REACTION_MODE</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">MEAN_REACTION_MODE</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="viewcode-block" id="ReportWindow">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow">[documentos]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ReportWindow</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Represental la ventana de configuración de monitoreo </span>
+<span class="sd">    de reacciones, se encarga de mostrar el estado de la</span>
+<span class="sd">    ronda de monitoreo y control del log de reacciones.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        reactionLog (list): Lista de las reacciones registradas en la interfaz.</span>
+<span class="sd">        noRondas (int): Número de rondas que durará el monitoreo de reacciones.</span>
+<span class="sd">        currentRound (int): Indice de la ronda ronda en la que esta el log actualmente</span>
+<span class="sd">        sujeto (int): Indice de la subcarpeta en la que se guardara los datos capturados.</span>
+<span class="sd">        currentDir (str): Dirección de general en el que se guardaran los archivos y carpetas de los datos.</span>
+<span class="sd">        signalTracker (SignalTracker): Monitor de reacciones.</span>
+<span class="sd">        isTracking (bool): Bandera que vale True si signalTracker se encuentra monitoreando reacciones.</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        startTracking(): Inicia el monitoreo de reacciones.</span>
+<span class="sd">        stopTracking(): Finaliza el monitoreo de reacciones.</span>
+<span class="sd">    """</span>
+    <span class="n">fillFigure</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">emptyFigure</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">stopSignal</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">reportSignal</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">reconnectSignal</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reactionLog</span><span class="o">=</span><span class="p">[],</span> <span class="n">puerto</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vectorSize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">currentDir</span><span class="o">=</span><span class="s2">"."</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reactionLog</span> <span class="o">=</span> <span class="n">reactionLog</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"no_round"</span><span class="p">,</span> <span class="s2">"ts_start_round"</span><span class="p">,</span> <span class="s2">"ts_end_round"</span><span class="p">,</span> <span class="s2">"delta_ts"</span><span class="p">,</span> <span class="s2">"reaction"</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">COLUMN_WIDTH</span><span class="o">+</span><span class="mi">7</span><span class="p">),</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">reactionLog</span><span class="p">))</span><span class="o">*</span><span class="mi">55</span><span class="p">)</span>
+        <span class="c1">#self.hasEnded = False</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+
+        <span class="c1">#Top controls</span>
+        <span class="n">hl1</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">hl2</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">hl1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">"ROUND NUM:"</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">puerto</span> <span class="o">=</span> <span class="n">puerto</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vectorSize</span> <span class="o">=</span> <span class="n">vectorSize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentRound</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">noRondas</span> <span class="o">=</span> <span class="mi">6</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sujeto</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isTracking</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rootDir</span> <span class="o">=</span> <span class="n">currentDir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentDir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rootDir</span> <span class="o">+</span> <span class="n">ADDED_DIR</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sujeto</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">noRondasBox</span> <span class="o">=</span> <span class="n">QSpinBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">noRondasBox</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">noRondas</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">noRondasBox</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changedRondas</span><span class="p">)</span>
+        <span class="n">hl1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">noRondasBox</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">minTime</span> <span class="o">=</span> <span class="mi">3</span> <span class="c1">#En segundos</span>
+        <span class="n">hl1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">"MIN TIME: "</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minTimeLabel</span> <span class="o">=</span> <span class="n">QSpinBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minTimeLabel</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minTime</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minTimeLabel</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changeMinTime</span><span class="p">)</span>
+        <span class="n">hl1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minTimeLabel</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxTime</span> <span class="o">=</span> <span class="mi">8</span> <span class="c1">#En segundos</span>
+        <span class="n">hl1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">"MAX TIME: "</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxTimeLabel</span> <span class="o">=</span> <span class="n">QSpinBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxTimeLabel</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxTime</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxTimeLabel</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changeMaxTime</span><span class="p">)</span>
+        <span class="n">hl1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxTimeLabel</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">waitTime</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="n">hl1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">"WAIT TIME:"</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waitTimeLabel</span> <span class="o">=</span> <span class="n">QSpinBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waitTimeLabel</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">waitTime</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waitTimeLabel</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changedWaitTime</span><span class="p">)</span>
+        <span class="n">hl1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">waitTimeLabel</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sujeto</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentDir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rootDir</span> <span class="o">+</span> <span class="n">ADDED_DIR</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sujeto</span><span class="p">)</span>
+        <span class="n">hl2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">"SUBJECT: "</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subjectLabel</span> <span class="o">=</span> <span class="n">QSpinBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subjectLabel</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sujeto</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subjectLabel</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changedSujeto</span><span class="p">)</span>
+        <span class="n">hl2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subjectLabel</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">startBtn</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">"START"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startBtn</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startTracking</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">stopButton</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">"STOP"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stopButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stopTracking</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdIMU</span> <span class="o">=</span> <span class="mf">0.3</span>
+        <span class="n">hl2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">"IMU:"</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdLabel</span> <span class="o">=</span> <span class="n">QDoubleSpinBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdLabel</span><span class="o">.</span><span class="n">setSingleStep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdLabel</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thresholdIMU</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdLabel</span><span class="o">.</span><span class="n">setDecimals</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdLabel</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changedThreshold</span><span class="p">)</span>
+        <span class="n">hl2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thresholdLabel</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">topThreshEOG</span> <span class="o">=</span> <span class="mi">500</span>
+        <span class="n">hl2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">"TOP EOG:"</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topThreshEOGLabel</span> <span class="o">=</span> <span class="n">QSpinBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topThreshEOGLabel</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topThreshEOGLabel</span><span class="o">.</span><span class="n">setSingleStep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topThreshEOGLabel</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">topThreshEOG</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topThreshEOGLabel</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changeTopThreshold</span><span class="p">)</span>
+        <span class="n">hl2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">topThreshEOGLabel</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomThreshEOG</span> <span class="o">=</span> <span class="mi">200</span>
+        <span class="n">hl2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">QLabel</span><span class="p">(</span><span class="s2">"BOTTOM EOG:"</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomThreshEOGLabel</span> <span class="o">=</span> <span class="n">QSpinBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomThreshEOGLabel</span><span class="o">.</span><span class="n">setMaximum</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomThreshEOGLabel</span><span class="o">.</span><span class="n">setSingleStep</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomThreshEOGLabel</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bottomThreshEOG</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomThreshEOGLabel</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changeBottomThreshold</span><span class="p">)</span>
+        <span class="n">hl2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bottomThreshEOGLabel</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdMode</span> <span class="o">=</span> <span class="n">STATIC_MODE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modeButton</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">"STATIC MODE"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modeButton</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modeButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changeMode</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataMode</span> <span class="o">=</span> <span class="n">IMU_MODE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataButton</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">"IMU"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataButton</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changeDataMode</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reactionMode</span> <span class="o">=</span> <span class="n">VALUE_REACTION_MODE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reactionModeButton</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">"VALUE"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reactionModeButton</span><span class="o">.</span><span class="n">setCheckable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reactionModeButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changeReactionMode</span><span class="p">)</span>
+
+        <span class="n">h3</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">continueLed</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">"CONTINUE"</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">continueLed</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="sa">f</span><span class="s2">"""QLabel </span><span class="se">{{</span><span class="s2">background-color: </span><span class="si">{</span><span class="s2">"#D10707"</span><span class="si">}</span><span class="s2">;</span>
+<span class="s2">                                                color: </span><span class="si">{</span><span class="s2">"#FFFFFF"</span><span class="si">}</span><span class="s2">;</span>
+<span class="s2">                                                border-radius: </span><span class="si">{</span><span class="s2">"15px"</span><span class="si">}</span><span class="s2">; </span>
+<span class="s2">                                                text-align: </span><span class="si">{</span><span class="s2">"center"</span><span class="si">}</span><span class="s2">;</span>
+<span class="s2">                                                </span><span class="se">}}</span><span class="s2">"""</span><span class="p">)</span>
+    
+        <span class="bp">self</span><span class="o">.</span><span class="n">reconnectButton</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">"RECONNECT"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reconnectButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reconnectSignal</span><span class="o">.</span><span class="n">emit</span><span class="p">)</span>
+        <span class="n">h3</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">continueLed</span><span class="p">)</span>
+        <span class="n">h3</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reconnectButton</span><span class="p">)</span>
+        <span class="n">hl1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">modeButton</span><span class="p">)</span>
+        <span class="n">hl1</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startBtn</span><span class="p">)</span>
+        <span class="n">hl2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataButton</span><span class="p">)</span>
+        <span class="n">hl2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stopButton</span><span class="p">)</span>
+        <span class="n">hl2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reactionModeButton</span><span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hl1</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">hl2</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">h3</span><span class="p">)</span>
+
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainTable</span> <span class="o">=</span> <span class="n">QTableWidget</span><span class="p">()</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainTable</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">headers</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainTable</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reactionLog</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainTable</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+        <span class="c1">#aux = QSizePolicy.}</span>
+        <span class="n">sizePolicy</span> <span class="o">=</span> <span class="n">QSizePolicy</span><span class="p">(</span><span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Policy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">,</span> <span class="n">QSizePolicy</span><span class="o">.</span><span class="n">Policy</span><span class="o">.</span><span class="n">Expanding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainTable</span><span class="o">.</span><span class="n">setSizePolicy</span><span class="p">(</span><span class="n">sizePolicy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainTable</span><span class="o">.</span><span class="n">horizontalHeader</span><span class="p">()</span><span class="o">.</span><span class="n">setSectionResizeMode</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">QHeaderView</span><span class="o">.</span><span class="n">ResizeMode</span><span class="o">.</span><span class="n">Stretch</span><span class="p">)</span>
+        
+        <span class="c1">#for i in range(mainTable.rowCount()):</span>
+        <span class="c1">#    mainTable.setColumnWidth(i, COLUMN_WIDTH)</span>
+        <span class="c1">#    mainTable.horizontalHeader().setSectionResizeMode(i, QHeaderView.ResizeMode.Stretch)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">log</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reactionLog</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">log</span><span class="p">):</span>
+                <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">j</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="n">content</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">content</span><span class="p">))</span>
+                <span class="n">label</span><span class="o">.</span><span class="n">setTextAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignHCenter</span><span class="p">)</span>
+                <span class="c1">#label.setTextAlig(Qt.AlignmentFlag.AlignHCenter)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mainTable</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mainTable</span><span class="p">)</span>
+        <span class="n">btnLayout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveBtn</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">"CONTINUE"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rerunBtn</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">"REPEAT"</span><span class="p">)</span>
+        <span class="n">btnLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saveBtn</span><span class="p">)</span>
+        <span class="n">btnLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rerunBtn</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveBtn</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saveLog</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rerunBtn</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reDoLog</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">btnLayout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">layout</span><span class="p">)</span>
+
+     
+<div class="viewcode-block" id="ReportWindow.saveLog">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.saveLog">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">saveLog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Alza las banderas para que se guarde la reacción y</span>
+<span class="sd">        continúe a la siguiente ronda de monitoreo.</span>
+<span class="sd">        """</span>
+        <span class="c1">#self.hasEnded = True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signalTracker</span><span class="o">.</span><span class="n">isCurrentLogSaved</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signalTracker</span><span class="o">.</span><span class="n">reviewEnded</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="ReportWindow.reDoLog">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.reDoLog">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reDoLog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Alza las banderas para que no se guarde la reacción y</span>
+<span class="sd">        vuelva a realizar la ronda.</span>
+<span class="sd">        """</span>
+        <span class="c1">#self.hasEnded = True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signalTracker</span><span class="o">.</span><span class="n">isCurrentLogSaved</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signalTracker</span><span class="o">.</span><span class="n">reviewEnded</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+
+    <span class="c1">#INTERFAZ</span>
+<div class="viewcode-block" id="ReportWindow.changedThreshold">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.changedThreshold">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">changedThreshold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdIMU</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"threshold: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">thresholdIMU</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReportWindow.changeTopThreshold">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.changeTopThreshold">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">changeTopThreshold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topThreshEOG</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"TOP THRESHOLD: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">topThreshEOG</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReportWindow.changeBottomThreshold">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.changeBottomThreshold">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">changeBottomThreshold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomThreshEOG</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"BOTTOM THRESHOLD: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bottomThreshEOG</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReportWindow.changeMode">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.changeMode">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">changeMode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdMode</span> <span class="o">=</span> <span class="n">MOVIL_MODE</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeButton</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> <span class="k">else</span> <span class="n">STATIC_MODE</span>
+        <span class="n">newText</span> <span class="o">=</span> <span class="s2">"MOVIL MODE"</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeButton</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"STATIC MODE"</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modeButton</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">newText</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"THRESHOLD MODE: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">thresholdMode</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReportWindow.changeDataMode">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.changeDataMode">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">changeDataMode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataMode</span> <span class="o">=</span> <span class="n">EOG_MODE</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataButton</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> <span class="k">else</span> <span class="n">IMU_MODE</span>
+        <span class="n">newText</span> <span class="o">=</span> <span class="s2">"EOG"</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataButton</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"IMU"</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataButton</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">newText</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"DATA MODE CHANGED: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dataMode</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReportWindow.changeReactionMode">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.changeReactionMode">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">changeReactionMode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reactionMode</span> <span class="o">=</span> <span class="n">VALUE_REACTION_MODE</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reactionModeButton</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> <span class="k">else</span> <span class="n">MEAN_REACTION_MODE</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reactionModeButton</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reactionModeButton</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">"MEAN"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reactionModeButton</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">"VALUE"</span><span class="p">)</span></div>
+
+    <span class="c1">#Valores de la UI</span>
+<div class="viewcode-block" id="ReportWindow.changedRondas">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.changedRondas">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">changedRondas</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">noRondas</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"RONDAS: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">noRondas</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ReportWindow.changeMinTime">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.changeMinTime">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">changeMinTime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minTime</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MIN TIME: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minTime</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ReportWindow.changeMaxTime">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.changeMaxTime">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">changeMaxTime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxTime</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"MAX TIME: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">maxTime</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ReportWindow.changedWaitTime">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.changedWaitTime">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">changedWaitTime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waitTime</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"WAIT TIME:  </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">waitTime</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReportWindow.changedSujeto">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.changedSujeto">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">changedSujeto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sujeto</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentDir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rootDir</span> <span class="o">+</span> <span class="n">ADDED_DIR</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sujeto</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentDir</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SUJETO: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sujeto</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReportWindow.updateAll">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.updateAll">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">updateAll</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdIMU</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thresholdLabel</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">noRondas</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">noRondasBox</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minTime</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minTimeLabel</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxTime</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maxTimeLabel</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waitTime</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">waitTimeLabel</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sujeto</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subjectLabel</span><span class="o">.</span><span class="n">value</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentDir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rootDir</span> <span class="o">+</span> <span class="n">ADDED_DIR</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sujeto</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdMode</span> <span class="o">=</span> <span class="n">MOVIL_MODE</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">modeButton</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> <span class="k">else</span> <span class="n">STATIC_MODE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataMode</span> <span class="o">=</span> <span class="n">EOG_MODE</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataButton</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> <span class="k">else</span> <span class="n">IMU_MODE</span></div>
+
+
+
+<div class="viewcode-block" id="ReportWindow.startTracking">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.startTracking">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">startTracking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Manda una señal al signalTracker para el monitoreo </span>
+<span class="sd">        continuo de reacciones en un nuevo hilo.</span>
+<span class="sd">        """</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"START IT"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updateAll</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isTracking</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">isTracking</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signalTracker</span> <span class="o">=</span> <span class="n">SignalTracker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">puerto</span><span class="p">,</span> <span class="mi">9600</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vectorSize</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thresholdMode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataMode</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">reactionMode</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">thresholdIMU</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">topThreshEOG</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottomThreshEOG</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentDir</span><span class="p">)</span>
+            <span class="c1">#Thread configuration</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trackingThread</span> <span class="o">=</span> <span class="n">QThread</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signalTracker</span><span class="o">.</span><span class="n">moveToThread</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trackingThread</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trackingThread</span><span class="o">.</span><span class="n">started</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signalTracker</span><span class="o">.</span><span class="n">trackData</span><span class="p">)</span>
+            <span class="c1">#Signals</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signalTracker</span><span class="o">.</span><span class="n">isTracking</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signalTracker</span><span class="o">.</span><span class="n">stopLedSignal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setPauseLed</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signalTracker</span><span class="o">.</span><span class="n">continueLedSignal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">setContinueLed</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signalTracker</span><span class="o">.</span><span class="n">emptyFigure</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">emptyFigure</span><span class="o">.</span><span class="n">emit</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signalTracker</span><span class="o">.</span><span class="n">fillFigure</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fillFigure</span><span class="o">.</span><span class="n">emit</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signalTracker</span><span class="o">.</span><span class="n">stopSignal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stopTracking</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signalTracker</span><span class="o">.</span><span class="n">reportSignal</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updateTable</span><span class="p">)</span> <span class="c1">#Esta actualiza esta tabla no el triangulo</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trackingThread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ReportWindow.stopTracking">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.stopTracking">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stopTracking</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Llama a finalizar el hilo de monitoreo y baja la</span>
+<span class="sd">        bandera isTracking.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signalTracker</span><span class="o">.</span><span class="n">stopThread</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trackingThread</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trackingThread</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isTracking</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+        <span class="c1">#self.signalTracker = SignalTracker(self.puerto)</span>
+
+<div class="viewcode-block" id="ReportWindow.updateTable">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.updateTable">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">updateTable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">newLog</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reactionLog</span> <span class="o">=</span> <span class="n">newLog</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMinimumHeight</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reactionLog</span><span class="p">))</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+        <span class="n">rowPos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainTable</span><span class="o">.</span><span class="n">rowCount</span><span class="p">()</span>
+        <span class="n">numCol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mainTable</span><span class="o">.</span><span class="n">columnCount</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mainTable</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reactionLog</span><span class="p">))</span>
+        <span class="c1">#aux = QSizePolicy.}</span>
+        <span class="c1">#sizePolicy = QSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)</span>
+        <span class="c1">#self.mainTable.setSizePolicy(sizePolicy)</span>
+        <span class="c1">#self.mainTable.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">log</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reactionLog</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">log</span><span class="p">):</span>
+                <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">j</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="n">content</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">content</span><span class="p">))</span>
+                <span class="n">label</span><span class="o">.</span><span class="n">setTextAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignHCenter</span><span class="p">)</span>
+                <span class="c1">#label.setTextAlig(Qt.AlignmentFlag.AlignHCenter)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mainTable</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReportWindow.setPauseLed">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.setPauseLed">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setPauseLed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">continueLed</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="sa">f</span><span class="s2">"""QLabel </span><span class="se">{{</span><span class="s2">background-color: </span><span class="si">{</span><span class="s2">"#D10707"</span><span class="si">}</span><span class="s2">;</span>
+<span class="s2">                                                color: </span><span class="si">{</span><span class="s2">"#FFFFFF"</span><span class="si">}</span><span class="s2">;</span>
+<span class="s2">                                                border-radius: </span><span class="si">{</span><span class="s2">"15px"</span><span class="si">}</span><span class="s2">; </span>
+<span class="s2">                                                text-align: </span><span class="si">{</span><span class="s2">"center"</span><span class="si">}</span><span class="s2">;</span>
+<span class="s2">                                                </span><span class="se">}}</span><span class="s2">"""</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">continueLed</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">"CONTINUE"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ReportWindow.setContinueLed">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.reportWindow.ReportWindow.setContinueLed">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">setContinueLed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">continueLed</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="sa">f</span><span class="s2">"""QLabel </span><span class="se">{{</span><span class="s2">background-color: </span><span class="si">{</span><span class="s2">"#15B818"</span><span class="si">}</span><span class="s2">;</span>
+<span class="s2">                                                    color: </span><span class="si">{</span><span class="s2">"#000000"</span><span class="si">}</span><span class="s2">;</span>
+<span class="s2">                                                    border-radius: </span><span class="si">{</span><span class="s2">"15px"</span><span class="si">}</span><span class="s2">;</span>
+<span class="s2">                                                    text-align: </span><span class="si">{</span><span class="s2">"center"</span><span class="si">}</span><span class="s2">;</span>
+<span class="s2">                                                    </span><span class="se">}}</span><span class="s2">"""</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">continueLed</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">"IN PROCESS"</span><span class="p">)</span></div>
+</div>
+
+        
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2026, Leobardo.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

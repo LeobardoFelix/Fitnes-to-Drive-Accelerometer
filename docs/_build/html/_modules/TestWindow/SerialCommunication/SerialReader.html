@@ -1,0 +1,210 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestWindow.SerialCommunication.SerialReader &mdash; documentación de RTEMPUS - 0.1</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=9c9b61ad"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../_static/translations.js?v=f85f4cfb"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            RTEMPUS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RTEMPUS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Código de módulo</a></li>
+      <li class="breadcrumb-item active">TestWindow.SerialCommunication.SerialReader</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Código fuente para TestWindow.SerialCommunication.SerialReader</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">serial</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="n">BAUD_RATE</span> <span class="o">=</span> <span class="mi">9600</span>
+
+
+<div class="viewcode-block" id="SerialReader">
+<a class="viewcode-back" href="../../../TestWindow.SerialCommunication.html#TestWindow.SerialCommunication.SerialReader.SerialReader">[documentos]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SerialReader</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Lector y decodificador del puerto serial destinado</span>
+<span class="sd">    a la comunicación con el sistema embebido.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        serialLocation (str): Locación del puerto de comunicación serial.</span>
+<span class="sd">        baudrate (int): Tasa de cambios de estados en el que se comunica el puerto serial.</span>
+<span class="sd">        vectorMaxSize (int): El tamaño de muestras del promedio.</span>
+<span class="sd">        thresholdMode (bool): El tipo de límite que el sistema toma registrar una reacción; False para un límite estático, True para uno móvil con respecto al promedio.</span>
+<span class="sd">        dataMode (bool): El tipo de dato que el sistema va capturar; False para la aceleración lineal, True para el valor en el electroculograma. </span>
+<span class="sd">        reactionMode (bool): El tipo de dato que toma en cuenta para registrar una reacción; False para el valor del sensor, True para el promedio de la medidas.</span>
+<span class="sd">        thresholdIMU (float): Límite de la reacción por sensor inercial.</span>
+<span class="sd">        topThresholdEOG (float): Límite superior de la reacción por electroculograma.</span>
+<span class="sd">        bottomThresholdEOG (float): Límite superior de la reacción por electroculograma.</span>
+<span class="sd">        ser (Serial): Puerto de comunicación serial.</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        openConection(): Abre conexión con el sistema embebido.</span>
+<span class="sd">        catchSerial(): Lee la información disponible en el puerto serial.</span>
+<span class="sd">        closeConnection(): Cierra el puerto de comunicación serial.</span>
+<span class="sd">        sendSignal(any): Manda un valor por el puerto serial.</span>
+<span class="sd">    """</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">puerto</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">9600</span><span class="p">,</span> <span class="n">vectorMaxSize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">thresholdMode</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dataMode</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                  <span class="n">reactionMode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">thresholdIMU</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">topThresholdEOG</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">bottomThresholdEOG</span><span class="o">=</span><span class="mi">200</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">serialLocation</span> <span class="o">=</span> <span class="n">puerto</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baudrate</span> <span class="o">=</span> <span class="n">baudrate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vectorMaxSize</span> <span class="o">=</span> <span class="n">vectorMaxSize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdMode</span> <span class="o">=</span> <span class="n">thresholdMode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataMode</span> <span class="o">=</span> <span class="n">dataMode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reactionMode</span><span class="o">=</span><span class="n">reactionMode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdIMU</span> <span class="o">=</span> <span class="n">thresholdIMU</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topThresholdEOG</span> <span class="o">=</span> <span class="n">topThresholdEOG</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomThresholdEOG</span> <span class="o">=</span> <span class="n">bottomThresholdEOG</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ser</span> <span class="o">=</span> <span class="kc">None</span>  
+
+<div class="viewcode-block" id="SerialReader.openConection">
+<a class="viewcode-back" href="../../../TestWindow.SerialCommunication.html#TestWindow.SerialCommunication.SerialReader.SerialReader.openConection">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">openConection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Abre el puerto serial y manda los datos de configuración</span>
+<span class="sd">        necesarios para establecer conexión con el sistema embebido.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ser</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">serialLocation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">baudrate</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># Esperar aquí una sola vez, tras abrir la conexión</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">reset_input_buffer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sendSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vectorMaxSize</span><span class="p">)</span><span class="o">+</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sendSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thresholdMode</span><span class="p">)</span><span class="o">+</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sendSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataMode</span><span class="p">)</span><span class="o">+</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sendSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reactionMode</span><span class="p">)</span><span class="o">+</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sendSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thresholdIMU</span><span class="p">)</span><span class="o">+</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sendSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">topThresholdEOG</span><span class="p">)</span><span class="o">+</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sendSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bottomThresholdEOG</span><span class="p">)</span><span class="o">+</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span></div>
+
+        
+
+<div class="viewcode-block" id="SerialReader.catchSerial">
+<a class="viewcode-back" href="../../../TestWindow.SerialCommunication.html#TestWindow.SerialCommunication.SerialReader.SerialReader.catchSerial">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">catchSerial</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Si hay bytes en espera en el puerto serial, lee y decodifica</span>
+<span class="sd">        los datos disponibles, en caso contrario regresa None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            linea (str): Cadena de caracteres de los datos recibidos por serial.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ser</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">in_waiting</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">linea</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">'utf-8'</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">'ignore'</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">linea</span>
+        <span class="k">return</span> <span class="kc">None</span>  </div>
+
+
+<div class="viewcode-block" id="SerialReader.closeConection">
+<a class="viewcode-back" href="../../../TestWindow.SerialCommunication.html#TestWindow.SerialCommunication.SerialReader.SerialReader.closeConection">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">closeConection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Cierra el puerto de comunicación serial.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ser</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">is_open</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SerialReader.sendSignal">
+<a class="viewcode-back" href="../../../TestWindow.SerialCommunication.html#TestWindow.SerialCommunication.SerialReader.SerialReader.sendSignal">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sendSignal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Manda un valor hacia el sistema embebido</span>
+<span class="sd">        por medio del puerto serial.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (any): El valor que es mandado por el puerto serial.</span>
+<span class="sd">        """</span>
+        <span class="n">bites</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">bites</span><span class="p">)</span></div>
+</div>
+
+            
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2026, Leobardo.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

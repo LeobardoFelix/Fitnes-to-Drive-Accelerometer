@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ConfigurationWindow.configWindow &mdash; documentación de RTEMPUS - 0.1</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=9c9b61ad"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/translations.js?v=f85f4cfb"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            RTEMPUS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RTEMPUS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Código de módulo</a></li>
+      <li class="breadcrumb-item active">ConfigurationWindow.configWindow</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Código fuente para ConfigurationWindow.configWindow</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">errno</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">serial.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">list_ports</span> 
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">"QtAgg"</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyQt6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">Qt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyQt6.QtWidgets</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">QCheckBox</span><span class="p">,</span> <span class="n">QComboBox</span><span class="p">,</span> <span class="n">QDialog</span><span class="p">,</span> <span class="n">QFrame</span><span class="p">,</span> <span class="n">QGridLayout</span><span class="p">,</span>
+    <span class="n">QGroupBox</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">,</span> <span class="n">QLabel</span><span class="p">,</span> <span class="n">QLineEdit</span><span class="p">,</span> 
+    <span class="n">QPushButton</span><span class="p">,</span> <span class="n">QSlider</span><span class="p">,</span> 
+    <span class="n">QVBoxLayout</span><span class="p">,</span> 
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">StyleGraphics.StylesGraphic</span><span class="w"> </span><span class="kn">import</span> <span class="n">STYLE_SHEET</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TestWindow.testsWindow</span><span class="w"> </span><span class="kn">import</span> <span class="n">IMU_MODE</span><span class="p">,</span> <span class="n">EOG_MODE</span><span class="p">,</span> <span class="n">STATIC_MODE</span><span class="p">,</span> <span class="n">MOVIL_MODE</span>
+<span class="n">GRAPH_WINDOW_MODE</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">PRUEBAS_WINDOW_MODE</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">ERROR_INVALID_NAME</span> <span class="o">=</span> <span class="mi">123</span>
+<span class="n">VALUE_REACTION_MODE</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">MEAN_REACTION_MODE</span> <span class="o">=</span> <span class="mi">1</span>
+
+
+<div class="viewcode-block" id="configurationWindow">
+<a class="viewcode-back" href="../../ConfigurationWindow.html#ConfigurationWindow.configWindow.configurationWindow">[documentos]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">configurationWindow</span><span class="p">(</span><span class="n">QDialog</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Ventana de inicio del sistema. Al presionar </span>
+<span class="sd">    el botón "conectar" devuelve los atributos configurados.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        puerto (str): Puerto designado para la comunicación serial.</span>
+<span class="sd">        dataMode (bool): El tipo de dato que el sistema va capturar; False para la aceleración lineal, True para el valor en el electroculograma. </span>
+<span class="sd">        thresholdMode (bool): El tipo de límite que el sistema toma registrar una reacción; False para un límite estático, True para uno móvil con respecto al promedio.</span>
+<span class="sd">        reactionMode (bool): El tipo de dato que toma en cuenta para registrar una reacción; False para el valor del sensor, True para el promedio de la medidas.</span>
+<span class="sd">        filterLength (int): El tamaño de muestras del promedio.</span>
+<span class="sd">        currentDir (str): Directorio donde los archivos serán guardados.</span>
+<span class="sd">        topThreshold (float): Límite superior de la reacción por electroculograma.</span>
+<span class="sd">        bottomThreshold (float): Límite superior de la reacción por electroculograma.</span>
+<span class="sd">        imuThreshold (float): Límite de la reacción por sensor inercial.</span>
+<span class="sd">        windowMode (bool): Tipo de ventana a la que el sistema pasará al presionar el "conectar". </span>
+<span class="sd">        topFrame (int): Valor máximo que se va a graficar.</span>
+<span class="sd">        bottomFrame (int): Valor mínimo que se va a graficar.</span>
+
+<span class="sd">    Methods:</span>
+<span class="sd">        conectar(): Captura todos los atributos actualizados y pasa a cerrar la ventana.</span>
+<span class="sd">        iniciar(): Muestra la ventana y si es cerrada devuelve todos los atributos.</span>
+<span class="sd">        </span>
+<span class="sd">    """</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">"Monitor Serial — Configuración"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMinimumWidth</span><span class="p">(</span><span class="mi">480</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="n">STYLE_SHEET</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">puerto</span>   <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topThreshold</span>     <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomThreshold</span>     <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdMode</span>   <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">root_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">root_layout</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">root_layout</span><span class="o">.</span><span class="n">setContentsMargins</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
+
+        <span class="c1"># Encabezado</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">lbl_title</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">"MONITOR SERIAL"</span><span class="p">)</span>
+        <span class="n">lbl_title</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">"labelTitle"</span><span class="p">)</span>
+        <span class="n">lbl_sub</span>   <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">"CONFIGURACIÓN DE CONEXIÓN"</span><span class="p">)</span>
+        <span class="n">lbl_sub</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">"labelSubtitle"</span><span class="p">)</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lbl_title</span><span class="p">)</span>
+        <span class="n">header</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lbl_sub</span><span class="p">)</span>
+        <span class="n">root_layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+        <span class="n">root_layout</span><span class="o">.</span><span class="n">addSpacing</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">root_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">make_separator</span><span class="p">())</span>
+        <span class="n">root_layout</span><span class="o">.</span><span class="n">addSpacing</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+
+        <span class="c1"># Formulario</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">QGridLayout</span><span class="p">()</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">setHorizontalSpacing</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">setVerticalSpacing</span><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">row</span><span class="p">(</span><span class="n">label_text</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+            <span class="n">lbl</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="n">label_text</span><span class="p">)</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lbl</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignRight</span><span class="p">)</span>
+            <span class="n">form</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">widget</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">campo_com</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+        <span class="n">puertos</span> <span class="o">=</span> <span class="n">list_ports</span><span class="o">.</span><span class="n">comports</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">puerto</span> <span class="ow">in</span> <span class="n">puertos</span><span class="p">:</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">campo_com</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">puerto</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">(</span><span class="s2">"Puerto COM"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">campo_com</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">windowsBox</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">windowsBox</span><span class="o">.</span><span class="n">addItems</span><span class="p">([</span><span class="s2">"Graficadora"</span><span class="p">,</span> <span class="s2">"Ventana de pruebas"</span><span class="p">])</span>
+        <span class="n">row</span><span class="p">(</span><span class="s2">"Ventana: "</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">windowsBox</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imuThreshLine</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s2">"2.0"</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">(</span><span class="s2">"Threshold IMU: "</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">imuThreshLine</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">campo_max</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s2">"1000"</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">(</span><span class="s2">"TOP THRESHOLD EOG"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">campo_max</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">campo_min</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s2">"0"</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">(</span><span class="s2">"BOTTOM THRESHOLD EOG"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">campo_min</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">topFrameLine</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s2">"1000"</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">(</span><span class="s2">"TOP FRAME"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">topFrameLine</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomFrameLine</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="s2">"0"</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">(</span><span class="s2">"BOTTOM FRAME"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottomFrameLine</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentDir</span> <span class="o">=</span> <span class="s2">"."</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">directoryLine</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentDir</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">(</span><span class="s2">"SAVE DIRECTORY"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">directoryLine</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+
+        <span class="n">root_layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">form</span><span class="p">)</span>
+        <span class="n">root_layout</span><span class="o">.</span><span class="n">addSpacing</span><span class="p">(</span><span class="mi">18</span><span class="p">)</span>
+
+        <span class="c1"># Promedio móvil</span>
+        <span class="n">grp_prom</span> <span class="o">=</span> <span class="n">QGroupBox</span><span class="p">(</span><span class="s2">"Promedio Móvil"</span><span class="p">)</span>
+        <span class="n">prom_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="n">grp_prom</span><span class="p">)</span>
+        <span class="n">prom_layout</span><span class="o">.</span><span class="n">setSpacing</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="c1">#Checks layout</span>
+        <span class="n">check_layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">checkUmbral</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="s2">"Static Threshold"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">checkUmbral</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changeThresholdCheckText</span><span class="p">)</span>
+        <span class="n">check_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">checkUmbral</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">checkDataMode</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="s2">"EOG"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">checkDataMode</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changeDataCheckText</span><span class="p">)</span>
+        <span class="n">check_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">checkDataMode</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">checkReactionMode</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="s2">"VALUE"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">checkReactionMode</span><span class="o">.</span><span class="n">toggled</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">changeReactionCheckText</span><span class="p">)</span>
+        <span class="n">check_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">checkReactionMode</span><span class="p">)</span>
+
+        <span class="n">prom_layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">check_layout</span><span class="p">)</span>
+
+        <span class="n">slider_row</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">lbl_slider</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">"Ventana:"</span><span class="p">)</span>
+        <span class="n">lbl_slider</span><span class="o">.</span><span class="n">setFixedWidth</span><span class="p">(</span><span class="mi">70</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filterLenSlider</span> <span class="o">=</span> <span class="n">QSlider</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Orientation</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filterLenSlider</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filterLenSlider</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_prom_val</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="s2">"50"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_prom_val</span><span class="o">.</span><span class="n">setFixedWidth</span><span class="p">(</span><span class="mi">36</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_prom_val</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignRight</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filterLenSlider</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">lbl_prom_val</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+        <span class="p">)</span>
+        <span class="n">slider_row</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">lbl_slider</span><span class="p">)</span>
+        <span class="n">slider_row</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filterLenSlider</span><span class="p">)</span>
+        <span class="n">slider_row</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lbl_prom_val</span><span class="p">)</span>
+        <span class="n">prom_layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">slider_row</span><span class="p">)</span>
+
+        <span class="n">root_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">grp_prom</span><span class="p">)</span>
+        <span class="n">root_layout</span><span class="o">.</span><span class="n">addSpacing</span><span class="p">(</span><span class="mi">24</span><span class="p">)</span>
+
+        <span class="c1"># Botón conectar</span>
+        <span class="n">btn</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">"CONECTAR"</span><span class="p">)</span>
+        <span class="n">btn</span><span class="o">.</span><span class="n">setObjectName</span><span class="p">(</span><span class="s2">"btnConectar"</span><span class="p">)</span>
+        <span class="n">btn</span><span class="o">.</span><span class="n">setCursor</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">CursorShape</span><span class="o">.</span><span class="n">PointingHandCursor</span><span class="p">)</span>
+        <span class="n">btn</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">conectar</span><span class="p">)</span>
+        <span class="n">root_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">btn</span><span class="p">,</span> <span class="n">alignment</span><span class="o">=</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignmentFlag</span><span class="o">.</span><span class="n">AlignHCenter</span><span class="p">)</span>
+
+<div class="viewcode-block" id="configurationWindow.changeThresholdCheckText">
+<a class="viewcode-back" href="../../ConfigurationWindow.html#ConfigurationWindow.configWindow.configurationWindow.changeThresholdCheckText">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">changeThresholdCheckText</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkUmbral</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">checkUmbral</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">"Movil Threshold"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">checkUmbral</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">"Static Threshold"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="configurationWindow.changeDataCheckText">
+<a class="viewcode-back" href="../../ConfigurationWindow.html#ConfigurationWindow.configWindow.configurationWindow.changeDataCheckText">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">changeDataCheckText</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkDataMode</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">checkDataMode</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">"IMU"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">checkDataMode</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">"EOG"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="configurationWindow.changeReactionCheckText">
+<a class="viewcode-back" href="../../ConfigurationWindow.html#ConfigurationWindow.configWindow.configurationWindow.changeReactionCheckText">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">changeReactionCheckText</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkReactionMode</span><span class="o">.</span><span class="n">isChecked</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">checkReactionMode</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">"MEAN"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">checkReactionMode</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">"VALUE"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="configurationWindow.conectar">
+<a class="viewcode-back" href="../../ConfigurationWindow.html#ConfigurationWindow.configWindow.configurationWindow.conectar">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">conectar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Actualiza todos los atributos en base a la interfaz y acepta la ventana.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">puerto</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">campo_com</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topThreshold</span>    <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">campo_max</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomThreshold</span>    <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">campo_min</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdMode</span>  <span class="o">=</span> <span class="n">MOVIL_MODE</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkUmbral</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> <span class="k">else</span> <span class="n">STATIC_MODE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filterLength</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filterLenSlider</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataMode</span> <span class="o">=</span>  <span class="n">IMU_MODE</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkDataMode</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> <span class="k">else</span> <span class="n">EOG_MODE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reactionMode</span> <span class="o">=</span> <span class="n">MEAN_REACTION_MODE</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkReactionMode</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span> <span class="k">else</span> <span class="n">VALUE_REACTION_MODE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">windowMode</span> <span class="o">=</span> <span class="n">GRAPH_WINDOW_MODE</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">windowsBox</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"Graficadora"</span> <span class="k">else</span> <span class="n">PRUEBAS_WINDOW_MODE</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imuThreshold</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imuThreshLine</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topFrame</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">topFrameLine</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bottomFrame</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bottomFrameLine</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentDir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">directoryLine</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_pathname_valid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentDir</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentDir</span> <span class="o">=</span> <span class="s2">"./NewFolder"</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="configurationWindow.iniciar">
+<a class="viewcode-back" href="../../ConfigurationWindow.html#ConfigurationWindow.configWindow.configurationWindow.iniciar">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">iniciar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Ejecuta la ventana, si la ventana es aceptada devuelve los atributos</span>
+<span class="sd">        </span>
+<span class="sd">        Returns: </span>
+<span class="sd">            puerto (str): Puerto designado para la comunicación serial.</span>
+<span class="sd">            topThreshold (float): Límite superior de la reacción por electroculograma.</span>
+<span class="sd">            bottomThreshold (float): Límite superior de la reacción por electroculograma.</span>
+<span class="sd">            thresholdMode (bool): El tipo de límite que el sistema toma registrar una reacción; False para un límite estático, True para uno móvil con respecto al promedio.</span>
+<span class="sd">            filterLength (int): El tamaño de muestras del promedio.</span>
+<span class="sd">            dataMode (bool): El tipo de dato que el sistema va capturar; False para la aceleración lineal, True para el valor en el electroculograma. </span>
+<span class="sd">            reactionMode (bool): El tipo de dato que toma en cuenta para registrar una reacción; False para el valor del sensor, True para el promedio de la medidas.</span>
+<span class="sd">            windowMode (bool): Tipo de ventana a la que el sistema pasará al presionar el "conectar". </span>
+<span class="sd">            imuThreshold (float): Límite de la reacción por sensor inercial.</span>
+<span class="sd">            topFrame (int): Valor máximo que se va a graficar.</span>
+<span class="sd">            bottomFrame (int): Valor mínimo que se va a graficar.</span>
+<span class="sd">            currentDir (str): Directorio donde los archivos serán guardados.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span> <span class="o">==</span> <span class="n">QDialog</span><span class="o">.</span><span class="n">DialogCode</span><span class="o">.</span><span class="n">Accepted</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">puerto</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">topThreshold</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bottomThreshold</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thresholdMode</span><span class="p">,</span> \
+         <span class="bp">self</span><span class="o">.</span><span class="n">filterLength</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataMode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reactionMode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">windowMode</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">imuThreshold</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">topFrame</span><span class="p">,</span> \
+            <span class="bp">self</span><span class="o">.</span><span class="n">bottomFrame</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">currentDir</span>
+        <span class="k">return</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="mi">12</span></div>
+</div>
+
+
+<div class="viewcode-block" id="make_separator">
+<a class="viewcode-back" href="../../ConfigurationWindow.html#ConfigurationWindow.configWindow.make_separator">[documentos]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_separator</span><span class="p">(</span><span class="n">vertical</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">""""</span>
+<span class="sd">    Genera una línea de separación basada en un QFrame.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        QFrame: Un widget en forma de línea.</span>
+<span class="sd">    """</span>
+    <span class="n">sep</span> <span class="o">=</span> <span class="n">QFrame</span><span class="p">()</span>
+    <span class="n">sep</span><span class="o">.</span><span class="n">setFrameShape</span><span class="p">(</span><span class="n">QFrame</span><span class="o">.</span><span class="n">Shape</span><span class="o">.</span><span class="n">VLine</span> <span class="k">if</span> <span class="n">vertical</span> <span class="k">else</span> <span class="n">QFrame</span><span class="o">.</span><span class="n">Shape</span><span class="o">.</span><span class="n">HLine</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sep</span></div>
+
+<div class="viewcode-block" id="is_pathname_valid">
+<a class="viewcode-back" href="../../ConfigurationWindow.html#ConfigurationWindow.configWindow.is_pathname_valid">[documentos]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_pathname_valid</span><span class="p">(</span><span class="n">pathname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Verifica si un directorio podria ser un camino valido en el sistema operativo.</span>
+
+<span class="sd">    Args: </span>
+<span class="sd">        pathname (str): El directorio a verificar.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True si el directorio es valido, False en caso contrario.</span>
+<span class="sd">    """</span>
+    <span class="c1"># If this pathname is either not a string or is but is empty, this pathname</span>
+    <span class="c1"># is invalid.</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pathname</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">pathname</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">pathname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitdrive</span><span class="p">(</span><span class="n">pathname</span><span class="p">)</span>
+
+
+        <span class="n">root_dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'HOMEDRIVE'</span><span class="p">,</span> <span class="s1">'C:'</span><span class="p">)</span> \
+            <span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s1">'win32'</span> <span class="k">else</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">root_dirname</span><span class="p">)</span>   <span class="c1"># ...Murphy and her ironclad Law</span>
+
+        <span class="c1"># Append a path separator to this directory if needed.</span>
+        <span class="n">root_dirname</span> <span class="o">=</span> <span class="n">root_dirname</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">)</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span>
+
+        <span class="c1"># Test whether each path component split from this pathname is valid or</span>
+        <span class="c1"># not, ignoring non-existent and non-readable path components.</span>
+        <span class="k">for</span> <span class="n">pathname_part</span> <span class="ow">in</span> <span class="n">pathname</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">lstat</span><span class="p">(</span><span class="n">root_dirname</span> <span class="o">+</span> <span class="n">pathname_part</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">exc</span><span class="p">,</span> <span class="s1">'winerror'</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">exc</span><span class="o">.</span><span class="n">winerror</span> <span class="o">==</span> <span class="n">ERROR_INVALID_NAME</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="kc">False</span>
+                <span class="k">elif</span> <span class="n">exc</span><span class="o">.</span><span class="n">errno</span> <span class="ow">in</span> <span class="p">{</span><span class="n">errno</span><span class="o">.</span><span class="n">ENAMETOOLONG</span><span class="p">,</span> <span class="n">errno</span><span class="o">.</span><span class="n">ERANGE</span><span class="p">}:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+    <span class="c1"># If a "TypeError" exception was raised, it almost certainly has the</span>
+    <span class="c1"># error message "embedded NUL character" indicating an invalid pathname.</span>
+    <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="c1"># If no exception was raised, all path components and hence this</span>
+    <span class="c1"># pathname itself are valid. (Praise be to the curmudgeonly python.)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2026, Leobardo.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

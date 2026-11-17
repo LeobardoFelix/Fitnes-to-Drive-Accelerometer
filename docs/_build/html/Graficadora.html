@@ -1,0 +1,630 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Graficadora package &mdash; documentación de RTEMPUS - 0.1</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=9c9b61ad"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/translations.js?v=f85f4cfb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RTEMPUS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Graficadora package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-Graficadora.DataLogger">Graficadora.DataLogger module</a><ul>
+<li><a class="reference internal" href="#Graficadora.DataLogger.DataLogger"><code class="docutils literal notranslate"><span class="pre">DataLogger</span></code></a><ul>
+<li><a class="reference internal" href="#Graficadora.DataLogger.DataLogger.modo"><code class="docutils literal notranslate"><span class="pre">DataLogger.modo</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.DataLogger.DataLogger.limit"><code class="docutils literal notranslate"><span class="pre">DataLogger.limit</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.DataLogger.DataLogger.activo"><code class="docutils literal notranslate"><span class="pre">DataLogger.activo</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.DataLogger.DataLogger._archivo"><code class="docutils literal notranslate"><span class="pre">DataLogger._archivo</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.DataLogger.DataLogger._file_obj"><code class="docutils literal notranslate"><span class="pre">DataLogger._file_obj</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.DataLogger.DataLogger._writer"><code class="docutils literal notranslate"><span class="pre">DataLogger._writer</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.DataLogger.DataLogger._t0"><code class="docutils literal notranslate"><span class="pre">DataLogger._t0</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.DataLogger.DataLogger.iniciar"><code class="docutils literal notranslate"><span class="pre">DataLogger.iniciar()</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.DataLogger.DataLogger.detener"><code class="docutils literal notranslate"><span class="pre">DataLogger.detener()</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.DataLogger.DataLogger.registrar"><code class="docutils literal notranslate"><span class="pre">DataLogger.registrar()</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.DataLogger.DataLogger.set_modo"><code class="docutils literal notranslate"><span class="pre">DataLogger.set_modo()</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.DataLogger.DataLogger.set_limit"><code class="docutils literal notranslate"><span class="pre">DataLogger.set_limit()</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.DataLogger.DataLogger.archivo_actual"><code class="docutils literal notranslate"><span class="pre">DataLogger.archivo_actual</span></code></a></li>
+<li><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">DataLogger.detener()</span></code></a></li>
+<li><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">DataLogger.iniciar()</span></code></a></li>
+<li><a class="reference internal" href="#id2"><code class="docutils literal notranslate"><span class="pre">DataLogger.registrar()</span></code></a></li>
+<li><a class="reference internal" href="#id3"><code class="docutils literal notranslate"><span class="pre">DataLogger.set_limit()</span></code></a></li>
+<li><a class="reference internal" href="#id4"><code class="docutils literal notranslate"><span class="pre">DataLogger.set_modo()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-Graficadora.graphWindow">Graficadora.graphWindow module</a><ul>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow"><code class="docutils literal notranslate"><span class="pre">GraphWindow</span></code></a><ul>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.corriendo"><code class="docutils literal notranslate"><span class="pre">GraphWindow.corriendo</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.reconectar"><code class="docutils literal notranslate"><span class="pre">GraphWindow.reconectar</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.SC"><code class="docutils literal notranslate"><span class="pre">GraphWindow.SC</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.logger"><code class="docutils literal notranslate"><span class="pre">GraphWindow.logger</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.average"><code class="docutils literal notranslate"><span class="pre">GraphWindow.average</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.datos"><code class="docutils literal notranslate"><span class="pre">GraphWindow.datos</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.promedios"><code class="docutils literal notranslate"><span class="pre">GraphWindow.promedios</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.queue"><code class="docutils literal notranslate"><span class="pre">GraphWindow.queue</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.leer_serial"><code class="docutils literal notranslate"><span class="pre">GraphWindow.leer_serial()</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.actualizar_ui"><code class="docutils literal notranslate"><span class="pre">GraphWindow.actualizar_ui()</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.actualizar_grafica"><code class="docutils literal notranslate"><span class="pre">GraphWindow.actualizar_grafica()</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.enviar_manual"><code class="docutils literal notranslate"><span class="pre">GraphWindow.enviar_manual()</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.iniciar_muestreo"><code class="docutils literal notranslate"><span class="pre">GraphWindow.iniciar_muestreo()</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.detener_muestreo"><code class="docutils literal notranslate"><span class="pre">GraphWindow.detener_muestreo()</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.cambiar_modo"><code class="docutils literal notranslate"><span class="pre">GraphWindow.cambiar_modo()</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow._cerrar_sesion"><code class="docutils literal notranslate"><span class="pre">GraphWindow._cerrar_sesion()</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.solicitar_reconexion"><code class="docutils literal notranslate"><span class="pre">GraphWindow.solicitar_reconexion()</span></code></a></li>
+<li><a class="reference internal" href="#id5"><code class="docutils literal notranslate"><span class="pre">GraphWindow.actualizar_grafica()</span></code></a></li>
+<li><a class="reference internal" href="#id6"><code class="docutils literal notranslate"><span class="pre">GraphWindow.actualizar_ui()</span></code></a></li>
+<li><a class="reference internal" href="#id7"><code class="docutils literal notranslate"><span class="pre">GraphWindow.cambiar_modo()</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.closeEvent"><code class="docutils literal notranslate"><span class="pre">GraphWindow.closeEvent()</span></code></a></li>
+<li><a class="reference internal" href="#id8"><code class="docutils literal notranslate"><span class="pre">GraphWindow.detener_muestreo()</span></code></a></li>
+<li><a class="reference internal" href="#id9"><code class="docutils literal notranslate"><span class="pre">GraphWindow.enviar_manual()</span></code></a></li>
+<li><a class="reference internal" href="#id10"><code class="docutils literal notranslate"><span class="pre">GraphWindow.iniciar_muestreo()</span></code></a></li>
+<li><a class="reference internal" href="#id11"><code class="docutils literal notranslate"><span class="pre">GraphWindow.leer_serial()</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.GraphWindow.reconectar_solicitado"><code class="docutils literal notranslate"><span class="pre">GraphWindow.reconectar_solicitado</span></code></a></li>
+<li><a class="reference internal" href="#id14"><code class="docutils literal notranslate"><span class="pre">GraphWindow.solicitar_reconexion()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.isNumeric"><code class="docutils literal notranslate"><span class="pre">isNumeric()</span></code></a></li>
+<li><a class="reference internal" href="#Graficadora.graphWindow.make_separator"><code class="docutils literal notranslate"><span class="pre">make_separator()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-Graficadora">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RTEMPUS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Graficadora package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Graficadora.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="graficadora-package">
+<h1>Graficadora package<a class="headerlink" href="#graficadora-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-Graficadora.DataLogger">
+<span id="graficadora-datalogger-module"></span><h2>Graficadora.DataLogger module<a class="headerlink" href="#module-Graficadora.DataLogger" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="Graficadora.DataLogger.DataLogger">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">Graficadora.DataLogger.</span></span><span class="sig-name descname"><span class="pre">DataLogger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'continuo'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/DataLogger.html#DataLogger"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.DataLogger.DataLogger" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Representa un capturador de datos, capaz de registrar datos
+en archivos CSV creados de forma automática.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Graficadora.DataLogger.DataLogger.modo">
+<span class="sig-name descname"><span class="pre">modo</span></span><a class="headerlink" href="#Graficadora.DataLogger.DataLogger.modo" title="Link to this definition"></a></dt>
+<dd><p>Representa el tipo de límite que se usa para referencia, puede ser continuo o umbral.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Graficadora.DataLogger.DataLogger.limit">
+<span class="sig-name descname"><span class="pre">limit</span></span><a class="headerlink" href="#Graficadora.DataLogger.DataLogger.limit" title="Link to this definition"></a></dt>
+<dd><p>El valor en el que el logger registra una reacción.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Graficadora.DataLogger.DataLogger.activo">
+<span class="sig-name descname"><span class="pre">activo</span></span><a class="headerlink" href="#Graficadora.DataLogger.DataLogger.activo" title="Link to this definition"></a></dt>
+<dd><p>Es True si un archivo se encuentra abierto.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Graficadora.DataLogger.DataLogger._archivo">
+<span class="sig-name descname"><span class="pre">_archivo</span></span><a class="headerlink" href="#Graficadora.DataLogger.DataLogger._archivo" title="Link to this definition"></a></dt>
+<dd><p>Directorio y nombre del archivo donde se guardaran los datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Graficadora.DataLogger.DataLogger._file_obj">
+<span class="sig-name descname"><span class="pre">_file_obj</span></span><a class="headerlink" href="#Graficadora.DataLogger.DataLogger._file_obj" title="Link to this definition"></a></dt>
+<dd><p>Archivo CSV actual</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Graficadora.DataLogger.DataLogger._writer">
+<span class="sig-name descname"><span class="pre">_writer</span></span><a class="headerlink" href="#Graficadora.DataLogger.DataLogger._writer" title="Link to this definition"></a></dt>
+<dd><p>Escritor de archivos CSV</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Writer</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Graficadora.DataLogger.DataLogger._t0">
+<span class="sig-name descname"><span class="pre">_t0</span></span><a class="headerlink" href="#Graficadora.DataLogger.DataLogger._t0" title="Link to this definition"></a></dt>
+<dd><p>Timestamp actual</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>long</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Graficadora.DataLogger.DataLogger.iniciar">
+<span class="sig-name descname"><span class="pre">iniciar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/DataLogger.html#DataLogger.iniciar"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.DataLogger.DataLogger.iniciar" title="Link to this definition"></a></dt>
+<dd><p>Crea y devuelve un nuevo archivo CSV.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Graficadora.DataLogger.DataLogger.detener">
+<span class="sig-name descname"><span class="pre">detener</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/DataLogger.html#DataLogger.detener"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.DataLogger.DataLogger.detener" title="Link to this definition"></a></dt>
+<dd><p>Cierra el archivo CSV actualmente abierto.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Graficadora.DataLogger.DataLogger.registrar">
+<span class="sig-name descname"><span class="pre">registrar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/DataLogger.html#DataLogger.registrar"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.DataLogger.DataLogger.registrar" title="Link to this definition"></a></dt>
+<dd><p>Añade una nueva entrada al archivo actualmente abierto.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Graficadora.DataLogger.DataLogger.set_modo">
+<span class="sig-name descname"><span class="pre">set_modo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/DataLogger.html#DataLogger.set_modo"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.DataLogger.DataLogger.set_modo" title="Link to this definition"></a></dt>
+<dd><p>Cambia el modo del límite.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Graficadora.DataLogger.DataLogger.set_limit">
+<span class="sig-name descname"><span class="pre">set_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/DataLogger.html#DataLogger.set_limit"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.DataLogger.DataLogger.set_limit" title="Link to this definition"></a></dt>
+<dd><p>Establece un nuevo valor para el limite actual.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="Graficadora.DataLogger.DataLogger.archivo_actual">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">archivo_actual</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#Graficadora.DataLogger.DataLogger.archivo_actual" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">detener</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/DataLogger.html#DataLogger.detener"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>Cierra el archivo CSV actualmente abierto.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">iniciar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directorio</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'.'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/Graficadora/DataLogger.html#DataLogger.iniciar"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd><p>Crea un nuevo archivo CSV en el directorio actual,
+con los campos: tiempo_ms, valor y promedio.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>directorio</strong> (<em>str</em>) – Directorio donde se creará el archivo.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>Directorio con el nombre del archivo creado.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#Graficadora.DataLogger.DataLogger._archivo" title="Graficadora.DataLogger.DataLogger._archivo">_archivo</a> (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id2">
+<span class="sig-name descname"><span class="pre">registrar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">valor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">promedio</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/DataLogger.html#DataLogger.registrar"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id2" title="Link to this definition"></a></dt>
+<dd><p>Añade una entrada al archivo abierto actualmente, si no existe un
+archivo abierto o el valor es menor al límite en modo umbral no
+registra ningún valor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>valor</strong> (<em>float</em>) – valor a registrar.</p></li>
+<li><p><strong>promedio</strong> (<em>float</em>) – promedio a registrar.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id3">
+<span class="sig-name descname"><span class="pre">set_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/DataLogger.html#DataLogger.set_limit"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id3" title="Link to this definition"></a></dt>
+<dd><p>Establece un nuevo valor para el límite actual.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>limit</strong> (<em>float</em>) – Nuevo límite.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id4">
+<span class="sig-name descname"><span class="pre">set_modo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/DataLogger.html#DataLogger.set_modo"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id4" title="Link to this definition"></a></dt>
+<dd><p>Cambia el modo del límite entre umbral y continuo.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>modo</strong> (<em>str</em>) – Nuevo modo del sistema.</p>
+</dd>
+<dt class="field-even">Muestra<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – Si el límite no tiene el valor «umbral» o «continuo»</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-Graficadora.graphWindow">
+<span id="graficadora-graphwindow-module"></span><h2>Graficadora.graphWindow module<a class="headerlink" href="#module-Graficadora.graphWindow" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">Graficadora.graphWindow.</span></span><span class="sig-name descname"><span class="pre">GraphWindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">puerto</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topThreshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottomThreshold</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholdMode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filterLength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataMode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactionMode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholdIMU</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottomFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">currentDir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QMainWindow</span></code></p>
+<p>Representa una graficadora, capaz de mostrar y guardar los datos
+que provengan del puerto serial.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.corriendo">
+<span class="sig-name descname"><span class="pre">corriendo</span></span><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.corriendo" title="Link to this definition"></a></dt>
+<dd><p>Control del gráfico principal, si es False el gráfico para.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.reconectar">
+<span class="sig-name descname"><span class="pre">reconectar</span></span><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.reconectar" title="Link to this definition"></a></dt>
+<dd><p>Variable de reconección con la ventana de configuración. Si es True al cerrar la ventana volverá a configuración.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.SC">
+<span class="sig-name descname"><span class="pre">SC</span></span><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.SC" title="Link to this definition"></a></dt>
+<dd><p>Lector del puerto serial.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="TestWindow.SerialCommunication.html#TestWindow.SerialCommunication.SerialReader.SerialReader" title="TestWindow.SerialCommunication.SerialReader.SerialReader">SerialReader</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.logger">
+<span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.logger" title="Link to this definition"></a></dt>
+<dd><p>Capturador de datos dentro de archivos CSV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#Graficadora.DataLogger.DataLogger" title="Graficadora.DataLogger.DataLogger">DataLogger</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.average">
+<span class="sig-name descname"><span class="pre">average</span></span><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.average" title="Link to this definition"></a></dt>
+<dd><p>Último promedio leído del SC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.datos">
+<span class="sig-name descname"><span class="pre">datos</span></span><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.datos" title="Link to this definition"></a></dt>
+<dd><p>Fila con los valores que son leídos por el SC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>deque</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.promedios">
+<span class="sig-name descname"><span class="pre">promedios</span></span><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.promedios" title="Link to this definition"></a></dt>
+<dd><p>Fila con los promedios que son leídos por el SC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>deque</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.queue">
+<span class="sig-name descname"><span class="pre">queue</span></span><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.queue" title="Link to this definition"></a></dt>
+<dd><p>Fila auxiliar con las líneas crudas leídas del SC.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Queue</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.leer_serial">
+<span class="sig-name descname"><span class="pre">leer_serial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.leer_serial"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.leer_serial" title="Link to this definition"></a></dt>
+<dd><p>Inicia un ciclo que lee el puerto serial y guarda los datos en queue.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.actualizar_ui">
+<span class="sig-name descname"><span class="pre">actualizar_ui</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.actualizar_ui"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.actualizar_ui" title="Link to this definition"></a></dt>
+<dd><p>Actualiza los valores del log de datos en la interfaz.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.actualizar_grafica">
+<span class="sig-name descname"><span class="pre">actualizar_grafica</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.actualizar_grafica"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.actualizar_grafica" title="Link to this definition"></a></dt>
+<dd><p>Actualiza la gráfica principal dentro de la interfaz con los valores de datos y promedios.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.enviar_manual">
+<span class="sig-name descname"><span class="pre">enviar_manual</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.enviar_manual"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.enviar_manual" title="Link to this definition"></a></dt>
+<dd><p>Envía al puerto serial la cadena de caracteres contenida en un campo de texto.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.iniciar_muestreo">
+<span class="sig-name descname"><span class="pre">iniciar_muestreo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.iniciar_muestreo"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.iniciar_muestreo" title="Link to this definition"></a></dt>
+<dd><p>Inicia a capturar datos en un nuevo archivo CSV.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.detener_muestreo">
+<span class="sig-name descname"><span class="pre">detener_muestreo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.detener_muestreo"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.detener_muestreo" title="Link to this definition"></a></dt>
+<dd><p>Detiene la captura de datos.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.cambiar_modo">
+<span class="sig-name descname"><span class="pre">cambiar_modo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.cambiar_modo"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.cambiar_modo" title="Link to this definition"></a></dt>
+<dd><p>Cambia la forma en la que el límite es calculado entre estático y móvil.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow._cerrar_sesion">
+<span class="sig-name descname"><span class="pre">_cerrar_sesion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow._cerrar_sesion"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow._cerrar_sesion" title="Link to this definition"></a></dt>
+<dd><p>Detiene todos los procesos y reinicia el sistema.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.solicitar_reconexion">
+<span class="sig-name descname"><span class="pre">solicitar_reconexion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.solicitar_reconexion"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.solicitar_reconexion" title="Link to this definition"></a></dt>
+<dd><p>Cierra la sesión y vuelve a la ventana de configuración.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id5">
+<span class="sig-name descname"><span class="pre">actualizar_grafica</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.actualizar_grafica"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id5" title="Link to this definition"></a></dt>
+<dd><p>Actualiza la gráfica principal dentro de la interfaz
+con los valores de datos y promedios.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id6">
+<span class="sig-name descname"><span class="pre">actualizar_ui</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.actualizar_ui"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id6" title="Link to this definition"></a></dt>
+<dd><p>Desglosa los valores del queue en datos, promedio y reacción,
+los añade a sus filas respectivas y actualiza los valores mostrados
+en el log datos de la interfaz.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id7">
+<span class="sig-name descname"><span class="pre">cambiar_modo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.cambiar_modo"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id7" title="Link to this definition"></a></dt>
+<dd><p>Cambia el modo en el que el límite es calculado entre
+uno estático y uno que se actualiza en referencia al promedio.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.closeEvent">
+<span class="sig-name descname"><span class="pre">closeEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">a0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">QCloseEvent</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.closeEvent"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.closeEvent" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id8">
+<span class="sig-name descname"><span class="pre">detener_muestreo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.detener_muestreo"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id8" title="Link to this definition"></a></dt>
+<dd><p>Detiene la captura de datos.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id9">
+<span class="sig-name descname"><span class="pre">enviar_manual</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.enviar_manual"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id9" title="Link to this definition"></a></dt>
+<dd><p>Envía la cadena de caracteres dentro de un campo
+de texto de la interfaz hacia el puerto serial y
+el logger.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id10">
+<span class="sig-name descname"><span class="pre">iniciar_muestreo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.iniciar_muestreo"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id10" title="Link to this definition"></a></dt>
+<dd><p>Inicia a capturar los datos del queue dentro de
+un archivo CSV.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id11">
+<span class="sig-name descname"><span class="pre">leer_serial</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.leer_serial"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id11" title="Link to this definition"></a></dt>
+<dd><p>Inicia un ciclo que corre de forma indefinida en el que lee el
+puerto serial, desglosa la línea en un arreglo de datos que guarda
+dentro del queue.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.GraphWindow.reconectar_solicitado">
+<span class="sig-name descname"><span class="pre">reconectar_solicitado</span></span><a class="headerlink" href="#Graficadora.graphWindow.GraphWindow.reconectar_solicitado" title="Link to this definition"></a></dt>
+<dd><p>int = …, arguments: Sequence = …) -&gt; PYQT_SIGNAL</p>
+<p>types is normally a sequence of individual types.  Each type is either a
+type object or a string that is the name of a C++ type.  Alternatively
+each type could itself be a sequence of types each describing a different
+overloaded signal.
+name is the optional C++ name of the signal.  If it is not specified then
+the name of the class attribute that is bound to the signal is used.
+revision is the optional revision of the signal that is exported to QML.
+If it is not specified then 0 is used.
+arguments is the optional sequence of the names of the signal’s arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pyqtSignal(<a href="#id12"><span class="problematic" id="id13">*</span></a>types, name</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str = …, revision</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id14">
+<span class="sig-name descname"><span class="pre">solicitar_reconexion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#GraphWindow.solicitar_reconexion"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id14" title="Link to this definition"></a></dt>
+<dd><p>Cierra la sesión y vuelve a la ventana de configuración.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.isNumeric">
+<span class="sig-prename descclassname"><span class="pre">Graficadora.graphWindow.</span></span><span class="sig-name descname"><span class="pre">isNumeric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#isNumeric"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.graphWindow.isNumeric" title="Link to this definition"></a></dt>
+<dd><p>Verifica si una cadena de caracteres puede ser
+transformada a un número.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True si es un número, False si no lo es.</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="Graficadora.graphWindow.make_separator">
+<span class="sig-prename descclassname"><span class="pre">Graficadora.graphWindow.</span></span><span class="sig-name descname"><span class="pre">make_separator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/Graficadora/graphWindow.html#make_separator"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#Graficadora.graphWindow.make_separator" title="Link to this definition"></a></dt>
+<dd><p>»
+Genera una línea de separación basada en un QFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Un widget en forma de línea.</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p>QFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-Graficadora">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-Graficadora" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2026, Leobardo.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -28,12 +28,9 @@ class configurationWindow(QDialog):
 
     Attributes:
         puerto (str): Puerto designado para la comunicación serial.
-        dataMode (bool): El tipo de dato que el sistema va capturar; 
-        False para la aceleración lineal, True para el valor en el electroculograma. 
-        thresholdMode (bool): El tipo de límite que el sistema toma registrar una reacción; 
-        False para un límite estático, True para uno móvil con respecto al promedio.
-        reactionMode (bool): El tipo de dato que toma en cuenta para registrar una reacción;
-        False para el valor del sensor, True para el promedio de la medidas.
+        dataMode (bool): El tipo de dato que el sistema va capturar; False para la aceleración lineal, True para el valor en el electroculograma. 
+        thresholdMode (bool): El tipo de límite que el sistema toma registrar una reacción; False para un límite estático, True para uno móvil con respecto al promedio.
+        reactionMode (bool): El tipo de dato que toma en cuenta para registrar una reacción; False para el valor del sensor, True para el promedio de la medidas.
         filterLength (int): El tamaño de muestras del promedio.
         currentDir (str): Directorio donde los archivos serán guardados.
         topThreshold (float): Límite superior de la reacción por electroculograma.
@@ -208,13 +205,10 @@ class configurationWindow(QDialog):
             puerto (str): Puerto designado para la comunicación serial.
             topThreshold (float): Límite superior de la reacción por electroculograma.
             bottomThreshold (float): Límite superior de la reacción por electroculograma.
-            thresholdMode (bool): El tipo de límite que el sistema toma registrar una reacción; 
-            False para un límite estático, True para uno móvil con respecto al promedio.
+            thresholdMode (bool): El tipo de límite que el sistema toma registrar una reacción; False para un límite estático, True para uno móvil con respecto al promedio.
             filterLength (int): El tamaño de muestras del promedio.
-            dataMode (bool): El tipo de dato que el sistema va capturar; 
-            False para la aceleración lineal, True para el valor en el electroculograma. 
-            reactionMode (bool): El tipo de dato que toma en cuenta para registrar una reacción;
-            False para el valor del sensor, True para el promedio de la medidas.
+            dataMode (bool): El tipo de dato que el sistema va capturar; False para la aceleración lineal, True para el valor en el electroculograma. 
+            reactionMode (bool): El tipo de dato que toma en cuenta para registrar una reacción; False para el valor del sensor, True para el promedio de la medidas.
             windowMode (bool): Tipo de ventana a la que el sistema pasará al presionar el "conectar". 
             imuThreshold (float): Límite de la reacción por sensor inercial.
             topFrame (int): Valor máximo que se va a graficar.

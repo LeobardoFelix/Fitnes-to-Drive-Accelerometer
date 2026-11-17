@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestWindow.TestRutine.SignalTracker &mdash; documentación de RTEMPUS - 0.1</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=9c9b61ad"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../_static/translations.js?v=f85f4cfb"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            RTEMPUS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RTEMPUS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Código de módulo</a></li>
+      <li class="breadcrumb-item active">TestWindow.TestRutine.SignalTracker</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Código fuente para TestWindow.TestRutine.SignalTracker</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">TestWindow.SerialCommunication.SerialReader</span><span class="w"> </span><span class="kn">import</span> <span class="n">SerialReader</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PyQt6.QtCore</span><span class="w"> </span><span class="kn">import</span> <span class="n">QObject</span><span class="p">,</span> <span class="n">pyqtSignal</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">TestWindow.SerialCommunication.SerialConsumer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SerialConsumer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="c1">#dataLock = threading.Lock()</span>
+<span class="n">READ_LINEAR_ACCELERATION</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">":41</span><span class="se">\n</span><span class="s2">"</span>
+<span class="n">GET_EULER</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">":1</span><span class="se">\n</span><span class="s2">"</span>
+<span class="n">GET_QUATERNION</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">":0</span><span class="se">\n</span><span class="s2">"</span>
+<span class="n">SET_BASE_OFFSET_TO_CURRENT_POSITION</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">":19</span><span class="se">\n</span><span class="s2">"</span>
+<span class="n">GET_BAUD_RATE</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">":232</span><span class="se">\n</span><span class="s2">"</span> <span class="c1">#NO AFECTA EN BLUETOOTH</span>
+<span class="n">SET_BAUD_RATE</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">":231,115200</span><span class="se">\n</span><span class="s2">"</span> <span class="c1">#NO AFECTA EN BLUETOOTH</span>
+<span class="n">FRONT_NAME</span> <span class="o">=</span> <span class="s2">"./sujetos/FRENTE.csv"</span>
+<span class="n">SIDE_NAME</span> <span class="o">=</span> <span class="s2">"./sujetos/SIDE.csv"</span>
+<span class="n">CLASSIFY_NAME</span> <span class="o">=</span> <span class="s2">"./sujetos/CLASSIFICACTION.csv"</span>
+<span class="n">SET_AUTOCALIBRATION_MODE</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">":171,0</span><span class="se">\n</span><span class="s2">"</span>
+<span class="n">GET_AUTOCALIBRATION_MODE</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">":172</span><span class="se">\n</span><span class="s2">"</span>
+<span class="n">GET_AUTOCALIBRATION_FACTORS</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">":174</span><span class="se">\n</span><span class="s2">"</span>
+<span class="n">TARE_ORIENTATION</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">":96</span><span class="se">\n</span><span class="s2">"</span>
+
+<span class="n">MOVIL_MODE</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">STATIC_MODE</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">IMU_MODE</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">EOG_MODE</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">FRECUENCIA</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">PERIODO</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">FRECUENCIA</span>
+<div class="viewcode-block" id="SignalTracker">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.SignalTracker.SignalTracker">[documentos]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SignalTracker</span><span class="p">(</span><span class="n">QObject</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Monitor de reacciones, por rondas se comunica con un puerto serial</span>
+<span class="sd">    esperando por una bandera de reacción capturando el resultado en un</span>
+<span class="sd">    archivo CSV, actualizando la interfaz en proceso.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        serialConsumer (SerialConsumer): Datos actuales del puerto serial.</span>
+<span class="sd">        isTracking (bool): Bandera que controla si se termina el monitoreo.</span>
+<span class="sd">        reactionLog (list): Lista de vectores con los valores de las reacciones.</span>
+<span class="sd">        isCurrentLogSaved (bool): Bandera que indica si al final de una ronda se salva el vector de valores o se vuelve a tomar la reacción.</span>
+<span class="sd">        reviewEnded (bool): Bandera que indica cuando puede progresar con la siguiente ronda.</span>
+<span class="sd">        currentRound (int): Indice de la ronda actual.</span>
+<span class="sd">        baseDir (str): Directorio donde se guardaran los datos del reactionLog.</span>
+<span class="sd">        noRondas (int): Cantidad de rondas de monitoreo de reacción.</span>
+<span class="sd">        minTime (int): Tiempo mínimo de espera entre rondas.</span>
+<span class="sd">        maxTime (int): Tiempo máximo de espera entre rondas.</span>
+<span class="sd">        waitTime (int): Tiempo de presentación del estímulo visual.</span>
+<span class="sd">    Methods: </span>
+<span class="sd">        trackData(): Inicia la rutina de monitoreo de reacciones.</span>
+<span class="sd">        stopThread(): Termina la rutina de monitoreo abruptamente.</span>
+<span class="sd">    """</span>
+
+
+    <span class="n">fillFigure</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">emptyFigure</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">stopSignal</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">reportSignal</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">stopLedSignal</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
+    <span class="n">continueLedSignal</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">()</span>
+    
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">puerto</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">9600</span><span class="p">,</span> <span class="n">vectorMaxSize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">thresholdMode</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dataMode</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+                  <span class="n">reactionMode</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">thresholdIMU</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">topThresholdEOG</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">bottomThresholdEOG</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">currentDir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">puerto</span> <span class="o">=</span> <span class="n">puerto</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baudrate</span> <span class="o">=</span> <span class="n">baudrate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vectorMaxSize</span> <span class="o">=</span> <span class="n">vectorMaxSize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdMode</span> <span class="o">=</span> <span class="n">thresholdMode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataMode</span> <span class="o">=</span> <span class="n">dataMode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reactionMode</span> <span class="o">=</span> <span class="n">reactionMode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholdIMU</span> <span class="o">=</span> <span class="n">thresholdIMU</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reactionLog</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isCurrentLogSaved</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reviewEnded</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">dataMode</span> <span class="o">==</span> <span class="n">EOG_MODE</span> <span class="ow">and</span> <span class="n">thresholdMode</span> <span class="o">==</span> <span class="n">MOVIL_MODE</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">topModEOG</span> <span class="o">=</span> <span class="n">topThresholdEOG</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bottomModEOG</span> <span class="o">=</span> <span class="n">bottomThresholdEOG</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">topThresholdEOG</span> <span class="o">=</span> <span class="n">topThresholdEOG</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bottomThresholdEOG</span> <span class="o">=</span> <span class="n">bottomThresholdEOG</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">serialConsumer</span> <span class="o">=</span> <span class="n">SerialConsumer</span><span class="p">(</span><span class="n">puerto</span><span class="p">,</span> <span class="n">baudrate</span><span class="p">,</span> <span class="n">vectorMaxSize</span><span class="p">,</span> 
+                <span class="n">thresholdMode</span><span class="p">,</span> <span class="n">dataMode</span><span class="p">,</span> <span class="n">reactionMode</span><span class="p">,</span> <span class="n">thresholdIMU</span><span class="p">,</span> <span class="n">topThresholdEOG</span><span class="p">,</span> <span class="n">bottomThresholdEOG</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">isTracking</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentRound</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">"sujetos"</span><span class="p">)</span> <span class="k">if</span> <span class="n">currentDir</span> <span class="o">==</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">currentDir</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">noRondas</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minTime</span> <span class="o">=</span> <span class="mi">5</span> <span class="c1">#En segundos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxTime</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1">#En segundos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waitTime</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sujeto</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="mf">.3</span>
+
+
+<div class="viewcode-block" id="SignalTracker.trackData">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.SignalTracker.SignalTracker.trackData">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">trackData</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Inicia la rutina de monitoreo de reacciones, por</span>
+<span class="sd">        noRondas cantidad de rondas la rutina espera</span>
+<span class="sd">        una cantidad de segundos aleatoria entre minTime y masTime,</span>
+<span class="sd">        muestre el estímulo por waitTime segundos, si el usuario reacciona</span>
+<span class="sd">        antes de waitTime la ronda termina antes y guarda la reacción, </span>
+<span class="sd">        caso contrario se guarda en el reactionLog como si no hubiera reaccionado. </span>
+<span class="sd">        """</span>
+        <span class="n">dataFileName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseDir</span> <span class="o">+</span> <span class="s2">"/MEDIDAS.csv"</span>
+        <span class="n">reactionName</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseDir</span> <span class="o">+</span> <span class="s2">"/REACCIONES.csv"</span>
+
+        <span class="n">reactFields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"no_round"</span><span class="p">,</span> <span class="s2">"ts_start_round"</span><span class="p">,</span> <span class="s2">"ts_end_round"</span><span class="p">,</span> <span class="s2">"delta_ts"</span><span class="p">,</span> <span class="s2">"reaction"</span><span class="p">]</span>
+
+        <span class="c1"># Check files BEFORE opening</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">baseDir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">reactionName</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">''</span><span class="p">)</span> <span class="k">as</span> <span class="n">reactcsvfile</span><span class="p">:</span>
+                <span class="c1">#csvwriter = csv.writer(csvfile)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">continueLedSignal</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+                <span class="n">reactWriter</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">reactcsvfile</span><span class="p">)</span>
+                <span class="c1">#csvwriter.writerow(fields)</span>
+                <span class="n">reactWriter</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">reactFields</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">"INICIARAN LAS RONDAS"</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">currentRound</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="c1">#self.catcher.openConection()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">serialConsumer</span><span class="o">.</span><span class="n">baseDir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">baseDir</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">serialConsumer</span><span class="o">.</span><span class="n">initMonitorThreading</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">serialConsumer</span><span class="o">.</span><span class="n">stopWriting</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">noRondas</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">isCurrentLogSaved</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isCurrentLogSaved</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">"INICIA UNA NUEVA RONDA"</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">currentLog</span> <span class="o">=</span> <span class="p">[]</span>
+                        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">isTracking</span><span class="p">:</span>
+                            <span class="k">break</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">currentRound</span> <span class="o">=</span> <span class="n">i</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">serialConsumer</span><span class="o">.</span><span class="n">currentRound</span> <span class="o">=</span> <span class="n">i</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">waitRandom</span><span class="p">()</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">"EMPIEZA BUSCAR REACCION"</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">waitForReaction</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">serialConsumer</span><span class="o">.</span><span class="n">stopWriting</span><span class="p">()</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s2">"TERMINA LA BUSQUEDA DE REACCIÓN"</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">emptyFigure</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">checkIfReacted</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">reviewRound</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isCurrentLogSaved</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">"Paso revision"</span><span class="p">)</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">reactionLog</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentLog</span><span class="p">)</span>
+                            <span class="n">reactWriter</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentLog</span><span class="p">)</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"REACTION LOG: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">reactionLog</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"RONDA </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">currentRound</span><span class="si">}</span><span class="s2"> TERMINO"</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No paso revision DE NUEVO, REPITE RONDA </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">currentRound</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                    
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"Error in classification:"</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stopSignal</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">serialConsumer</span><span class="o">.</span><span class="n">stopMonitorThread</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SignalTracker.waitRandom">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.SignalTracker.SignalTracker.waitRandom">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">waitRandom</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">esperaActual</span>  <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minTime</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxTime</span><span class="p">)</span>
+        <span class="n">startTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span>
+        <span class="n">currentTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emptyFigure</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">currentTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">esperaActual</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">.1</span><span class="p">)</span>
+            <span class="n">currentTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="SignalTracker.waitForReaction">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.SignalTracker.SignalTracker.waitForReaction">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">waitForReaction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">reacciono</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1">#Marca el momento del estimulo</span>
+        <span class="n">startTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span>
+        <span class="n">currentTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">startRoundTime</span> <span class="o">=</span> <span class="n">currentTime</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentLog</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentRound</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">currentLog</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">startRoundTime</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"RONDA: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">currentRound</span><span class="si">}</span><span class="s2"> TS: </span><span class="si">{</span><span class="n">currentTime</span><span class="si">}</span><span class="s2">  REACCION: 0"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">serialConsumer</span><span class="o">.</span><span class="n">startWriting</span><span class="p">()</span>
+        <span class="c1">#time.sleep(1)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">fillFigure</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+        
+        <span class="k">while</span> <span class="p">(</span><span class="n">currentTime</span> <span class="o">-</span> <span class="n">startTime</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">waitTime</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">isTracking</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialConsumer</span><span class="o">.</span><span class="n">hasReacted</span><span class="p">:</span>
+                <span class="n">valor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialConsumer</span><span class="o">.</span><span class="n">reactionValue</span>
+                <span class="n">promedio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialConsumer</span><span class="o">.</span><span class="n">reactionMean</span>
+                <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serialConsumer</span><span class="o">.</span><span class="n">reactionTime</span>
+                <span class="n">reaccion</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">currentLog</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">currentLog</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ts</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">startRoundTime</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">currentLog</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reaccion</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"REACTION: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">serialConsumer</span><span class="o">.</span><span class="n">reactionValue</span><span class="si">}</span><span class="s2"> PROMEDIO: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">serialConsumer</span><span class="o">.</span><span class="n">reactionMean</span><span class="si">}</span><span class="s2">  TIEMPO: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">serialConsumer</span><span class="o">.</span><span class="n">reactionTime</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">valor</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">promedio</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">ts</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">reaccion</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">serialConsumer</span><span class="o">.</span><span class="n">hasReacted</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reacciono</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.002</span><span class="p">)</span>
+            <span class="n">currentTime</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="SignalTracker.stopThread">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.SignalTracker.SignalTracker.stopThread">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stopThread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Termina la rutina de monitoreo abruptamente.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">isTracking</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"Cycle stopped and thread finished"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SignalTracker.checkIfReacted">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.SignalTracker.SignalTracker.checkIfReacted">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">checkIfReacted</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">reacciono</span><span class="p">:</span>
+            <span class="n">ts</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentLog</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentLog</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ts</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">startRoundTime</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">currentLog</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"NO REACCIONO TS: </span><span class="si">{</span><span class="n">ts</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SI REACCIONO"</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SignalTracker.reviewRound">
+<a class="viewcode-back" href="../../../TestWindow.TestRutine.html#TestWindow.TestRutine.SignalTracker.SignalTracker.reviewRound">[documentos]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reviewRound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reviewEnded</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">preliminarLog</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">log</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reactionLog</span><span class="p">:</span>
+            <span class="n">preliminarLog</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">log</span><span class="p">)</span>
+        <span class="c1">#preliminarLog = self.reactionLog</span>
+        <span class="n">preliminarLog</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">currentLog</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reportSignal</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">preliminarLog</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"EJECUTADO"</span><span class="p">)</span>
+        <span class="c1">#Espera hasta que le diga que continue</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stopLedSignal</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">reviewEnded</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">continueLedSignal</span><span class="o">.</span><span class="n">emit</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isCurrentLogSaved</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"SALVADO"</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"DE NUEVO"</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2026, Leobardo.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

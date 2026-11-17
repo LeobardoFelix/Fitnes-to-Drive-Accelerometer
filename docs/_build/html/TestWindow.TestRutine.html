@@ -1,0 +1,824 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TestWindow.TestRutine package &mdash; documentación de RTEMPUS - 0.1</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=9c9b61ad"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/translations.js?v=f85f4cfb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RTEMPUS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">TestWindow.TestRutine package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-TestWindow.TestRutine.SignalTracker">TestWindow.TestRutine.SignalTracker module</a><ul>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker"><code class="docutils literal notranslate"><span class="pre">SignalTracker</span></code></a><ul>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.serialConsumer"><code class="docutils literal notranslate"><span class="pre">SignalTracker.serialConsumer</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.isTracking"><code class="docutils literal notranslate"><span class="pre">SignalTracker.isTracking</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.reactionLog"><code class="docutils literal notranslate"><span class="pre">SignalTracker.reactionLog</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.isCurrentLogSaved"><code class="docutils literal notranslate"><span class="pre">SignalTracker.isCurrentLogSaved</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.reviewEnded"><code class="docutils literal notranslate"><span class="pre">SignalTracker.reviewEnded</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.currentRound"><code class="docutils literal notranslate"><span class="pre">SignalTracker.currentRound</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.baseDir"><code class="docutils literal notranslate"><span class="pre">SignalTracker.baseDir</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.noRondas"><code class="docutils literal notranslate"><span class="pre">SignalTracker.noRondas</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.minTime"><code class="docutils literal notranslate"><span class="pre">SignalTracker.minTime</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.maxTime"><code class="docutils literal notranslate"><span class="pre">SignalTracker.maxTime</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.waitTime"><code class="docutils literal notranslate"><span class="pre">SignalTracker.waitTime</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.trackData"><code class="docutils literal notranslate"><span class="pre">SignalTracker.trackData()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.stopThread"><code class="docutils literal notranslate"><span class="pre">SignalTracker.stopThread()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.checkIfReacted"><code class="docutils literal notranslate"><span class="pre">SignalTracker.checkIfReacted()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.continueLedSignal"><code class="docutils literal notranslate"><span class="pre">SignalTracker.continueLedSignal</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.emptyFigure"><code class="docutils literal notranslate"><span class="pre">SignalTracker.emptyFigure</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.fillFigure"><code class="docutils literal notranslate"><span class="pre">SignalTracker.fillFigure</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.reportSignal"><code class="docutils literal notranslate"><span class="pre">SignalTracker.reportSignal</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.reviewRound"><code class="docutils literal notranslate"><span class="pre">SignalTracker.reviewRound()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.stopLedSignal"><code class="docutils literal notranslate"><span class="pre">SignalTracker.stopLedSignal</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.stopSignal"><code class="docutils literal notranslate"><span class="pre">SignalTracker.stopSignal</span></code></a></li>
+<li><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">SignalTracker.stopThread()</span></code></a></li>
+<li><a class="reference internal" href="#id13"><code class="docutils literal notranslate"><span class="pre">SignalTracker.trackData()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.waitForReaction"><code class="docutils literal notranslate"><span class="pre">SignalTracker.waitForReaction()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.waitRandom"><code class="docutils literal notranslate"><span class="pre">SignalTracker.waitRandom()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-TestWindow.TestRutine.reportWindow">TestWindow.TestRutine.reportWindow module</a><ul>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow"><code class="docutils literal notranslate"><span class="pre">ReportWindow</span></code></a><ul>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.reactionLog"><code class="docutils literal notranslate"><span class="pre">ReportWindow.reactionLog</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.noRondas"><code class="docutils literal notranslate"><span class="pre">ReportWindow.noRondas</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.currentRound"><code class="docutils literal notranslate"><span class="pre">ReportWindow.currentRound</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.sujeto"><code class="docutils literal notranslate"><span class="pre">ReportWindow.sujeto</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.currentDir"><code class="docutils literal notranslate"><span class="pre">ReportWindow.currentDir</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.signalTracker"><code class="docutils literal notranslate"><span class="pre">ReportWindow.signalTracker</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.isTracking"><code class="docutils literal notranslate"><span class="pre">ReportWindow.isTracking</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.startTracking"><code class="docutils literal notranslate"><span class="pre">ReportWindow.startTracking()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.stopTracking"><code class="docutils literal notranslate"><span class="pre">ReportWindow.stopTracking()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changeBottomThreshold"><code class="docutils literal notranslate"><span class="pre">ReportWindow.changeBottomThreshold()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changeDataMode"><code class="docutils literal notranslate"><span class="pre">ReportWindow.changeDataMode()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changeMaxTime"><code class="docutils literal notranslate"><span class="pre">ReportWindow.changeMaxTime()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changeMinTime"><code class="docutils literal notranslate"><span class="pre">ReportWindow.changeMinTime()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changeMode"><code class="docutils literal notranslate"><span class="pre">ReportWindow.changeMode()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changeReactionMode"><code class="docutils literal notranslate"><span class="pre">ReportWindow.changeReactionMode()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changeTopThreshold"><code class="docutils literal notranslate"><span class="pre">ReportWindow.changeTopThreshold()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changedRondas"><code class="docutils literal notranslate"><span class="pre">ReportWindow.changedRondas()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changedSujeto"><code class="docutils literal notranslate"><span class="pre">ReportWindow.changedSujeto()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changedThreshold"><code class="docutils literal notranslate"><span class="pre">ReportWindow.changedThreshold()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changedWaitTime"><code class="docutils literal notranslate"><span class="pre">ReportWindow.changedWaitTime()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.emptyFigure"><code class="docutils literal notranslate"><span class="pre">ReportWindow.emptyFigure</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.fillFigure"><code class="docutils literal notranslate"><span class="pre">ReportWindow.fillFigure</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.reDoLog"><code class="docutils literal notranslate"><span class="pre">ReportWindow.reDoLog()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.reconnectSignal"><code class="docutils literal notranslate"><span class="pre">ReportWindow.reconnectSignal</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.reportSignal"><code class="docutils literal notranslate"><span class="pre">ReportWindow.reportSignal</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.saveLog"><code class="docutils literal notranslate"><span class="pre">ReportWindow.saveLog()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.setContinueLed"><code class="docutils literal notranslate"><span class="pre">ReportWindow.setContinueLed()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.setPauseLed"><code class="docutils literal notranslate"><span class="pre">ReportWindow.setPauseLed()</span></code></a></li>
+<li><a class="reference internal" href="#id22"><code class="docutils literal notranslate"><span class="pre">ReportWindow.startTracking()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.stopSignal"><code class="docutils literal notranslate"><span class="pre">ReportWindow.stopSignal</span></code></a></li>
+<li><a class="reference internal" href="#id25"><code class="docutils literal notranslate"><span class="pre">ReportWindow.stopTracking()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.updateAll"><code class="docutils literal notranslate"><span class="pre">ReportWindow.updateAll()</span></code></a></li>
+<li><a class="reference internal" href="#TestWindow.TestRutine.reportWindow.ReportWindow.updateTable"><code class="docutils literal notranslate"><span class="pre">ReportWindow.updateTable()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-TestWindow.TestRutine">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RTEMPUS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">TestWindow.TestRutine package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/TestWindow.TestRutine.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="testwindow-testrutine-package">
+<h1>TestWindow.TestRutine package<a class="headerlink" href="#testwindow-testrutine-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-TestWindow.TestRutine.SignalTracker">
+<span id="testwindow-testrutine-signaltracker-module"></span><h2>TestWindow.TestRutine.SignalTracker module<a class="headerlink" href="#module-TestWindow.TestRutine.SignalTracker" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">TestWindow.TestRutine.SignalTracker.</span></span><span class="sig-name descname"><span class="pre">SignalTracker</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">puerto</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">baudrate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9600</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectorMaxSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholdMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactionMode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholdIMU</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topThresholdEOG</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottomThresholdEOG</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">currentDir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/SignalTracker.html#SignalTracker"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QObject</span></code></p>
+<p>Monitor de reacciones, por rondas se comunica con un puerto serial
+esperando por una bandera de reacción capturando el resultado en un
+archivo CSV, actualizando la interfaz en proceso.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.serialConsumer">
+<span class="sig-name descname"><span class="pre">serialConsumer</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.serialConsumer" title="Link to this definition"></a></dt>
+<dd><p>Datos actuales del puerto serial.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="TestWindow.SerialCommunication.html#TestWindow.SerialCommunication.SerialConsumer.SerialConsumer" title="TestWindow.SerialCommunication.SerialConsumer.SerialConsumer">SerialConsumer</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.isTracking">
+<span class="sig-name descname"><span class="pre">isTracking</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.isTracking" title="Link to this definition"></a></dt>
+<dd><p>Bandera que controla si se termina el monitoreo.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.reactionLog">
+<span class="sig-name descname"><span class="pre">reactionLog</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.reactionLog" title="Link to this definition"></a></dt>
+<dd><p>Lista de vectores con los valores de las reacciones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.isCurrentLogSaved">
+<span class="sig-name descname"><span class="pre">isCurrentLogSaved</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.isCurrentLogSaved" title="Link to this definition"></a></dt>
+<dd><p>Bandera que indica si al final de una ronda se salva el vector de valores o se vuelve a tomar la reacción.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.reviewEnded">
+<span class="sig-name descname"><span class="pre">reviewEnded</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.reviewEnded" title="Link to this definition"></a></dt>
+<dd><p>Bandera que indica cuando puede progresar con la siguiente ronda.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.currentRound">
+<span class="sig-name descname"><span class="pre">currentRound</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.currentRound" title="Link to this definition"></a></dt>
+<dd><p>Indice de la ronda actual.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.baseDir">
+<span class="sig-name descname"><span class="pre">baseDir</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.baseDir" title="Link to this definition"></a></dt>
+<dd><p>Directorio donde se guardaran los datos del reactionLog.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.noRondas">
+<span class="sig-name descname"><span class="pre">noRondas</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.noRondas" title="Link to this definition"></a></dt>
+<dd><p>Cantidad de rondas de monitoreo de reacción.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.minTime">
+<span class="sig-name descname"><span class="pre">minTime</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.minTime" title="Link to this definition"></a></dt>
+<dd><p>Tiempo mínimo de espera entre rondas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.maxTime">
+<span class="sig-name descname"><span class="pre">maxTime</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.maxTime" title="Link to this definition"></a></dt>
+<dd><p>Tiempo máximo de espera entre rondas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.waitTime">
+<span class="sig-name descname"><span class="pre">waitTime</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.waitTime" title="Link to this definition"></a></dt>
+<dd><p>Tiempo de presentación del estímulo visual.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.trackData">
+<span class="sig-name descname"><span class="pre">trackData</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/SignalTracker.html#SignalTracker.trackData"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.trackData" title="Link to this definition"></a></dt>
+<dd><p>Inicia la rutina de monitoreo de reacciones.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.stopThread">
+<span class="sig-name descname"><span class="pre">stopThread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/SignalTracker.html#SignalTracker.stopThread"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.stopThread" title="Link to this definition"></a></dt>
+<dd><p>Termina la rutina de monitoreo abruptamente.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.checkIfReacted">
+<span class="sig-name descname"><span class="pre">checkIfReacted</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/SignalTracker.html#SignalTracker.checkIfReacted"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.checkIfReacted" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.continueLedSignal">
+<span class="sig-name descname"><span class="pre">continueLedSignal</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.continueLedSignal" title="Link to this definition"></a></dt>
+<dd><p>int = …, arguments: Sequence = …) -&gt; PYQT_SIGNAL</p>
+<p>types is normally a sequence of individual types.  Each type is either a
+type object or a string that is the name of a C++ type.  Alternatively
+each type could itself be a sequence of types each describing a different
+overloaded signal.
+name is the optional C++ name of the signal.  If it is not specified then
+the name of the class attribute that is bound to the signal is used.
+revision is the optional revision of the signal that is exported to QML.
+If it is not specified then 0 is used.
+arguments is the optional sequence of the names of the signal’s arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pyqtSignal(<a href="#id1"><span class="problematic" id="id2">*</span></a>types, name</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str = …, revision</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.emptyFigure">
+<span class="sig-name descname"><span class="pre">emptyFigure</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.emptyFigure" title="Link to this definition"></a></dt>
+<dd><p>int = …, arguments: Sequence = …) -&gt; PYQT_SIGNAL</p>
+<p>types is normally a sequence of individual types.  Each type is either a
+type object or a string that is the name of a C++ type.  Alternatively
+each type could itself be a sequence of types each describing a different
+overloaded signal.
+name is the optional C++ name of the signal.  If it is not specified then
+the name of the class attribute that is bound to the signal is used.
+revision is the optional revision of the signal that is exported to QML.
+If it is not specified then 0 is used.
+arguments is the optional sequence of the names of the signal’s arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pyqtSignal(<a href="#id3"><span class="problematic" id="id4">*</span></a>types, name</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str = …, revision</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.fillFigure">
+<span class="sig-name descname"><span class="pre">fillFigure</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.fillFigure" title="Link to this definition"></a></dt>
+<dd><p>int = …, arguments: Sequence = …) -&gt; PYQT_SIGNAL</p>
+<p>types is normally a sequence of individual types.  Each type is either a
+type object or a string that is the name of a C++ type.  Alternatively
+each type could itself be a sequence of types each describing a different
+overloaded signal.
+name is the optional C++ name of the signal.  If it is not specified then
+the name of the class attribute that is bound to the signal is used.
+revision is the optional revision of the signal that is exported to QML.
+If it is not specified then 0 is used.
+arguments is the optional sequence of the names of the signal’s arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pyqtSignal(<a href="#id5"><span class="problematic" id="id6">*</span></a>types, name</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str = …, revision</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.reportSignal">
+<span class="sig-name descname"><span class="pre">reportSignal</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.reportSignal" title="Link to this definition"></a></dt>
+<dd><p>int = …, arguments: Sequence = …) -&gt; PYQT_SIGNAL</p>
+<p>types is normally a sequence of individual types.  Each type is either a
+type object or a string that is the name of a C++ type.  Alternatively
+each type could itself be a sequence of types each describing a different
+overloaded signal.
+name is the optional C++ name of the signal.  If it is not specified then
+the name of the class attribute that is bound to the signal is used.
+revision is the optional revision of the signal that is exported to QML.
+If it is not specified then 0 is used.
+arguments is the optional sequence of the names of the signal’s arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pyqtSignal(<a href="#id7"><span class="problematic" id="id8">*</span></a>types, name</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str = …, revision</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.reviewRound">
+<span class="sig-name descname"><span class="pre">reviewRound</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/SignalTracker.html#SignalTracker.reviewRound"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.reviewRound" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.stopLedSignal">
+<span class="sig-name descname"><span class="pre">stopLedSignal</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.stopLedSignal" title="Link to this definition"></a></dt>
+<dd><p>int = …, arguments: Sequence = …) -&gt; PYQT_SIGNAL</p>
+<p>types is normally a sequence of individual types.  Each type is either a
+type object or a string that is the name of a C++ type.  Alternatively
+each type could itself be a sequence of types each describing a different
+overloaded signal.
+name is the optional C++ name of the signal.  If it is not specified then
+the name of the class attribute that is bound to the signal is used.
+revision is the optional revision of the signal that is exported to QML.
+If it is not specified then 0 is used.
+arguments is the optional sequence of the names of the signal’s arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pyqtSignal(<a href="#id9"><span class="problematic" id="id10">*</span></a>types, name</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str = …, revision</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.stopSignal">
+<span class="sig-name descname"><span class="pre">stopSignal</span></span><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.stopSignal" title="Link to this definition"></a></dt>
+<dd><p>int = …, arguments: Sequence = …) -&gt; PYQT_SIGNAL</p>
+<p>types is normally a sequence of individual types.  Each type is either a
+type object or a string that is the name of a C++ type.  Alternatively
+each type could itself be a sequence of types each describing a different
+overloaded signal.
+name is the optional C++ name of the signal.  If it is not specified then
+the name of the class attribute that is bound to the signal is used.
+revision is the optional revision of the signal that is exported to QML.
+If it is not specified then 0 is used.
+arguments is the optional sequence of the names of the signal’s arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pyqtSignal(<a href="#id11"><span class="problematic" id="id12">*</span></a>types, name</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str = …, revision</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">stopThread</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/SignalTracker.html#SignalTracker.stopThread"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>Termina la rutina de monitoreo abruptamente.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id13">
+<span class="sig-name descname"><span class="pre">trackData</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/SignalTracker.html#SignalTracker.trackData"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id13" title="Link to this definition"></a></dt>
+<dd><p>Inicia la rutina de monitoreo de reacciones, por
+noRondas cantidad de rondas la rutina espera
+una cantidad de segundos aleatoria entre minTime y masTime,
+muestre el estímulo por waitTime segundos, si el usuario reacciona
+antes de waitTime la ronda termina antes y guarda la reacción,
+caso contrario se guarda en el reactionLog como si no hubiera reaccionado.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.waitForReaction">
+<span class="sig-name descname"><span class="pre">waitForReaction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/SignalTracker.html#SignalTracker.waitForReaction"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.waitForReaction" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.SignalTracker.SignalTracker.waitRandom">
+<span class="sig-name descname"><span class="pre">waitRandom</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/SignalTracker.html#SignalTracker.waitRandom"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.SignalTracker.SignalTracker.waitRandom" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-TestWindow.TestRutine.reportWindow">
+<span id="testwindow-testrutine-reportwindow-module"></span><h2>TestWindow.TestRutine.reportWindow module<a class="headerlink" href="#module-TestWindow.TestRutine.reportWindow" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">TestWindow.TestRutine.reportWindow.</span></span><span class="sig-name descname"><span class="pre">ReportWindow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reactionLog</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">puerto</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectorSize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">currentDir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QWidget</span></code></p>
+<p>Represental la ventana de configuración de monitoreo
+de reacciones, se encarga de mostrar el estado de la
+ronda de monitoreo y control del log de reacciones.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.reactionLog">
+<span class="sig-name descname"><span class="pre">reactionLog</span></span><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.reactionLog" title="Link to this definition"></a></dt>
+<dd><p>Lista de las reacciones registradas en la interfaz.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.noRondas">
+<span class="sig-name descname"><span class="pre">noRondas</span></span><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.noRondas" title="Link to this definition"></a></dt>
+<dd><p>Número de rondas que durará el monitoreo de reacciones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.currentRound">
+<span class="sig-name descname"><span class="pre">currentRound</span></span><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.currentRound" title="Link to this definition"></a></dt>
+<dd><p>Indice de la ronda ronda en la que esta el log actualmente</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.sujeto">
+<span class="sig-name descname"><span class="pre">sujeto</span></span><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.sujeto" title="Link to this definition"></a></dt>
+<dd><p>Indice de la subcarpeta en la que se guardara los datos capturados.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.currentDir">
+<span class="sig-name descname"><span class="pre">currentDir</span></span><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.currentDir" title="Link to this definition"></a></dt>
+<dd><p>Dirección de general en el que se guardaran los archivos y carpetas de los datos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.signalTracker">
+<span class="sig-name descname"><span class="pre">signalTracker</span></span><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.signalTracker" title="Link to this definition"></a></dt>
+<dd><p>Monitor de reacciones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#TestWindow.TestRutine.SignalTracker.SignalTracker" title="TestWindow.TestRutine.SignalTracker.SignalTracker">SignalTracker</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.isTracking">
+<span class="sig-name descname"><span class="pre">isTracking</span></span><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.isTracking" title="Link to this definition"></a></dt>
+<dd><p>Bandera que vale True si signalTracker se encuentra monitoreando reacciones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.startTracking">
+<span class="sig-name descname"><span class="pre">startTracking</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.startTracking"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.startTracking" title="Link to this definition"></a></dt>
+<dd><p>Inicia el monitoreo de reacciones.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.stopTracking">
+<span class="sig-name descname"><span class="pre">stopTracking</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.stopTracking"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.stopTracking" title="Link to this definition"></a></dt>
+<dd><p>Finaliza el monitoreo de reacciones.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.changeBottomThreshold">
+<span class="sig-name descname"><span class="pre">changeBottomThreshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.changeBottomThreshold"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changeBottomThreshold" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.changeDataMode">
+<span class="sig-name descname"><span class="pre">changeDataMode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.changeDataMode"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changeDataMode" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.changeMaxTime">
+<span class="sig-name descname"><span class="pre">changeMaxTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.changeMaxTime"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changeMaxTime" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.changeMinTime">
+<span class="sig-name descname"><span class="pre">changeMinTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.changeMinTime"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changeMinTime" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.changeMode">
+<span class="sig-name descname"><span class="pre">changeMode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.changeMode"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changeMode" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.changeReactionMode">
+<span class="sig-name descname"><span class="pre">changeReactionMode</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.changeReactionMode"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changeReactionMode" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.changeTopThreshold">
+<span class="sig-name descname"><span class="pre">changeTopThreshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.changeTopThreshold"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changeTopThreshold" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.changedRondas">
+<span class="sig-name descname"><span class="pre">changedRondas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.changedRondas"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changedRondas" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.changedSujeto">
+<span class="sig-name descname"><span class="pre">changedSujeto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.changedSujeto"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changedSujeto" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.changedThreshold">
+<span class="sig-name descname"><span class="pre">changedThreshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.changedThreshold"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changedThreshold" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.changedWaitTime">
+<span class="sig-name descname"><span class="pre">changedWaitTime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.changedWaitTime"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.changedWaitTime" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.emptyFigure">
+<span class="sig-name descname"><span class="pre">emptyFigure</span></span><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.emptyFigure" title="Link to this definition"></a></dt>
+<dd><p>int = …, arguments: Sequence = …) -&gt; PYQT_SIGNAL</p>
+<p>types is normally a sequence of individual types.  Each type is either a
+type object or a string that is the name of a C++ type.  Alternatively
+each type could itself be a sequence of types each describing a different
+overloaded signal.
+name is the optional C++ name of the signal.  If it is not specified then
+the name of the class attribute that is bound to the signal is used.
+revision is the optional revision of the signal that is exported to QML.
+If it is not specified then 0 is used.
+arguments is the optional sequence of the names of the signal’s arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pyqtSignal(<a href="#id14"><span class="problematic" id="id15">*</span></a>types, name</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str = …, revision</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.fillFigure">
+<span class="sig-name descname"><span class="pre">fillFigure</span></span><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.fillFigure" title="Link to this definition"></a></dt>
+<dd><p>int = …, arguments: Sequence = …) -&gt; PYQT_SIGNAL</p>
+<p>types is normally a sequence of individual types.  Each type is either a
+type object or a string that is the name of a C++ type.  Alternatively
+each type could itself be a sequence of types each describing a different
+overloaded signal.
+name is the optional C++ name of the signal.  If it is not specified then
+the name of the class attribute that is bound to the signal is used.
+revision is the optional revision of the signal that is exported to QML.
+If it is not specified then 0 is used.
+arguments is the optional sequence of the names of the signal’s arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pyqtSignal(<a href="#id16"><span class="problematic" id="id17">*</span></a>types, name</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str = …, revision</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.reDoLog">
+<span class="sig-name descname"><span class="pre">reDoLog</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.reDoLog"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.reDoLog" title="Link to this definition"></a></dt>
+<dd><p>Alza las banderas para que no se guarde la reacción y
+vuelva a realizar la ronda.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.reconnectSignal">
+<span class="sig-name descname"><span class="pre">reconnectSignal</span></span><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.reconnectSignal" title="Link to this definition"></a></dt>
+<dd><p>int = …, arguments: Sequence = …) -&gt; PYQT_SIGNAL</p>
+<p>types is normally a sequence of individual types.  Each type is either a
+type object or a string that is the name of a C++ type.  Alternatively
+each type could itself be a sequence of types each describing a different
+overloaded signal.
+name is the optional C++ name of the signal.  If it is not specified then
+the name of the class attribute that is bound to the signal is used.
+revision is the optional revision of the signal that is exported to QML.
+If it is not specified then 0 is used.
+arguments is the optional sequence of the names of the signal’s arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pyqtSignal(<a href="#id18"><span class="problematic" id="id19">*</span></a>types, name</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str = …, revision</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.reportSignal">
+<span class="sig-name descname"><span class="pre">reportSignal</span></span><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.reportSignal" title="Link to this definition"></a></dt>
+<dd><p>int = …, arguments: Sequence = …) -&gt; PYQT_SIGNAL</p>
+<p>types is normally a sequence of individual types.  Each type is either a
+type object or a string that is the name of a C++ type.  Alternatively
+each type could itself be a sequence of types each describing a different
+overloaded signal.
+name is the optional C++ name of the signal.  If it is not specified then
+the name of the class attribute that is bound to the signal is used.
+revision is the optional revision of the signal that is exported to QML.
+If it is not specified then 0 is used.
+arguments is the optional sequence of the names of the signal’s arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pyqtSignal(<a href="#id20"><span class="problematic" id="id21">*</span></a>types, name</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str = …, revision</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.saveLog">
+<span class="sig-name descname"><span class="pre">saveLog</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.saveLog"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.saveLog" title="Link to this definition"></a></dt>
+<dd><p>Alza las banderas para que se guarde la reacción y
+continúe a la siguiente ronda de monitoreo.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.setContinueLed">
+<span class="sig-name descname"><span class="pre">setContinueLed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.setContinueLed"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.setContinueLed" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.setPauseLed">
+<span class="sig-name descname"><span class="pre">setPauseLed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.setPauseLed"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.setPauseLed" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id22">
+<span class="sig-name descname"><span class="pre">startTracking</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.startTracking"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id22" title="Link to this definition"></a></dt>
+<dd><p>Manda una señal al signalTracker para el monitoreo
+continuo de reacciones en un nuevo hilo.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.stopSignal">
+<span class="sig-name descname"><span class="pre">stopSignal</span></span><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.stopSignal" title="Link to this definition"></a></dt>
+<dd><p>int = …, arguments: Sequence = …) -&gt; PYQT_SIGNAL</p>
+<p>types is normally a sequence of individual types.  Each type is either a
+type object or a string that is the name of a C++ type.  Alternatively
+each type could itself be a sequence of types each describing a different
+overloaded signal.
+name is the optional C++ name of the signal.  If it is not specified then
+the name of the class attribute that is bound to the signal is used.
+revision is the optional revision of the signal that is exported to QML.
+If it is not specified then 0 is used.
+arguments is the optional sequence of the names of the signal’s arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pyqtSignal(<a href="#id23"><span class="problematic" id="id24">*</span></a>types, name</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str = …, revision</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id25">
+<span class="sig-name descname"><span class="pre">stopTracking</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.stopTracking"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id25" title="Link to this definition"></a></dt>
+<dd><p>Llama a finalizar el hilo de monitoreo y baja la
+bandera isTracking.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.updateAll">
+<span class="sig-name descname"><span class="pre">updateAll</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.updateAll"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.updateAll" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TestWindow.TestRutine.reportWindow.ReportWindow.updateTable">
+<span class="sig-name descname"><span class="pre">updateTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">newLog</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/TestWindow/TestRutine/reportWindow.html#ReportWindow.updateTable"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#TestWindow.TestRutine.reportWindow.ReportWindow.updateTable" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-TestWindow.TestRutine">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-TestWindow.TestRutine" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2026, Leobardo.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

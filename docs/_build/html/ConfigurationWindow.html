@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ConfigurationWindow package &mdash; documentación de RTEMPUS - 0.1</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=9c9b61ad"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="_static/translations.js?v=f85f4cfb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RTEMPUS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">ConfigurationWindow package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-ConfigurationWindow.configWindow">ConfigurationWindow.configWindow module</a><ul>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow"><code class="docutils literal notranslate"><span class="pre">configurationWindow</span></code></a><ul>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.puerto"><code class="docutils literal notranslate"><span class="pre">configurationWindow.puerto</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.dataMode"><code class="docutils literal notranslate"><span class="pre">configurationWindow.dataMode</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.thresholdMode"><code class="docutils literal notranslate"><span class="pre">configurationWindow.thresholdMode</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.reactionMode"><code class="docutils literal notranslate"><span class="pre">configurationWindow.reactionMode</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.filterLength"><code class="docutils literal notranslate"><span class="pre">configurationWindow.filterLength</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.currentDir"><code class="docutils literal notranslate"><span class="pre">configurationWindow.currentDir</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.topThreshold"><code class="docutils literal notranslate"><span class="pre">configurationWindow.topThreshold</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.bottomThreshold"><code class="docutils literal notranslate"><span class="pre">configurationWindow.bottomThreshold</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.imuThreshold"><code class="docutils literal notranslate"><span class="pre">configurationWindow.imuThreshold</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.windowMode"><code class="docutils literal notranslate"><span class="pre">configurationWindow.windowMode</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.topFrame"><code class="docutils literal notranslate"><span class="pre">configurationWindow.topFrame</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.bottomFrame"><code class="docutils literal notranslate"><span class="pre">configurationWindow.bottomFrame</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.conectar"><code class="docutils literal notranslate"><span class="pre">configurationWindow.conectar()</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.iniciar"><code class="docutils literal notranslate"><span class="pre">configurationWindow.iniciar()</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.changeDataCheckText"><code class="docutils literal notranslate"><span class="pre">configurationWindow.changeDataCheckText()</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.changeReactionCheckText"><code class="docutils literal notranslate"><span class="pre">configurationWindow.changeReactionCheckText()</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.changeThresholdCheckText"><code class="docutils literal notranslate"><span class="pre">configurationWindow.changeThresholdCheckText()</span></code></a></li>
+<li><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">configurationWindow.conectar()</span></code></a></li>
+<li><a class="reference internal" href="#id1"><code class="docutils literal notranslate"><span class="pre">configurationWindow.iniciar()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.is_pathname_valid"><code class="docutils literal notranslate"><span class="pre">is_pathname_valid()</span></code></a></li>
+<li><a class="reference internal" href="#ConfigurationWindow.configWindow.make_separator"><code class="docutils literal notranslate"><span class="pre">make_separator()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-ConfigurationWindow">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RTEMPUS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ConfigurationWindow package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/ConfigurationWindow.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configurationwindow-package">
+<h1>ConfigurationWindow package<a class="headerlink" href="#configurationwindow-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-ConfigurationWindow.configWindow">
+<span id="configurationwindow-configwindow-module"></span><h2>ConfigurationWindow.configWindow module<a class="headerlink" href="#module-ConfigurationWindow.configWindow" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ConfigurationWindow.configWindow.</span></span><span class="sig-name descname"><span class="pre">configurationWindow</span></span><a class="reference internal" href="_modules/ConfigurationWindow/configWindow.html#configurationWindow"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">QDialog</span></code></p>
+<p>Ventana de inicio del sistema. Al presionar
+el botón «conectar» devuelve los atributos configurados.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.puerto">
+<span class="sig-name descname"><span class="pre">puerto</span></span><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.puerto" title="Link to this definition"></a></dt>
+<dd><p>Puerto designado para la comunicación serial.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.dataMode">
+<span class="sig-name descname"><span class="pre">dataMode</span></span><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.dataMode" title="Link to this definition"></a></dt>
+<dd><p>El tipo de dato que el sistema va capturar; False para la aceleración lineal, True para el valor en el electroculograma.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.thresholdMode">
+<span class="sig-name descname"><span class="pre">thresholdMode</span></span><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.thresholdMode" title="Link to this definition"></a></dt>
+<dd><p>El tipo de límite que el sistema toma registrar una reacción; False para un límite estático, True para uno móvil con respecto al promedio.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.reactionMode">
+<span class="sig-name descname"><span class="pre">reactionMode</span></span><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.reactionMode" title="Link to this definition"></a></dt>
+<dd><p>El tipo de dato que toma en cuenta para registrar una reacción; False para el valor del sensor, True para el promedio de la medidas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.filterLength">
+<span class="sig-name descname"><span class="pre">filterLength</span></span><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.filterLength" title="Link to this definition"></a></dt>
+<dd><p>El tamaño de muestras del promedio.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.currentDir">
+<span class="sig-name descname"><span class="pre">currentDir</span></span><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.currentDir" title="Link to this definition"></a></dt>
+<dd><p>Directorio donde los archivos serán guardados.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.topThreshold">
+<span class="sig-name descname"><span class="pre">topThreshold</span></span><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.topThreshold" title="Link to this definition"></a></dt>
+<dd><p>Límite superior de la reacción por electroculograma.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.bottomThreshold">
+<span class="sig-name descname"><span class="pre">bottomThreshold</span></span><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.bottomThreshold" title="Link to this definition"></a></dt>
+<dd><p>Límite superior de la reacción por electroculograma.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.imuThreshold">
+<span class="sig-name descname"><span class="pre">imuThreshold</span></span><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.imuThreshold" title="Link to this definition"></a></dt>
+<dd><p>Límite de la reacción por sensor inercial.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.windowMode">
+<span class="sig-name descname"><span class="pre">windowMode</span></span><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.windowMode" title="Link to this definition"></a></dt>
+<dd><p>Tipo de ventana a la que el sistema pasará al presionar el «conectar».</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.topFrame">
+<span class="sig-name descname"><span class="pre">topFrame</span></span><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.topFrame" title="Link to this definition"></a></dt>
+<dd><p>Valor máximo que se va a graficar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.bottomFrame">
+<span class="sig-name descname"><span class="pre">bottomFrame</span></span><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.bottomFrame" title="Link to this definition"></a></dt>
+<dd><p>Valor mínimo que se va a graficar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.conectar">
+<span class="sig-name descname"><span class="pre">conectar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ConfigurationWindow/configWindow.html#configurationWindow.conectar"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.conectar" title="Link to this definition"></a></dt>
+<dd><p>Captura todos los atributos actualizados y pasa a cerrar la ventana.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.iniciar">
+<span class="sig-name descname"><span class="pre">iniciar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ConfigurationWindow/configWindow.html#configurationWindow.iniciar"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.iniciar" title="Link to this definition"></a></dt>
+<dd><p>Muestra la ventana y si es cerrada devuelve todos los atributos.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.changeDataCheckText">
+<span class="sig-name descname"><span class="pre">changeDataCheckText</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ConfigurationWindow/configWindow.html#configurationWindow.changeDataCheckText"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.changeDataCheckText" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.changeReactionCheckText">
+<span class="sig-name descname"><span class="pre">changeReactionCheckText</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ConfigurationWindow/configWindow.html#configurationWindow.changeReactionCheckText"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.changeReactionCheckText" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.configurationWindow.changeThresholdCheckText">
+<span class="sig-name descname"><span class="pre">changeThresholdCheckText</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ConfigurationWindow/configWindow.html#configurationWindow.changeThresholdCheckText"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#ConfigurationWindow.configWindow.configurationWindow.changeThresholdCheckText" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">conectar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ConfigurationWindow/configWindow.html#configurationWindow.conectar"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition"></a></dt>
+<dd><p>Actualiza todos los atributos en base a la interfaz y acepta la ventana.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id1">
+<span class="sig-name descname"><span class="pre">iniciar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ConfigurationWindow/configWindow.html#configurationWindow.iniciar"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#id1" title="Link to this definition"></a></dt>
+<dd><p>Ejecuta la ventana, si la ventana es aceptada devuelve los atributos</p>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Puerto designado para la comunicación serial.
+topThreshold (float): Límite superior de la reacción por electroculograma.
+bottomThreshold (float): Límite superior de la reacción por electroculograma.
+thresholdMode (bool): El tipo de límite que el sistema toma registrar una reacción; False para un límite estático, True para uno móvil con respecto al promedio.
+filterLength (int): El tamaño de muestras del promedio.
+dataMode (bool): El tipo de dato que el sistema va capturar; False para la aceleración lineal, True para el valor en el electroculograma.
+reactionMode (bool): El tipo de dato que toma en cuenta para registrar una reacción; False para el valor del sensor, True para el promedio de la medidas.
+windowMode (bool): Tipo de ventana a la que el sistema pasará al presionar el «conectar».
+imuThreshold (float): Límite de la reacción por sensor inercial.
+topFrame (int): Valor máximo que se va a graficar.
+bottomFrame (int): Valor mínimo que se va a graficar.
+currentDir (str): Directorio donde los archivos serán guardados.</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ConfigurationWindow.configWindow.configurationWindow.puerto" title="ConfigurationWindow.configWindow.configurationWindow.puerto">puerto</a> (str)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.is_pathname_valid">
+<span class="sig-prename descclassname"><span class="pre">ConfigurationWindow.configWindow.</span></span><span class="sig-name descname"><span class="pre">is_pathname_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pathname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/ConfigurationWindow/configWindow.html#is_pathname_valid"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#ConfigurationWindow.configWindow.is_pathname_valid" title="Link to this definition"></a></dt>
+<dd><p>Verifica si un directorio podria ser un camino valido en el sistema operativo.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pathname</strong> (<em>str</em>) – El directorio a verificar.</p>
+</dd>
+<dt class="field-even">Devuelve<span class="colon">:</span></dt>
+<dd class="field-even"><p>True si el directorio es valido, False en caso contrario.</p>
+</dd>
+<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ConfigurationWindow.configWindow.make_separator">
+<span class="sig-prename descclassname"><span class="pre">ConfigurationWindow.configWindow.</span></span><span class="sig-name descname"><span class="pre">make_separator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ConfigurationWindow/configWindow.html#make_separator"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#ConfigurationWindow.configWindow.make_separator" title="Link to this definition"></a></dt>
+<dd><p>»
+Genera una línea de separación basada en un QFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Un widget en forma de línea.</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p>QFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-ConfigurationWindow">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-ConfigurationWindow" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2026, Leobardo.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

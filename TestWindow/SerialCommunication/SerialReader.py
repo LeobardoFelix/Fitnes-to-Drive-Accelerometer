@@ -12,12 +12,9 @@ class SerialReader:
         serialLocation (str): Locación del puerto de comunicación serial.
         baudrate (int): Tasa de cambios de estados en el que se comunica el puerto serial.
         vectorMaxSize (int): El tamaño de muestras del promedio.
-        thresholdMode (bool): El tipo de límite que el sistema toma registrar una reacción; 
-        False para un límite estático, True para uno móvil con respecto al promedio.
-        dataMode (bool): El tipo de dato que el sistema va capturar; 
-        False para la aceleración lineal, True para el valor en el electroculograma. 
-        reactionMode (bool): El tipo de dato que toma en cuenta para registrar una reacción;
-        False para el valor del sensor, True para el promedio de la medidas.
+        thresholdMode (bool): El tipo de límite que el sistema toma registrar una reacción; False para un límite estático, True para uno móvil con respecto al promedio.
+        dataMode (bool): El tipo de dato que el sistema va capturar; False para la aceleración lineal, True para el valor en el electroculograma. 
+        reactionMode (bool): El tipo de dato que toma en cuenta para registrar una reacción; False para el valor del sensor, True para el promedio de la medidas.
         thresholdIMU (float): Límite de la reacción por sensor inercial.
         topThresholdEOG (float): Límite superior de la reacción por electroculograma.
         bottomThresholdEOG (float): Límite superior de la reacción por electroculograma.

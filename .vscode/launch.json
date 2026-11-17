@@ -10,7 +10,7 @@
             "name": "main.py",
             "type": "debugpy",
             "request": "launch",
-            "program": "main.py",
+            "program": "main/main.py",
             "console": "integratedTerminal"
         }
     ]
