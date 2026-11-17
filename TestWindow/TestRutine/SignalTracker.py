@@ -28,6 +28,29 @@ EOG_MODE = 1
 FRECUENCIA = 30
 PERIODO = 1/FRECUENCIA
 class SignalTracker(QObject):
+    """
+    Monitor de reacciones, por rondas se comunica con un puerto serial
+    esperando por una bandera de reacción capturando el resultado en un
+    archivo CSV, actualizando la interfaz en proceso.
+
+    Attributes:
+        serialConsumer (SerialConsumer): Datos actuales del puerto serial.
+        isTracking (bool): Bandera que controla si se termina el monitoreo.
+        reactionLog (list): Lista de vectores con los valores de las reacciones.
+        isCurrentLogSaved (bool): Bandera que indica si al final de una ronda se salva el vector de valores o se vuelve a tomar la reacción.
+        reviewEnded (bool): Bandera que indica cuando puede progresar con la siguiente ronda.
+        currentRound (int): Indice de la ronda actual.
+        baseDir (str): Directorio donde se guardaran los datos del reactionLog.
+        noRondas (int): Cantidad de rondas de monitoreo de reacción.
+        minTime (int): Tiempo mínimo de espera entre rondas.
+        maxTime (int): Tiempo máximo de espera entre rondas.
+        waitTime (int): Tiempo de presentación del estímulo visual.
+    Methods: 
+        trackData(): Inicia la rutina de monitoreo de reacciones.
+        stopThread(): Termina la rutina de monitoreo abruptamente.
+    """
+
+
     fillFigure = pyqtSignal()
     emptyFigure = pyqtSignal()
     stopSignal = pyqtSignal()
@@ -73,6 +96,14 @@ class SignalTracker(QObject):
 
 
     def trackData(self):
+        """
+        Inicia la rutina de monitoreo de reacciones, por
+        noRondas cantidad de rondas la rutina espera
+        una cantidad de segundos aleatoria entre minTime y masTime,
+        muestre el estímulo por waitTime segundos, si el usuario reacciona
+        antes de waitTime la ronda termina antes y guarda la reacción, 
+        caso contrario se guarda en el reactionLog como si no hubiera reaccionado. 
+        """
         dataFileName = self.baseDir + "/MEDIDAS.csv"
         reactionName = self.baseDir + "/REACCIONES.csv"
 
@@ -172,6 +203,9 @@ class SignalTracker(QObject):
 
 
     def stopThread(self):
+        """
+        Termina la rutina de monitoreo abruptamente.
+        """
         self.isTracking = False
         print("Cycle stopped and thread finished")
 
@@ -206,10 +240,3 @@ class SignalTracker(QObject):
         else:
             print("DE NUEVO")
             return False
-
-
-
-
-# print("ISDOADSIJOD")
-# signalMonitor = SignalTracker("COM7")
-# signalMonitor.trackData()

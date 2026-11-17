@@ -18,6 +18,24 @@ COLUMN_WIDTH = 100
 VALUE_REACTION_MODE = 0
 MEAN_REACTION_MODE = 1
 class ReportWindow(QWidget):
+    """
+    Represental la ventana de configuración de monitoreo 
+    de reacciones, se encarga de mostrar el estado de la
+    ronda de monitoreo y control del log de reacciones.
+
+    Attributes:
+        reactionLog (list): Lista de las reacciones registradas en la interfaz.
+        noRondas (int): Número de rondas que durará el monitoreo de reacciones.
+        currentRound (int): Indice de la ronda ronda en la que esta el log actualmente
+        sujeto (int): Indice de la subcarpeta en la que se guardara los datos capturados.
+        currentDir (str): Dirección de general en el que se guardaran los archivos y carpetas de los datos.
+        signalTracker (SignalTracker): Monitor de reacciones.
+        isTracking (bool): Bandera que vale True si signalTracker se encuentra monitoreando reacciones.
+
+    Methods:
+        startTracking(): Inicia el monitoreo de reacciones.
+        stopTracking(): Finaliza el monitoreo de reacciones.
+    """
     fillFigure = pyqtSignal()
     emptyFigure = pyqtSignal()
     stopSignal = pyqtSignal()
@@ -28,7 +46,7 @@ class ReportWindow(QWidget):
         self.reactionLog = reactionLog
         headers = ["no_round", "ts_start_round", "ts_end_round", "delta_ts", "reaction"]
         self.resize(len(headers) * (COLUMN_WIDTH+7), (len(reactionLog))*55)
-        self.hasEnded = False
+        #self.hasEnded = False
         layout = QVBoxLayout()
 
         #Top controls
@@ -186,13 +204,20 @@ class ReportWindow(QWidget):
 
      
     def saveLog(self):
-        self.hasEnded = True
-
+        """
+        Alza las banderas para que se guarde la reacción y
+        continúe a la siguiente ronda de monitoreo.
+        """
+        #self.hasEnded = True
         self.signalTracker.isCurrentLogSaved = True
         self.signalTracker.reviewEnded = True
 
     def reDoLog(self):
-        self.hasEnded = True
+        """
+        Alza las banderas para que no se guarde la reacción y
+        vuelva a realizar la ronda.
+        """
+        #self.hasEnded = True
         self.signalTracker.isCurrentLogSaved = False
         self.signalTracker.reviewEnded = True
 
@@ -261,6 +286,10 @@ class ReportWindow(QWidget):
 
 
     def startTracking(self):
+        """
+        Manda una señal al signalTracker para el monitoreo 
+        continuo de reacciones en un nuevo hilo.
+        """
         print("START IT")
         self.updateAll()
         if not self.isTracking:
@@ -283,6 +312,10 @@ class ReportWindow(QWidget):
             self.trackingThread.start()
 
     def stopTracking(self):
+        """
+        Llama a finalizar el hilo de monitoreo y baja la
+        bandera isTracking.
+        """
         self.signalTracker.stopThread()
         self.trackingThread.quit()
         self.trackingThread.wait()
@@ -324,16 +357,3 @@ class ReportWindow(QWidget):
                                                     }}""")
         self.continueLed.setText("IN PROCESS")
         
-
-
-#TestWindow/TestRutine/reportWindow.py
-"""app = QApplication(sys.argv)
-app.setStyle("Fusion")
-pruebaLog = [[0,6693.7325156,6698.7338546,5.001339000000371,0],
-[1,6702.771452,6703.835072,1.0636199999999008,1],
-[2,6710.8934594,6715.8945745,5.001115099999879,0],
-[3,6723.947009,6725.2070988,1.2600897999991503,1]]
-reportWindow = ReportWindow(pruebaLog)
-reportWindow.show()
-
-app.exec()"""

@@ -7,10 +7,10 @@ import matplotlib
 matplotlib.use("QtAgg")
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (
-    QApplication, QCheckBox, QComboBox, QDialog, QFrame, QGridLayout,
-    QGroupBox, QHBoxLayout, QLabel, QLineEdit, QMainWindow,
-    QPushButton, QScrollBar, QSizePolicy, QSlider, QTextEdit,
-    QVBoxLayout, QWidget,
+    QCheckBox, QComboBox, QDialog, QFrame, QGridLayout,
+    QGroupBox, QHBoxLayout, QLabel, QLineEdit, 
+    QPushButton, QSlider, 
+    QVBoxLayout, 
 )
 from StyleGraphics.StylesGraphic import STYLE_SHEET
 from TestWindow.testsWindow import IMU_MODE, EOG_MODE, STATIC_MODE, MOVIL_MODE
@@ -22,6 +22,32 @@ MEAN_REACTION_MODE = 1
 
 
 class configurationWindow(QDialog):
+    """
+    Ventana de inicio del sistema. Al presionar 
+    el botón "conectar" devuelve los atributos configurados.
+
+    Attributes:
+        puerto (str): Puerto designado para la comunicación serial.
+        dataMode (bool): El tipo de dato que el sistema va capturar; 
+        False para la aceleración lineal, True para el valor en el electroculograma. 
+        thresholdMode (bool): El tipo de límite que el sistema toma registrar una reacción; 
+        False para un límite estático, True para uno móvil con respecto al promedio.
+        reactionMode (bool): El tipo de dato que toma en cuenta para registrar una reacción;
+        False para el valor del sensor, True para el promedio de la medidas.
+        filterLength (int): El tamaño de muestras del promedio.
+        currentDir (str): Directorio donde los archivos serán guardados.
+        topThreshold (float): Límite superior de la reacción por electroculograma.
+        bottomThreshold (float): Límite superior de la reacción por electroculograma.
+        imuThreshold (float): Límite de la reacción por sensor inercial.
+        windowMode (bool): Tipo de ventana a la que el sistema pasará al presionar el "conectar". 
+        topFrame (int): Valor máximo que se va a graficar.
+        bottomFrame (int): Valor mínimo que se va a graficar.
+
+    Methods:
+        conectar(): Captura todos los atributos actualizados y pasa a cerrar la ventana.
+        iniciar(): Muestra la ventana y si es cerrada devuelve todos los atributos.
+        
+    """
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Monitor Serial — Configuración")
@@ -32,7 +58,6 @@ class configurationWindow(QDialog):
         self.topThreshold     = None
         self.bottomThreshold     = None
         self.thresholdMode   = None
-        self.promAmo  = None
 
         root_layout = QVBoxLayout(self)
         root_layout.setSpacing(0)
@@ -155,6 +180,9 @@ class configurationWindow(QDialog):
             self.checkReactionMode.setText("VALUE")
 
     def conectar(self):
+        """
+        Actualiza todos los atributos en base a la interfaz y acepta la ventana.
+        """
         self.puerto  = self.campo_com.currentText()
         self.topThreshold    = int(self.campo_max.text())
         self.bottomThreshold    = int(self.campo_min.text())
@@ -173,6 +201,26 @@ class configurationWindow(QDialog):
         self.accept()
 
     def iniciar(self):
+        """
+        Ejecuta la ventana, si la ventana es aceptada devuelve los atributos
+        
+        Returns: 
+            puerto (str): Puerto designado para la comunicación serial.
+            topThreshold (float): Límite superior de la reacción por electroculograma.
+            bottomThreshold (float): Límite superior de la reacción por electroculograma.
+            thresholdMode (bool): El tipo de límite que el sistema toma registrar una reacción; 
+            False para un límite estático, True para uno móvil con respecto al promedio.
+            filterLength (int): El tamaño de muestras del promedio.
+            dataMode (bool): El tipo de dato que el sistema va capturar; 
+            False para la aceleración lineal, True para el valor en el electroculograma. 
+            reactionMode (bool): El tipo de dato que toma en cuenta para registrar una reacción;
+            False para el valor del sensor, True para el promedio de la medidas.
+            windowMode (bool): Tipo de ventana a la que el sistema pasará al presionar el "conectar". 
+            imuThreshold (float): Límite de la reacción por sensor inercial.
+            topFrame (int): Valor máximo que se va a graficar.
+            bottomFrame (int): Valor mínimo que se va a graficar.
+            currentDir (str): Directorio donde los archivos serán guardados.
+        """
         if self.exec() == QDialog.DialogCode.Accepted:
             return self.puerto, self.topThreshold, self.bottomThreshold, self.thresholdMode, \
          self.filterLength, self.dataMode, self.reactionMode, self.windowMode, self.imuThreshold, self.topFrame, \
@@ -180,29 +228,34 @@ class configurationWindow(QDialog):
         return [None] * 12
 
 def make_separator(vertical=False):
+    """"
+    Genera una línea de separación basada en un QFrame.
+
+    Returns:
+        QFrame: Un widget en forma de línea.
+    """
     sep = QFrame()
     sep.setFrameShape(QFrame.Shape.VLine if vertical else QFrame.Shape.HLine)
     return sep
 def is_pathname_valid(pathname: str) -> bool:
-    '''
-    `True` if the passed pathname is a valid pathname for the current OS;
-    `False` otherwise.
-    '''
+    """
+    Verifica si un directorio podria ser un camino valido en el sistema operativo.
+
+    Args: 
+        pathname (str): El directorio a verificar.
+
+    Returns:
+        bool: True si el directorio es valido, False en caso contrario.
+    """
     # If this pathname is either not a string or is but is empty, this pathname
     # is invalid.
     try:
         if not isinstance(pathname, str) or not pathname:
             return False
 
-        # Strip this pathname's Windows-specific drive specifier (e.g., `C:\`)
-        # if any. Since Windows prohibits path components from containing `:`
-        # characters, failing to strip this `:`-suffixed prefix would
-        # erroneously invalidate all valid absolute Windows pathnames.
         _, pathname = os.path.splitdrive(pathname)
 
-        # Directory guaranteed to exist. If the current OS is Windows, this is
-        # the drive to which Windows was installed (e.g., the "%HOMEDRIVE%"
-        # environment variable); else, the typical root directory.
+
         root_dirname = os.environ.get('HOMEDRIVE', 'C:') \
             if sys.platform == 'win32' else os.path.sep
         assert os.path.isdir(root_dirname)   # ...Murphy and her ironclad Law
@@ -215,24 +268,6 @@ def is_pathname_valid(pathname: str) -> bool:
         for pathname_part in pathname.split(os.path.sep):
             try:
                 os.lstat(root_dirname + pathname_part)
-            # If an OS-specific exception is raised, its error code
-            # indicates whether this pathname is valid or not. Unless this
-            # is the case, this exception implies an ignorable kernel or
-            # filesystem complaint (e.g., path not found or inaccessible).
-            #
-            # Only the following exceptions indicate invalid pathnames:
-            #
-            # * Instances of the Windows-specific "WindowsError" class
-            #   defining the "winerror" attribute whose value is
-            #   "ERROR_INVALID_NAME". Under Windows, "winerror" is more
-            #   fine-grained and hence useful than the generic "errno"
-            #   attribute. When a too-long pathname is passed, for example,
-            #   "errno" is "ENOENT" (i.e., no such file or directory) rather
-            #   than "ENAMETOOLONG" (i.e., file name too long).
-            # * Instances of the cross-platform "OSError" class defining the
-            #   generic "errno" attribute whose value is either:
-            #   * Under most POSIX-compatible OSes, "ENAMETOOLONG".
-            #   * Under some edge-case OSes (e.g., SunOS, *BSD), "ERANGE".
             except OSError as exc:
                 if hasattr(exc, 'winerror'):
                     if exc.winerror == ERROR_INVALID_NAME:

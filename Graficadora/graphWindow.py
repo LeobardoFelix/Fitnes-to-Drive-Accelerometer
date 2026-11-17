@@ -26,8 +26,35 @@ ACCENT_RED, ACCENT_AMBER, ACCENT_BLUE, TEXT_PRIMARY, TEXT_MUTED, TEXT_LABEL, ACC
 BAUD_RATE = 9600
 LINE_LENGTH = [0, 500]
 class GraphWindow(QMainWindow):
+    """
+    Representa una graficadora, capaz de mostrar y guardar los datos
+    que provengan del puerto serial.
 
-    reconectar_solicitado = pyqtSignal()  # ← avisa al loop principal
+    Attributes:
+        corriendo (bool): Control del gráfico principal, si es False el gráfico para.
+        reconectar (bool): Variable de reconección con la ventana de configuración. Si es True al cerrar la ventana volverá a configuración.
+        SC (SerialReader): Lector del puerto serial.
+        logger (DataLogger): Capturador de datos dentro de archivos CSV.
+        average (float): Último promedio leído del SC.
+        datos (deque): Fila con los valores que son leídos por el SC.
+        promedios (deque): Fila con los promedios que son leídos por el SC.
+        queue (Queue): Fila auxiliar con las líneas crudas leídas del SC.
+
+
+    Methods:
+        leer_serial(): Inicia un ciclo que lee el puerto serial y guarda los datos en queue.
+        actualizar_ui(): Actualiza los valores del log de datos en la interfaz.
+        actualizar_grafica(): Actualiza la gráfica principal dentro de la interfaz con los valores de datos y promedios.
+        enviar_manual(): Envía al puerto serial la cadena de caracteres contenida en un campo de texto.
+        iniciar_muestreo(): Inicia a capturar datos en un nuevo archivo CSV.
+        detener_muestreo():  Detiene la captura de datos.
+        cambiar_modo(): Cambia la forma en la que el límite es calculado entre estático y móvil.
+        _cerrar_sesion(): Detiene todos los procesos y reinicia el sistema.
+        solicitar_reconexion(): Cierra la sesión y vuelve a la ventana de configuración.
+    """
+
+
+    reconectar_solicitado = pyqtSignal() 
 
     def __init__(self, puerto, topThreshold, bottomThreshold, thresholdMode, 
                  filterLength, dataMode, reactionMode,
@@ -56,7 +83,6 @@ class GraphWindow(QMainWindow):
         self.currentDir = currentDir
         #self.topEOG = topEOG
         #self.bottomEOG = bottomEOG
-
         if thresholdMode:
             self.umbralType = "Promedio"
             self.limit      = 0
@@ -250,6 +276,11 @@ class GraphWindow(QMainWindow):
     # ── Lógica (sin cambios respecto al original) ─────────────────────────────
     #Leer_serial se actualiza en un hilo
     def leer_serial(self):
+        """
+        Inicia un ciclo que corre de forma indefinida en el que lee el 
+        puerto serial, desglosa la línea en un arreglo de datos que guarda 
+        dentro del queue.
+        """
         #Equivalente a SerialConsumer, lee constantemente el puerto serial con SerialCatcher (SerialReader)
         while self.corriendo:
             linea = self.SC.catchSerial()
@@ -271,23 +302,19 @@ class GraphWindow(QMainWindow):
 
     #actualizar_ui Se actualiza cada 50 ms en un timer
     def actualizar_ui(self):
-        #Clasifica los valores leidos dentro de datos y promedios
-        #Actualiza los valores mostrados en el log.
-        #print(f"AU: {self.queue.empty()}")
+        """
+        Desglosa los valores del queue en datos, promedio y reacción,
+        los añade a sus filas respectivas y actualiza los valores mostrados
+        en el log datos de la interfaz.
+        """
         while not self.queue.empty():
-             #aux = self.queue.get()
             valor, promedio, reaccion = self.queue.get()
-            #print(f"VAL: {valor} Prom: {promedio} REACT: {reaccion}")
             if promedio is not None:
                 self.average = promedio
                 self.label_promedio.setText(f"Promedio móvil: {self.average:.2f}")
 
             self.datos.append(valor)
             self.promedios.append(promedio)
-            #self.promedio_datosBth.append(promedioIMU * 1000)
-            
-            
-
             self.area_log.append(f"V: {str(valor)} M: {str(promedio)} R: {str(reaccion)}")
             # Limitar líneas del log
             doc = self.area_log.document()
@@ -313,7 +340,11 @@ class GraphWindow(QMainWindow):
 
     #actualizar_grafica Se actualiza cada 100ms en un timer
     def actualizar_grafica(self):
-        #Actualiza las lineas
+        """
+        Actualiza la gráfica principal dentro de la interfaz
+        con los valores de datos y promedios.
+        """
+
         if len(self.promedios) > 0:
             n = len(self.promedios)
             self.lineaPromedio.set_data(range(n), list(self.promedios))
@@ -335,6 +366,11 @@ class GraphWindow(QMainWindow):
         
 
     def enviar_manual(self):
+        """
+        Envía la cadena de caracteres dentro de un campo
+        de texto de la interfaz hacia el puerto serial y
+        el logger.
+        """
         try:
             mensaje = self.campo_texto.text()
             self.limit = float(mensaje)
@@ -344,17 +380,31 @@ class GraphWindow(QMainWindow):
             pass
 
     def iniciar_muestreo(self):
+        """
+        Inicia a capturar los datos del queue dentro de
+        un archivo CSV.
+        """
         self.logger.iniciar(self.currentDir)
 
     def detener_muestreo(self):
+        """
+        Detiene la captura de datos.
+        """
         self.logger.detener()
 
     def cambiar_modo(self):
+        """
+        Cambia el modo en el que el límite es calculado entre 
+        uno estático y uno que se actualiza en referencia al promedio.
+        """
         modo = "umbral" if self.modo_umbral_var.isChecked() else "continuo"
         self.logger.set_modo(modo)
 
     def _cerrar_sesion(self, reset_arduino=False):
-        """Detiene timers, hilo y conexión. Si reset_arduino=True, pulsa DTR."""
+        """
+        Detiene todos los procesos y reinicia 
+        el sistema embebido mediante conexión serial.
+        """
         self.corriendo = False
         if hasattr(self, 'timer_ui'):
             self.timer_ui.stop()
@@ -374,6 +424,9 @@ class GraphWindow(QMainWindow):
             self.SC.closeConection()
 
     def solicitar_reconexion(self):
+        """
+        Cierra la sesión y vuelve a la ventana de configuración.
+        """
         self.reconectar = True
         self._cerrar_sesion(reset_arduino=True)
         self.reconectar_solicitado.emit()
@@ -388,12 +441,25 @@ class GraphWindow(QMainWindow):
         event.accept()
 
 def isNumeric(num):
+    """
+    Verifica si una cadena de caracteres puede ser
+    transformada a un número.
+    
+    Returns:
+    Un valor booleano: True si es un número, False si no lo es.
+    """
     try: 
         float(num)
         return True
     except Exception as e:
         return False
 def make_separator(vertical=False):
+    """"
+    Genera una línea de separación basada en un QFrame.
+    
+    Returns:
+        QFrame: Un widget en forma de línea.
+    """
     sep = QFrame()
     sep.setFrameShape(QFrame.Shape.VLine if vertical else QFrame.Shape.HLine)
     return sep

@@ -8,6 +8,31 @@ STATIC_MODE = 0
 IMU_MODE = 0
 EOG_MODE = 1
 class SerialConsumer:
+    """
+    Representación del estado actual y últimos valores relevantes
+    del que el sistema embebido pasa por medio del puerto serial.
+
+    Attributes:
+        catcher (SerialReader): Lector de puerto serial.
+        baseDir (str): Directorio actual donde se guardaran los datos capturados.
+        currentValue (float): Último valor leido del puerto serial.
+        currentMean (float): Último promedio leído por el puerto serial.
+        currentReaction (int): Última bandera de reacción leída por el puerto serial.
+        reactionValue (float): Valor de la última reacción leída.
+        reactionMean (float): Promedio de la última reacción leída.
+        reactionTime (float): Timestamp de la última reacción leída.
+        isWriting (bool): Bandera que controla si se esta escribiendo los datos en un archivo.
+        isMonitoring (bool): Bandera que controla el inicio y el fin del ciclo de consumo de datos por el serial.
+        hasReacted (bool): Bandera que se alza si ha leído una reacción.
+
+    Methods:
+        initMonitorThreading(): Inicia el ciclo de consumo del puerto serial en un nuevo hilo.
+        stopMonitorThread(): Para el ciclo de consumo y termina el hilo.
+        stopWriting(): Para la captura de datos en el archivo CSV.
+        startWriting(): Inicia la captura de datos en el archivo CSV.
+        stopMonitoring(): Alza la bandera para terminar el ciclo de consumo.
+        monitorSerial(): Inicia el archivo CSV y el ciclo de consumo.
+    """
     def __init__(self, puerto, baudrate=9600, vectorMaxSize = 20, thresholdMode = 0, dataMode = 0, 
             reactionMode=0, thresholdIMU=2, topThresholdEOG=500, bottomThresholdEOG=200):
         self.puerto = puerto
@@ -48,20 +73,40 @@ class SerialConsumer:
 
 
     def initMonitorThreading(self):
+        """
+        Inicia el ciclo de consumo del puerto serial en un nuevo hilo.
+        """
         self.monitorThread =  threading.Thread(target=self.monitorSerial, name="Monitor_Thread")
         self.monitorThread.start()
     
     def stopMonitorThread(self):
+        """
+        Para el ciclo de consumo y termina el hilo.
+        """
         self.stopMonitoring()
         self.monitorThread.join()
 
     def stopWriting(self):
+        """
+        Para la captura de datos en los archivos CSV.
+        """
         self.isWriting = False
 
     def startWriting(self):
+        """
+        Inicia la captura de datos en los archivos CSV.
+        """
         self.isWriting = True
 
     def monitorSerial(self):
+        """
+        Inicia la conexión con el puerto serial, crea un archivo
+        CSV en el que se guardaran los datos e inicia el ciclo de 
+        consumo.
+
+        Exceptions:
+            ValueError: Los datos mandados se encuentran corruptos o incompletos.
+        """
         self.catcher.openConection()
         dataFileName = self.baseDir + "/MEDIDAS.csv"
         try:
@@ -86,16 +131,13 @@ class SerialConsumer:
                                     self.reactionMean = self.currentMean
                                     self.reactionTime = self.currentTime
                                     self.hasReacted = True
-                    # else:
-                    #     print(f"NOT WRITING: {values}")
                     time.sleep(0.002)
         except Exception as e:
             print(f"ERROR: {e}")
         finally:
             self.catcher.closeConection()
     def stopMonitoring(self):
+        """
+        Alza la bandera para terminar el ciclo de consumo.
+        """
         self.isMonitoring = False
-
-
-#objeto = SerialConsumer("COM7")
-#objeto.monitorSerial()

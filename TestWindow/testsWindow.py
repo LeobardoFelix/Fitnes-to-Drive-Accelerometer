@@ -15,6 +15,25 @@ STATIC_MODE = 0
 IMU_MODE = 0
 EOG_MODE = 1
 class TestsWindow(QWidget):
+    """
+    Interfaz de monitoreo y captura de reacciones, compuesta
+    por una pantalla de presentación de estímulos visuales y
+    una de configuración de variables.
+
+
+    Attributes:
+        reportWindow (ReportWindow): Ventana de configuración anidada a la ventana de estímulos.
+        reconectar (bool): Variable de reconección con la ventana de configuración. Si es True al cerrar la ventana volverá a configuración.
+        pixmap (QPixmap): Imagen que cambia para generar el estímulo visual.
+
+
+    Methods:
+        update_image(): Actualiza y reescala la imagen dentro de pixmap.
+        emptyTriangle(): Carga la imagen perteneciente al estímulo inactivo en el pixmap.
+        fillTriangle(): Carga la imagen perteneciente al estímulo activo en el pixmap.
+        reconnect(): Activa la bandera reconectar y cierra la interfaz.
+   
+    """
     def __init__(self, puerto, vectorSize, currentDir):
         super().__init__()
         #self.tracker = imuTracker()
@@ -48,6 +67,10 @@ class TestsWindow(QWidget):
         self.reportWindow.reconnectSignal.connect(self.reconnect)
 
     def update_image(self):
+        """
+        Actualiza y reescala la imagen cargada en pixmap
+        si esta no es nula o vacía.
+        """
         if not self.pixmap.isNull():
             scaled = self.pixmap.scaled(
                 self.pic.width(),
@@ -61,26 +84,23 @@ class TestsWindow(QWidget):
         self.update_image()
         super().resizeEvent(event)
 
-
-    def changeTriangleColor(self, isRed):
-        if isRed:
-            self.pixmap.load(fillFile)
-        else:
-            self.pixmap.load(emptyFile)
-        self.update_image()
-
     def emptyTriangle(self):
+        """
+        Carga la imagen perteneciente al estímulo inactivo en el pixmap.
+        """
         self.pixmap.load(emptyFile)
         self.update_image()
 
     def fillTriangle(self):
+        """
+        Carga la imagen perteneciente al estímulo activo en el pixmap.
+        """
         self.pixmap.load(fillFile)
         self.update_image()
     def reconnect(self):
+        """
+        Activa la bandera reconectar y cierra la interfaz.
+        """
         self.reconectar = True
         self.reportWindow.close()
         self.close()
-"""app = QApplication(sys.argv)
-mainWindow = ventanaPrincipal("COM7")
-mainWindow.show()
-sys.exit(app.exec())"""
