@@ -1,9 +1,11 @@
 import sys
 import matplotlib
 matplotlib.use("QtAgg")
+
+#from Graficadora.graphWindow import GraphWindow
+from ConfigurationWindow.configWindow import configurationWindow, GRAPH_WINDOW_MODE
 from Graficadora.graphWindow import GraphWindow
 
-from ConfigurationWindow.configWindow import configurationWindow, GRAPH_WINDOW_MODE
 from PyQt6.QtWidgets import (
     QApplication
 )

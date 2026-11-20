@@ -23,7 +23,7 @@ from TestWindow.testsWindow import IMU_MODE, EOG_MODE, STATIC_MODE, MOVIL_MODE
 import Graficadora.DataLogger as DL
 from StyleGraphics.StylesGraphic import STYLE_SHEET, DARK_BG, PANEL_BG, BORDER, ACCENT_CYAN, \
 ACCENT_RED, ACCENT_AMBER, ACCENT_BLUE, TEXT_PRIMARY, TEXT_MUTED, TEXT_LABEL, ACCENT_GREEN, ACCENT_YELLOW
-BAUD_RATE = 9600
+BAUD_RATE = 19200
 LINE_LENGTH = [0, 500]
 class GraphWindow(QMainWindow):
     """

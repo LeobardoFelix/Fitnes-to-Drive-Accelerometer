@@ -17,6 +17,7 @@ ADDED_DIR = "/sujetos/sujeto"
 COLUMN_WIDTH = 100
 VALUE_REACTION_MODE = 0
 MEAN_REACTION_MODE = 1
+BAUD_RATE = 19200
 class ReportWindow(QWidget):
     """
     Represental la ventana de configuración de monitoreo 
@@ -294,9 +295,10 @@ class ReportWindow(QWidget):
         self.updateAll()
         if not self.isTracking:
             self.isTracking = True
-            self.signalTracker = SignalTracker(self.puerto, 9600,
+            self.signalTracker = SignalTracker(self.puerto, BAUD_RATE,
                 self.vectorSize, self.thresholdMode, self.dataMode,self.reactionMode,
                 self.thresholdIMU, self.topThreshEOG, self.bottomThreshEOG, self.currentDir)
+            self.signalTracker.noRondas = self.noRondas
             #Thread configuration
             self.trackingThread = QThread()
             self.signalTracker.moveToThread(self.trackingThread)

@@ -115,8 +115,7 @@ class SerialConsumer:
                 csvwriter.writerow(self.fields)
                 while self.isMonitoring:
                     values = self.catcher.catchSerial()
-                    if self.isWriting:
-                        if values:
+                    if self.isWriting and values:
                             parts = values.split(",")
                             if len(parts) > 2:
                                 #with dataLock:
@@ -131,7 +130,7 @@ class SerialConsumer:
                                     self.reactionMean = self.currentMean
                                     self.reactionTime = self.currentTime
                                     self.hasReacted = True
-                    time.sleep(0.002)
+                    time.sleep(0.0005)
         except Exception as e:
             print(f"ERROR: {e}")
         finally:

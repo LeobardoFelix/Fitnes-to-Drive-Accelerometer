@@ -1,7 +1,5 @@
 import serial
 import time
-BAUD_RATE = 9600
-
 
 class SerialReader:
     """
