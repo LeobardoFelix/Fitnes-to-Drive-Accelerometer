@@ -292,6 +292,7 @@ class GraphWindow(QMainWindow):
                     valor   = float(partes[0])
                     promedio = float(partes[1]) if len(partes) > 1 else None
                     reaccion = float(partes[2]) if len(partes) > 2 else None
+                    ts = float(partes[3]) if len(partes) > 3 else None
                     #promedioIMU = float(partes[3]) if len(partes) > 3 else None
 
                     item = (valor, promedio, reaccion)

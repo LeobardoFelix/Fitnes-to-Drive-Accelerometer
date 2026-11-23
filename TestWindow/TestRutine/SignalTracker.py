@@ -107,7 +107,7 @@ class SignalTracker(QObject):
         dataFileName = self.baseDir + "/MEDIDAS.csv"
         reactionName = self.baseDir + "/REACCIONES.csv"
 
-        reactFields = ["no_round", "ts_start_round", "ts_end_round", "delta_ts", "reaction"]
+        reactFields = ["no_round", "ts_start_round", "ts_end_round", "delta_ts", "embeded_time", "reaction"]
 
         # Check files BEFORE opening
         os.makedirs(self.baseDir, exist_ok=True)
@@ -180,7 +180,7 @@ class SignalTracker(QObject):
         print(f"RONDA: {self.currentRound} TS: {currentTime}  REACCION: 0")
         self.serialConsumer.startWriting()
         #time.sleep(1)
-        
+        self.serialConsumer.startRound()
         self.fillFigure.emit()
         
         while (currentTime - startTime) < self.waitTime and self.isTracking:
@@ -188,13 +188,15 @@ class SignalTracker(QObject):
             if self.serialConsumer.hasReacted:
                 valor = self.serialConsumer.reactionValue
                 promedio = self.serialConsumer.reactionMean
-                ts = self.serialConsumer.reactionTime
+                embededTS = self.serialConsumer.reactionTime
+                pcTs = self.serialConsumer.reactionPCTime
                 reaccion = 1
-                self.currentLog.append(ts)
-                self.currentLog.append(ts-self.startRoundTime)
+                self.currentLog.append(pcTs)
+                self.currentLog.append(pcTs-self.startRoundTime)
+                self.currentLog.append(embededTS)
                 self.currentLog.append(reaccion)
-                print(f"REACTION: {self.serialConsumer.reactionValue} PROMEDIO: {self.serialConsumer.reactionMean}  TIEMPO: {self.serialConsumer.reactionTime}")
-                print(f"{valor}, {promedio}, {ts}, {reaccion}")
+                print(f"REACTION: {self.serialConsumer.reactionValue} PROMEDIO: {self.serialConsumer.reactionMean}  PC_TS: {self.serialConsumer.reactionPCTime} EMBEDED_TS: {self.serialConsumer.reactionTime}")
+                print(f"{valor}, {promedio}, {embededTS}, {pcTs}, {reaccion}")
                 self.serialConsumer.hasReacted = False
                 self.reacciono = True
                 break
@@ -214,6 +216,7 @@ class SignalTracker(QObject):
             ts = time.monotonic()
             self.currentLog.append(ts)
             self.currentLog.append(ts-self.startRoundTime)
+            self.currentLog.append(self.serialConsumer.currentTime)
             self.currentLog.append(0)
             print(f"NO REACCIONO TS: {ts}")
         else:

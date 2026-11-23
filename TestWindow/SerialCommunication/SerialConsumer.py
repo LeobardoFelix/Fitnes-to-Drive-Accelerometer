@@ -43,7 +43,7 @@ class SerialConsumer:
         self.reactionMode = reactionMode
         self.thresholdIMU = thresholdIMU
         self.baseDir = "."
-        self.fields = ["Aceleración escalar", "Promedio", "Ronda", "Timestamp", "Estimulo"]
+        self.fields = ["Valor", "Promedio", "Ronda", "ts_embebido", "ts_pc", "Estimulo"]
         self.currentRound = 0
         if dataMode == EOG_MODE and thresholdMode == MOVIL_MODE:
             self.topModEOG = topThresholdEOG
@@ -117,11 +117,11 @@ class SerialConsumer:
                     values = self.catcher.catchSerial()
                     if self.isWriting and values:
                             parts = values.split(",")
-                            if len(parts) > 2:
+                            if len(parts) > 3:
                                 #with dataLock:
-                                self.currentValue, self.currentMean, self.currentReaction = map(float, parts)
-                                self.currentTime = time.monotonic()
-                                row = [self.currentValue, self.currentMean, self.currentRound, self.currentTime, self.currentReaction]
+                                self.currentValue, self.currentMean, self.currentReaction, self.currentTime = map(float, parts)
+                                self.computerTime = time.monotonic()
+                                row = [self.currentValue, self.currentMean, self.currentRound, self.currentTime, self.computerTime, self.currentReaction]
                                 csvwriter.writerow(row)
                                 #print(f"WRITING: {self.currentValue}, {self.currentMean}, {self.currentReaction}")
                                 if self.currentReaction == 1:
@@ -129,6 +129,7 @@ class SerialConsumer:
                                     self.reactionValue = self.currentValue
                                     self.reactionMean = self.currentMean
                                     self.reactionTime = self.currentTime
+                                    self.reactionPCTime = self.computerTime
                                     self.hasReacted = True
                     time.sleep(0.0005)
         except Exception as e:
@@ -140,3 +141,11 @@ class SerialConsumer:
         Alza la bandera para terminar el ciclo de consumo.
         """
         self.isMonitoring = False
+
+    def startRound(self):
+        """
+        Manda a llamar el pulso de inicio de ronda
+        del SerialReader
+        """
+        self.catcher.sendStartRoundPulse()
+

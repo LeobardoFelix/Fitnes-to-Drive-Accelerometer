@@ -91,4 +91,16 @@ class SerialReader:
         """
         bites = data.encode()
         self.ser.write(bites)
+
+    def sendStartRoundPulse(self):
+        """
+        Manda un caracter al puerto serial,
+        es usado una vez que la conexión ya se ha establecido
+        y el sistema ya esta mandando datos. Inicia el timer
+        entre la presentación de estimulo hasta la siguiente reacción.
+        """
+        dato = "1"
+        bites = dato.encode()
+        self.ser.write(bites)
+
             

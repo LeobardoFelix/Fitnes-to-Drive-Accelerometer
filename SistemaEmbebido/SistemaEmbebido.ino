@@ -1,8 +1,11 @@
 #include <SoftwareSerial.h>
 #include <String.h>
+
+#define F_CPU 16000000UL
+#define PRESCALER 64.0f
 #define NUM_DATOS 100
-#define PRINT_INTERVAL_MS 33
-#define INTERVAL_MS 17
+#define PRINT_INTERVAL_MS 15
+#define INTERVAL_MS 16
 #define EOG_PIN A0
 #define RX_PIN 8
 #define TX_PIN 9
@@ -73,11 +76,20 @@ float printValue = 0.0;
 float printPromedio = 0.0;
 float printThreshold = 0.0;
 
+//Variables de timer
+float t = .001f;
+float tc = PRESCALER/F_CPU;
+float ciclos = t/tc;
+unsigned long timerCounter = 0;
+bool isCounting = false; 
+unsigned long startRoundTS = 0;
+unsigned long lastDataTS = 0;
+
 
 
 void setup() {
-
-  Serial.begin(9600);
+  
+  Serial.begin(19200);
   delay(1000);
   Serial.println("Iniciando conexion");
   BTSerial.begin(38400); 
@@ -99,14 +111,17 @@ void setup() {
   lastPrint = millis();
   printValue = 0.0;
   printPromedio = 0.0;
-  
+  //Serial.println("FINAL");
+  //configTimer();
 
 }
 
 void loop() {
+  //Serial.println("ENTRO");
   //readForMessages();
-  turnOffSignal();
+  readStartTimer();
   
+  turnOffSignal();
   if (dataMode == 0){
     reconectar();
     sendRequest();
@@ -116,7 +131,7 @@ void loop() {
     readEOG();
   }
 
-  printAt30Hz();
+  printAt60Hz();
 }
 
 void readForMessages(){
@@ -193,6 +208,8 @@ void waitForMessages(){
   while (msgReceived < 7){
     readForMessages();
   }
+  Serial.println("DESPUES DE MESSAGES");
+
 }
 
 void sendRequest(){
@@ -202,7 +219,6 @@ void sendRequest(){
     BTSerial.print(":41\n");
   }
 }
-
 
 void readEOG(){
   eogValue = analogRead(A0);
@@ -214,6 +230,7 @@ void readEOG(){
   //Impresión
   printValue = eogValue;
   printPromedio = eogFilterValue;
+  lastDataTS = millis();
   thresholdBeheaviorEOG();
 }
 
@@ -247,6 +264,7 @@ void readBth(){
           //Impresión
           printValue = scalarValue;
           printPromedio = bthFilterValue;
+          lastDataTS = millis();
           thresholdBeheaviorIMU();
         }
       }
@@ -269,15 +287,27 @@ void reconectar(){
     inputBuffer = "";
   }
 }
-void printAt30Hz(){
+void printAt60Hz(){
   now = millis();
   period = now - lastPrint;
   if (period >= PRINT_INTERVAL_MS){
+    
     Serial.print(printValue, 5);
     Serial.print(",");
     Serial.print(printPromedio, 5);
     Serial.print(",");
-    Serial.println(hasReacted);
+    Serial.print(hasReacted);
+    Serial.print(",");
+    if (isCounting && lastDataTS > startRoundTS)
+    {
+      Serial.println(lastDataTS-startRoundTS);
+      if (hasReacted)
+        isCounting = false;
+    }
+    else
+    {
+      Serial.println("0");
+    }
     lastPrint = millis();
   }
 }
@@ -335,4 +365,16 @@ void thresholdBeheaviorEOG(){
     }
 
 
+}
+
+void readStartTimer(){
+  if (Serial.available()){
+    int consumedData = Serial.read();
+    //Contador en ceros
+    //Empezara acontar
+    startRoundTS = millis();
+    isCounting = true;
+
+    
+  }
 }
