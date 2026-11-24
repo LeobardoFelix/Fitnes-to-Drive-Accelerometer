@@ -107,7 +107,7 @@ class SignalTracker(QObject):
         dataFileName = self.baseDir + "/MEDIDAS.csv"
         reactionName = self.baseDir + "/REACCIONES.csv"
 
-        reactFields = ["no_round", "ts_start_round", "ts_end_round", "delta_ts", "embeded_time", "reaction"]
+        reactFields = ["no_round", "ts_start_round", "ts_end_round", "delta_ts", "embedded_time", "reaction"]
 
         # Check files BEFORE opening
         os.makedirs(self.baseDir, exist_ok=True)
@@ -188,15 +188,15 @@ class SignalTracker(QObject):
             if self.serialConsumer.hasReacted:
                 valor = self.serialConsumer.reactionValue
                 promedio = self.serialConsumer.reactionMean
-                embededTS = self.serialConsumer.reactionTime
+                embeddedTS = self.serialConsumer.reactionTime
                 pcTs = self.serialConsumer.reactionPCTime
                 reaccion = 1
                 self.currentLog.append(pcTs)
                 self.currentLog.append(pcTs-self.startRoundTime)
-                self.currentLog.append(embededTS)
+                self.currentLog.append(embeddedTS)
                 self.currentLog.append(reaccion)
-                print(f"REACTION: {self.serialConsumer.reactionValue} PROMEDIO: {self.serialConsumer.reactionMean}  PC_TS: {self.serialConsumer.reactionPCTime} EMBEDED_TS: {self.serialConsumer.reactionTime}")
-                print(f"{valor}, {promedio}, {embededTS}, {pcTs}, {reaccion}")
+                print(f"REACTION: {self.serialConsumer.reactionValue} PROMEDIO: {self.serialConsumer.reactionMean}  PC_TS: {self.serialConsumer.reactionPCTime} embedded_TS: {self.serialConsumer.reactionTime}")
+                print(f"{valor}, {promedio}, {embeddedTS}, {pcTs}, {reaccion}")
                 self.serialConsumer.hasReacted = False
                 self.reacciono = True
                 break

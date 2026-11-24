@@ -45,7 +45,8 @@ class ReportWindow(QWidget):
     def __init__(self, reactionLog=[], puerto=None, vectorSize=20, currentDir="."):
         super().__init__()
         self.reactionLog = reactionLog
-        headers = ["no_round", "ts_start_round", "ts_end_round", "delta_ts", "reaction"]
+        
+        headers = ["no_round", "ts_start_round", "ts_end_round", "delta_ts", "embedded_time", "reaction"]
         self.resize(len(headers) * (COLUMN_WIDTH+7), (len(reactionLog))*55)
         #self.hasEnded = False
         layout = QVBoxLayout()
